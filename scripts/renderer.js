@@ -24,6 +24,11 @@ async function listSerialPorts() {
   })
 }
 
+const getMainData = async () => {
+  const response = await window.channels.getMainData()
+  console.log(response) // prints out 'pong'
+}
+
 function listPorts() {
   listSerialPorts();
   setTimeout(listPorts, 2000);
@@ -34,3 +39,4 @@ function listPorts() {
 setTimeout(listPorts, 2000);
 
 listSerialPorts()
+getMainData()

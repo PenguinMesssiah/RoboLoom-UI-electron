@@ -1,23 +1,21 @@
 {
-  "name": "electron-serialport",
+  "name": "Loom-UI",
   "version": "1.0.2",
-  "description": "A minimal Electron application with node serialport",
+  "description": "An Electron application with node serialport for weaving on a robotic loom developed by the SHRED Lab",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:serialport/electron-serialport.git"
+    "url": "git@github.com:PenguinMesssiah/SPEERLoom-UI-electron.git"
   },
   "keywords": [
     "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "Serial",
+    "start"
   ],
-  "author": "GitHub",
+  "author": "William Scott",
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^26.4.0"
