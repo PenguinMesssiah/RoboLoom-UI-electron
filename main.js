@@ -1,12 +1,14 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
+const { SerialPort }                  = require('serialport')
+
 const path = require('path')
 const url = require('url')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let mainWindow, windows, activeSerialPort
 
-function createWindow() {
+function createMainWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 800,
@@ -14,10 +16,11 @@ function createWindow() {
         backgroundColor: "#ccc",
         webPreferences: {
             nodeIntegration: true, // to allow require
-            contextIsolation: false, // allow use with Electron 12+
+            contextIsolation: true, // allow use with Electron 12+
             preload: path.join(__dirname, 'preload.js')
         }
     })
+        mainWindow.webContents.openDevTools();
 
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({
@@ -26,23 +29,22 @@ function createWindow() {
         slashes: true
     }))
 
-    // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
-
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {
         // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
+        // in an array if your app supports multi windows
         mainWindow = null
     })
 }
 
+// set up an internal app communication channel.
+//const { port0, port1 } = new MessageChannelMain()
+ipcMain.handle('get-serial', async () => { return SerialPort.list()})
+
 // Initialize and create browser windows when app is ready.
 app.on('ready', () => {
     //ipcMain.handle('channel_one', () => async () => {})
-    ipcMain.handle('data', () => 'pong')
-    createWindow()
+    createMainWindow()
 })
 
 // Quit when all windows are closed.
@@ -54,7 +56,7 @@ app.on('window-all-closed', function() {
 // & there are no other windows open.
 app.on('activate', function() {
     if (mainWindow === null) {
-        createWindow()
+        createMainWindow()
     }
 })
 

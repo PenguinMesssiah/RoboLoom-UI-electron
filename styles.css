@@ -1,0 +1,17 @@
+#ports {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+h1 {
+    text-align: center;
+}
+body {
+    text-align: center;
+}
+.spinner-grow {
+    width: 5rem; 
+    height: 5rem;
+}
+p {
+    white-space: pre;
+}

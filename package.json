@@ -21,6 +21,7 @@
     "electron": "^26.4.0"
   },
   "dependencies": {
+    "bootstrap": "^5.3.3",
     "serialport": "^10.3.0",
     "tableify": "^1.1.1"
   },
