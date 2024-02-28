@@ -2,16 +2,39 @@
     border-collapse: collapse;
     border: 1px solid black;
 }
+#alert_alert-success {
+    text-align: center;
+}
+#version-info-container {
+    position: relative;
+    left: 5%;
+    top: 12rem;
+}
+button-container {
+    position: relative;
+}
 h1 {
     text-align: center;
 }
 body {
     text-align: center;
 }
+.card {
+    width: 45rem;  
+    justify-content: center;
+    justify-self: center;
+}
+.card-title {
+    font-size: 1rem; /*16 pt*/
+}
+.card-text  {
+    font-size: .875rem; /*14 pt*/
+}
 .spinner-grow {
     width: 5rem; 
     height: 5rem;
+    justify-content: center;
 }
 p {
-    white-space: pre;
+    text-align: center;
 }

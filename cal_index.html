@@ -10,20 +10,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     
-    <title>Loom UI (v2)</title>
+    <title>Calibration Mode</title>
 </head>
 
 <body>
-    <h1>Welcome to Weaving!</h1>
+    <h1>Calibration Mode</h1>
 
     <div id="connecting-message" class="alert alert-warning alert-dismissible" role="alert">
-        Please wait while we automatically connect to your loom.
-       <!-- <span type="button" class="close" data-dismiss="alert" aria-label="Close" role="button"><span aria-hidden="true">&times;</span></span> -->
+        If all the heddles on the loom are DOWN, simply press the continue button below.
     </div>
 
-    <div id="connected-message" class="alert alert-success alert-dismissible" display="none" role="alert">
+    <div id="connected-message" class="alert alert-success alert-dismissible" role="alert">
         <h4 class="alert-heading">Sucess!</h4>
-        Detected and Connected to your Loom on Serial Port: <span id="serial-port"></span>
+        Identified Loom on Serial Port: <span id="serial-port"></span>
     </div>
     
     <div id="spinner-container" class="d-flex justify-content-center">
@@ -38,19 +37,11 @@
     <div class="d-grid d-md-flex justify-content-md-center">
         <button type="button" id="continue-btn" class="btn btn-outline-success">Continue</button>
     </div>
-
-    <div class="card" id="version-info-container">
-        <div class="card-body">
-            <h5 class="card-title">Core Software Packages</h5>
-            <p class="card-text"> This desktop application is built on Node.js <span id="node-version"></span>, Chromium <span id="chrome-version"></span>, Electron <span id="electron-version"></span>, and Serialport <span id="serialport-version"></span></p>
-        </div>
-    </div>
-
     <div >
        
     </div>
 </body>
 
-<script src="./renderer.js"></script>
+<script src="./cal_renderer.js"></script>
 
 </html>

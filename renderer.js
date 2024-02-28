@@ -1,32 +1,15 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
+// All of the Node.js APIs are available in this process.s
 
 activeSerialConnection = 0
-activeSerialPort = null
-
+activeSerialPort       = null
 /*
-const tableify = require('tableify')
-async function listSerialPorts() {
-  await SerialPort.list().then((ports, err) => {
-    if(err) {
-      document.getElementById('error').textContent = err.message
-      return
-    } else {
-      document.getElementById('error').textContent = ''
-    }
-    console.log('ports', ports);
-    
-    if (ports.length === 0) {
-      document.getElementById('error').textContent = 'No ports discovered'
-    }
-    
-    tableHTML = tableify(ports)
-    console.log(ports)
-    document.getElementById('ports').innerHTML = tableHTML
-  })
-}
+async function SerialPort() {
+  return await window.serial.getSerialObject()
+} 
 */
+
 async function parseSerialPorts() {
   await window.serial.getSerial().then((ports, err) => { 
     if(err) {
@@ -36,7 +19,7 @@ async function parseSerialPorts() {
     } else {
       document.getElementById('error').textContent = ''
     }
-    //console.log('ports', ports);
+
     if (ports.length === 0) {
       document.getElementById('error').textContent = 'No ports discovered'
       resetConnection()
@@ -44,40 +27,59 @@ async function parseSerialPorts() {
     }
 
     for (let x in ports) {
+      x = parseInt(x)
       if(ports[x].manufacturer == 'Arduino (www.arduino.cc)') {
         activeSerialConnection = 1 
-        activeSerialPort       = ports[x]
+        activeSerialPort = ports[x]        
+
+        window.serial.sendSerialPath(ports[x].path)
+        setConnectionHTML(activeSerialPort)
         //console.log("activeSerialConnection = ", activeSerialConnection)
-        return
+        break
+      } else if (x+1 == ports.length) {
+        resetConnection()
       }
     }
-    resetConnection()
     //console.log("activeSerialConnection = ", activeSerialConnection)
   })
 }
 
-const toggleSpinner = async () => {
-  if(activeSerialConnection) {
-    document.getElementById('spinner').style.display = hidden
-  } else {
-    document.getElementById('spinner').style.display = flex
-  }
+function linkEventHandlers() {
+  document.getElementById("continue-btn").addEventListener('click', () => {
+    window.activeWindows.getCalWindow()
+  })
 }
 
+// Helper Functions for Updating index.html
 function resetConnection() {
   activeSerialConnection = 0
   activeSerialPort       = null
+  
+  document.getElementById("spinner-container").style.display = 'block'
+  document.getElementById("spinner").style.display = 'inline'
+  document.getElementById("connecting-message").style.display = 'block'
+  document.getElementById("connected-message").style.display = 'none'
+  document.getElementById("continue-btn").style.display = 'none'
+}
+
+function setConnectionHTML(currentArduinoPort) {
+  document.getElementById("spinner-container").style.display = 'none'
+  document.getElementById("spinner").style.display = 'none'
+  document.getElementById("connecting-message").style.display = 'none'
+  document.getElementById("connected-message").style.display = 'block'
+  document.getElementById("continue-btn").style.display = 'block'
+  document.getElementById("serial-port").innerText = currentArduinoPort.path
 }
 
 function parsePorts() {
-  parseSerialPorts();
-  setTimeout(parsePorts, 2000);
+  parseSerialPorts()
+  setTimeout(parsePorts, 3000)
 }
 
 //Execute
-parsePorts()
-toggleSpinner()
+resetConnection()
+linkEventHandlers()
 
 // Heartbeat that reschedules itself
-setTimeout(parsePorts, 5000);
+setTimeout(parsePorts, 3000);
 
