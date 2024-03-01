@@ -37,12 +37,12 @@ function createMainWindow() {
         // in an array if your app supports multi windows
         mainWindow = null
     })
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
 }
 
 function createCalWindow() {
     calWindow = new BrowserWindow({
-        width: 1200,
+        width: 600,
         height: 600,
         parent: mainWindow,
         backgroundColor: "#ccc",
@@ -67,7 +67,6 @@ function createCalWindow() {
 
 function openSerialConnetion(event, path) {
     //console.log("path = ", path)
-
     if(activeSerialPort == null) {
         activeSerialPort = new SerialPort({
             path: path,
@@ -76,7 +75,6 @@ function openSerialConnetion(event, path) {
         })
     }
 
-    //console.log("activeSerialPort status = ", activeSerialPort.open())
     /*
     activeSerialPort.open(function (err) {
         if (err) {

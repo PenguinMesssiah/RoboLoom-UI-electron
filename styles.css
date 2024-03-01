@@ -8,10 +8,10 @@
 #version-info-container {
     position: relative;
     left: 5%;
-    top: 12rem;
+    margin-top: 25%;
 }
-button-container {
-    position: relative;
+button {
+    text-align: center;
 }
 h1 {
     text-align: center;
