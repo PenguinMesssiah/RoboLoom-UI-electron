@@ -1,6 +1,6 @@
 function linkEventHandlers() {
     document.getElementById("manual-btn").addEventListener('click', () => {
-      //Open Modal
+      //Open Modal Here
     })
 }
 
