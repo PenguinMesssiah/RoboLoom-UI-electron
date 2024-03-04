@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <link rel="stylesheet" href="cal_styles.css">
+    <link rel="stylesheet" href="./assets/css/cal_styles.css">
     
     <title>Calibration Mode</title>
 </head>
@@ -18,7 +17,6 @@
     <div class="card" id="calibration-menu-container">
         <div class="card-body">
             <h5 class="card-title">Automatic Calibration</h5>
-            <img src="./assets/icons/bi-arrows-collapse.svg">
             <p class="card-text">In order to Automatically Calibrate the Jaquard Loom, you must ensure the following: 
                 <br>* ALL the motor heddles are set to the DOWN position.
                 <br>* Your computer is physically connected to your Loom's Arduino with an open Serial port.
@@ -26,16 +24,21 @@
             <button type="button" id="automatic-btn" class="btn btn-outline-info">Automaically Calibrate</button>      
         </div>
     </div>
-
+    
     <div class="card" id="calibration-menu-container">
-        <div class="card-body">
-            <h5 class="card-title">Manual Calibration</h5>
-            <p class="card-text">Use manual calibration in the event ANY of the Jaquard Loom's heddles are not in the DOWN position</p>
-            <button type="button" id="automatic-btn" class="btn btn-outline-secondary">Manual Calibration</button>
+        <h5 class="card-title">Manual Calibration<button class="btn btn-outline-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContainer" role="button" aria-expanded="false" aria-controls="collapseContainer">
+            <img src="./assets/icons/bi-arrows-collapse.svg">
+        </button></h5>
+        <!--<div class=""-->
+            <div class="collapse card-body" id="collapseContainer">
+                <p class="card-text">Use manual calibration in the event ANY of the Jaquard Loom's heddles are not in the DOWN position</p>
+                <button type="button" id="manual-btn" class="btn btn-outline-secondary">Manual Calibration</button>
+            </div>
         </div>
     </div>
+
 </body>
 
-<script src="./cal_renderer.js"></script>
+<script src="./assets/js/cal_renderer.js"></script>
 
 </html>

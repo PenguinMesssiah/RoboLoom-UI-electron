@@ -4,11 +4,6 @@
 
 activeSerialConnection = 0
 activeSerialPort       = null
-/*
-async function SerialPort() {
-  return await window.serial.getSerialObject()
-} 
-*/
 
 async function parseSerialPorts() {
   await window.serial.getSerial().then((ports, err) => { 

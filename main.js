@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, MessageChannelMain } = require('electron')
-const { SerialPort }                  = require('serialport')
+const { SerialPort } = require('serialport')
+//const bootstrap      = require('bootstrap')
 
 const path = require('path')
 const url  = require('url')
@@ -12,8 +13,8 @@ let appWindows       = new List()
 function createMainWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 600,
+        height: 400,
         backgroundColor: "#ccc",
         webPreferences: {
             nodeIntegration: true, // to allow require
