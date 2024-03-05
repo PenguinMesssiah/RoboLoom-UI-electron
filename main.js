@@ -75,7 +75,6 @@ function openSerialConnetion(event, path) {
             autoOpen: true
         })
     }
-
     /*
     activeSerialPort.open(function (err) {
         if (err) {
@@ -91,7 +90,6 @@ function openSerialConnetion(event, path) {
 }
 
 //Inter-Process Communication
-//const { port0, port1 } = new MessageChannelMain()
 ipcMain.on('send-serial-port', openSerialConnetion)
 ipcMain.handle('get-serial', async () => { return SerialPort.list()})
 ipcMain.handle('cal-window', async () => {
