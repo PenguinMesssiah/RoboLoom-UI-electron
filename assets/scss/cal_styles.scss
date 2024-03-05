@@ -31,7 +31,7 @@ $success: #7952b3;
 @import "../../node_modules/bootstrap/scss/buttons";
 @import "../../node_modules/bootstrap/scss/transitions";
 @import "../../node_modules/bootstrap/scss/dropdown";
-// @import "../../node_modules/bootstrap/scss/button-group";
+@import "../../node_modules/bootstrap/scss/button-group";
 // @import "../../node_modules/bootstrap/scss/nav";
 // @import "../../node_modules/bootstrap/scss/navbar"; // Requires nav
 @import "../../node_modules/bootstrap/scss/card";
@@ -49,7 +49,7 @@ $success: #7952b3;
 @import "../../node_modules/bootstrap/scss/popover";
 // @import "../../node_modules/bootstrap/scss/carousel";
 @import "../../node_modules/bootstrap/scss/spinners";
-@import "../../node_modules/bootstrap/scss/offcanvas"; // Requires transitions
+//@import "../../node_modules/bootstrap/scss/offcanvas"; // Requires transitions
 // @import "../../node_modules/bootstrap/scss/placeholders";
 
 // Helpers

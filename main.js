@@ -44,7 +44,7 @@ function createMainWindow() {
 function createCalWindow() {
     calWindow = new BrowserWindow({
         width: 600,
-        height: 600,
+        height: 500,
         parent: mainWindow,
         backgroundColor: "#ccc",
         webPreferences: {
