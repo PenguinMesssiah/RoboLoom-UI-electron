@@ -49,7 +49,8 @@ function createCalWindow() {
         backgroundColor: "#ccc",
         webPreferences: {
             nodeIntegration: true, // to allow require
-            contextIsolation: true
+            contextIsolation: true,
+            preload: path.join(__dirname, 'preload.js')
         }
     })
 
@@ -66,6 +67,31 @@ function createCalWindow() {
     })
 }
 
+function createManCalWindow() {
+    manCalWindow = new BrowserWindow({
+        width: 600,
+        height: 500,
+        parent: calWindow,
+        backgroundColor: "#ccc",
+        webPreferences: {
+            nodeIntegration: true, // to allow require
+            contextIsolation: true
+        }
+    })
+
+    manCalWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'man_cal_index.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
+
+    appWindows.push(manCalWindow)
+    
+    // Emitted when the window is closed.
+    manCalWindow.on('closed', function() {
+    })
+}
+
 function openSerialConnetion(event, path) {
     //console.log("path = ", path)
     if(activeSerialPort == null) {
@@ -75,6 +101,7 @@ function openSerialConnetion(event, path) {
             autoOpen: true
         })
     }
+
     /*
     activeSerialPort.open(function (err) {
         if (err) {
@@ -95,10 +122,12 @@ ipcMain.handle('get-serial', async () => { return SerialPort.list()})
 ipcMain.handle('cal-window', async () => {
     await app.isReady('ready', createCalWindow())
 })
+ipcMain.handle('man-cal-window', async () => {
+    await app.isReady('ready', createManCalWindow())
+})
 
 // Initialize and create browser windows when app is ready.
 app.on('ready', () => {
-    //ipcMain.handle('channel_one', () => async () => {})
     createMainWindow()
 })
 

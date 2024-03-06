@@ -1,9 +1,8 @@
 function linkEventHandlers() {
-    document.getElementById("manual-btn").addEventListener('click', setWindowSize)
-}
-
-function setWindowSize(){
-  window.setSize(1000, 400)
+    document.getElementById("manual-btn").addEventListener('click', () => {
+      console.log("window object = ", window)
+      window.activeWindows.getManCalWindow()
+    })
 }
 
 function sendMotorUpCommand(motorInt) {
@@ -17,4 +16,4 @@ function sendMotorDownCommand(motorInt) {
 }
 
 //Execute
-//linkEventHandlers()
+linkEventHandlers()

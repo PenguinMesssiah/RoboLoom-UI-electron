@@ -11,7 +11,8 @@ contextBridge.exposeInMainWorld('serial', {
 })
 
 contextBridge.exposeInMainWorld('activeWindows', {
-  getCalWindow: () => ipcRenderer.invoke('cal-window')
+  getCalWindow: () => ipcRenderer.invoke('cal-window'),
+  getManCalWindow: () => ipcRenderer.invoke('man-cal-window')
 })
 
 window.addEventListener('DOMContentLoaded', () => {
