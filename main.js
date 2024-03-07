@@ -122,9 +122,6 @@ ipcMain.handle('get-serial', async () => { return SerialPort.list()})
 ipcMain.handle('cal-window', async () => {
     await app.isReady('ready', createCalWindow())
 })
-ipcMain.handle('man-cal-window', async () => {
-    await app.isReady('ready', createManCalWindow())
-})
 
 // Initialize and create browser windows when app is ready.
 app.on('ready', () => {

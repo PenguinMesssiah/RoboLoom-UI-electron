@@ -5517,9 +5517,12 @@ progress {
 @media (min-width: 576px) {
   .float-sm-start {
     float: left !important;
+    margin-top: 10.25%;
+    margin-left: 8%;
   }
   .float-sm-end {
     float: right !important;
+    margin-right: 3%;
   }
   .float-sm-none {
     float: none !important;

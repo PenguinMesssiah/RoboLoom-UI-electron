@@ -1,7 +1,10 @@
 function linkEventHandlers() {
+    document.getElementById("automatic-btn").addEventListener('click', () => {
+      //Enable/Show Continue Button
+    })
+
     document.getElementById("manual-btn").addEventListener('click', () => {
-      console.log("window object = ", window)
-      window.activeWindows.getManCalWindow()
+      //Enable/Show Continue Button
     })
 }
 
@@ -16,4 +19,4 @@ function sendMotorDownCommand(motorInt) {
 }
 
 //Execute
-linkEventHandlers()
+//linkEventHandlers()
