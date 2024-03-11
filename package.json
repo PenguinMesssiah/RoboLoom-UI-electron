@@ -24,6 +24,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "collections": "^5.1.13",
+    "konva": "^9.3.6",
     "serialport": "^10.3.0",
     "tableify": "^1.1.1"
   },

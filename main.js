@@ -13,8 +13,10 @@ let appWindows       = new List()
 function createMainWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        width: 600,
-        height: 400,
+        //width: 600,
+        //height: 400,
+        width: 1920,
+        height: 1080,
         backgroundColor: "#ccc",
         webPreferences: {
             nodeIntegration: true, // to allow require
@@ -27,7 +29,7 @@ function createMainWindow() {
 
     // and load the index.html of the app.
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
+        pathname: path.join(__dirname, 'shaft_index.html'),
         protocol: 'file:',
         slashes: true
     }))
@@ -67,10 +69,10 @@ function createCalWindow() {
     })
 }
 
-function createManCalWindow() {
-    manCalWindow = new BrowserWindow({
-        width: 600,
-        height: 500,
+function createshaftWeaveWindow() {
+    shaftWeaveWindow = new BrowserWindow({
+        width: 1920,
+        height: 1080,
         parent: calWindow,
         backgroundColor: "#ccc",
         webPreferences: {
@@ -79,16 +81,16 @@ function createManCalWindow() {
         }
     })
 
-    manCalWindow.loadURL(url.format({
-        pathname: path.join(__dirname, 'man_cal_index.html'),
+    shaftWeaveWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'shaft_index.html'),
         protocol: 'file:',
         slashes: true
     }))
 
-    appWindows.push(manCalWindow)
+    appWindows.push(shaftWeaveWindow)
     
     // Emitted when the window is closed.
-    manCalWindow.on('closed', function() {
+    shaftWeaveWindow.on('closed', function() {
     })
 }
 
@@ -121,6 +123,9 @@ ipcMain.on('send-serial-port', openSerialConnetion)
 ipcMain.handle('get-serial', async () => { return SerialPort.list()})
 ipcMain.handle('cal-window', async () => {
     await app.isReady('ready', createCalWindow())
+})
+ipcMain.handle('shaft-window', async () => {
+    await app.isReady('ready', createshaftWeaveWindow())
 })
 
 // Initialize and create browser windows when app is ready.

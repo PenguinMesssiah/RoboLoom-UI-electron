@@ -1,10 +1,16 @@
 function linkEventHandlers() {
     document.getElementById("automatic-btn").addEventListener('click', () => {
       //Enable/Show Continue Button
+      document.getElementById("continue-btn").style.display = 'block'
     })
 
     document.getElementById("manual-btn").addEventListener('click', () => {
       //Enable/Show Continue Button
+      document.getElementById("continue-btn").style.display = 'block'
+    })
+
+    document.getElementById("continue-btn").addEventListener('click', () => {
+      window.activeWindows.getShaftWindow()
     })
 }
 
@@ -19,4 +25,4 @@ function sendMotorDownCommand(motorInt) {
 }
 
 //Execute
-//linkEventHandlers()
+linkEventHandlers()
