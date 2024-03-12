@@ -13,8 +13,9 @@ const stage = new Konva.Stage({
 const rectLayer = new Konva.Layer();
 
 const cmain       = 'black'
+const cmainFill   = 'white'
 const calternate  = 'blue'
-const cwhite = 'white'
+const calternativeFill = '#0080FF'
 const cgreen = 'green'
 
 let num_pedals = DEFAULT
@@ -94,32 +95,32 @@ function drawWeaveDraft() {
     stage.on('click', function (e) {
         var text_obj = e.target
         var obj_id   = 'rect_' + text_obj.id().toString()
-        console.log("Clicked on obj with id = ", obj_id)
-        console.log("obj of type = ", text_obj.getClassName())
+        //console.log("Clicked on obj with id = ", obj_id)
+        //console.log("obj of type = ", text_obj.getClassName())
+        
+        //Find Corresponding Rectangle
+        var cRect = stage.find("."+obj_id)[0]
+        //console.log("looking for id= ", obj_id, cRect)
+        //console.log("Found Obj w/ id , ", cRect.name(), ', of type', cRect.getClassName())
         
         //Handle Click on Text
         if(text_obj.text() == '0') {
             text_obj.text('1')
             text_obj.fill(calternate)
+            //text_obj.zIndex(100)
         } else if(text_obj.text() == '1') {
             text_obj.text('0')
-            text_obj.fill(cmain)  
+            text_obj.fill('cmain') 
+            //text_obj.zIndex(0) 
         }
 
-        //Working, Found Corresponding Rectangle
-        var cRect = stage.find("."+obj_id)[0]
-        console.log("looking for id= ", obj_id, cRect)
-        console.log("Found Obj w/ id , ", cRect.name(), ', of type', cRect.getClassName())
-        /*
         //Handle Click on Rect
-        if (shape.stroke() == cmain) {
-            shape.stroke(cgreen);
-            shape.fill(cblue);
-        } else if (shape.stroke() == cgreen) {
-            shape.stroke(cmain);
-            shape.fill(cwhite);
+        if (cRect.fill() == cmainFill) {
+            cRect.fill(calternativeFill)
+        } else if (cRect.fill() == calternativeFill) {
+            cRect.fill(cmainFill);
         }
-        */
+        rectLayer.draw()
     })
 }
 
@@ -131,11 +132,13 @@ function createRectangle(i, x, y, group) {
         width: 25,
         height: 25,
         name: name,
+        cornerRadius: 1,
         x: x*BUFFER,
         y: y*BUFFER,
-        fill: cwhite,
+        fill: cmainFill,
         stroke: cmain,
-        strokeWidth: 2
+        strokeWidth: 1,
+        zindex: 0
     })
     
     label = new Konva.Text({
@@ -148,20 +151,9 @@ function createRectangle(i, x, y, group) {
         fill: cmain,
         width: 25,
         padding: 5,
-        align: 'center'
+        align: 'center',
+        zindex: 10
     })
-    /*
-    rect.on('pointer', function () {
-        console.log("Clicked on Rect with id = ", e.target.id())
-        if (e.target.stroke() == cmain) {
-            e.target.stroke(cgreen);
-            e.target.fill(cblue);
-        } else if (e.target.stroke() == cgreen) {
-            e.target.stroke(cmain);
-            e.target.fill(cwhite);
-        }
-    })
-    */
 
     group.add(rect)
     group.add(label)
