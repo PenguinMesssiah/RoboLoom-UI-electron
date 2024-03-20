@@ -21,6 +21,7 @@
     "electron": "^26.4.0"
   },
   "dependencies": {
+    "@stdlib/ndarray": "^0.2.1",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "collections": "^5.1.13",
