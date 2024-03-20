@@ -132,7 +132,7 @@ ipcMain.handle('shaft-window', async () => {
 })
 
 //Matrix Operations
-ipcMain.on('create-array', async (event, {row, col, id}) => {
+ipcMain.on('create-array', (event, {row, col, id}) => {
     let message = {
         type: 0, 
         row: row, 
@@ -143,7 +143,7 @@ ipcMain.on('create-array', async (event, {row, col, id}) => {
     matrix_child.postMessage(message)
 })
 
-ipcMain.on('update-matrix', async (event, {row, col, state, id}) => {
+ipcMain.on('update-matrix', (event, {row, col, state, id}) => {
     let message = {
         type: 1, 
         row: row, 

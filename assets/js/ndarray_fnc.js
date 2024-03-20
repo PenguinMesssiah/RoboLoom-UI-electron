@@ -54,15 +54,15 @@ function updateMatrix (pRow, pCol, pState, pId) {
             break;
         case TIEUP_ID:
             tieUpArr.set(pRow, pCol, pState)
-            console.log('teiUpArr @ ', pRow,", " ,pCol, " = ", threadingArr.get(pRow,pCol))
+            console.log('teiUpArr @ ', pRow,", " ,pCol, " = ", tieUpArr.get(pRow,pCol))
             break;
         case TREADLING_ID:
             treadlingArr.set(pRow, pCol, pState)
-            console.log('treadlingArr @ ', pRow,", " ,pCol, " = ", threadingArr.get(pRow,pCol))
+            console.log('treadlingArr @ ', pRow,", " ,pCol, " = ", treadlingArr.get(pRow,pCol))
             break;
         case DRAWDOWN_ID:
             drawdownArr.set(pRow, pCol, pState)
-            console.log('drawdownArr @ ', pRow,", " ,pCol, " = ", threadingArr.get(pRow,pCol))
+            console.log('drawdownArr @ ', pRow,", " ,pCol, " = ", drawdownArr.get(pRow,pCol))
             break;
     }
 }
