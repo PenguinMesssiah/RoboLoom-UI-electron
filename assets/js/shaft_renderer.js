@@ -10,7 +10,7 @@ const BUFFER   = 25
 const stage = new Konva.Stage({
     container: 'konva-container',
     width: 1250,
-    height: 700,
+    height: 650,
     draggable: false
 });
 const rectLayer = new Konva.Layer();
@@ -23,6 +23,11 @@ const cgreen      = 'green'
 
 let num_pedals = DEFAULT
 let num_shafts = DEFAULT
+
+function initCanvas() {
+    stage.container().style.backgroundColor = 'green';
+    drawWeaveDraft()
+}
 
 function drawWeaveDraft() {
     let idx = 0
@@ -135,7 +140,6 @@ function updateMatrixElement(pRect, pState) {
     }
 }
 
-
 //Toggle Rect & Text Obj
 function toggleObj(pText, pRect) {
     var bool = null
@@ -197,4 +201,4 @@ function createRectangle(i, x, y, group) {
 }
 
 //Execute
-drawWeaveDraft()
+initCanvas()

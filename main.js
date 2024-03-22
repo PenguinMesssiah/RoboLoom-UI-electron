@@ -4,13 +4,11 @@ const path  = require('path')
 const url   = require('url')
 const List  = require("collections/list");
 
-const matrix_child = utilityProcess.fork(path.join(__dirname, './assets/js/ndarray_fnc'), {
-    serviceName: 'Matrix Utility Process'
-})
 
 let mainWindow       = null
 let shaftWeaveWindow = null
 let activeSerialPort = null
+let matrix_child     = null
 let appWindows       = new List()
 
 function createMainWindow() {
@@ -71,6 +69,11 @@ function createCalWindow() {
 }
 
 function createShaftWeaveWindow() {
+    //Create Utility Service
+    matrix_child = utilityProcess.fork(path.join(__dirname, './assets/util/ndarray_fnc'), {
+        serviceName: 'Matrix Utility Process'
+    })
+
     shaftWeaveWindow = new BrowserWindow({
         width: 1920,
         height: 1080,
@@ -94,6 +97,7 @@ function createShaftWeaveWindow() {
     
     // Emitted when the window is closed.
     shaftWeaveWindow.on('closed', function() {
+        matrix_child.kill()
     })
 }
 
