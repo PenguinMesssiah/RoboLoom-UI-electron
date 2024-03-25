@@ -70,7 +70,27 @@
                     </h2>
                     <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                            <form class="row needs-validation" novalidate>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="shafts-input-label">Shafts:</span>
+                                <input type="number" class="form-control" id="shafts-input" placeholder="s" min="2" max="12" aria-label="Shafts" aria-describedby="basic-addon1">
+                                <div class="form-text" id="shaft-input-text"><small class="text-body-secondary">Minimum of 2, Maximum of 12</small></div>
+                                <!--
+                                <div class="valid-feedback">Applied!</div>  
+                                <div class="invalid-feedback">Whoops! This software only supports a minimum and maximum of 2 & 12 shafts, respectively.</div>   
+                                -->                            
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="pedals-input-label">Pedals:</span>
+                                <input type="number" class="form-control" id="pedals-input" placeholder="p" min="2" max="8" aria-label="Pedals" aria-describedby="basic-addon1">
+                                <div class="form-text" id="shaft-input-text"><small class="text-body-secondary">Minimum of 2, Maximum of 8</small></div>
+                                <!--
+                                <div class="valid-feedback">Applied!</div>
+                                <div class="invalid-feedback">Whoops! This software only supports a minimum and maximum of 2 & 8 pedals, respectively.</div>
+                                -->                                 
+                            </div>
+                            <button type="button" class="btn btn-info mx-auto" onclick='configShaftsPedals()'>Apply</button>
+                            </form>
                         </div>
                     </div>
                 </div>

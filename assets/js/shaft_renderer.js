@@ -2,7 +2,9 @@ const ROW_MAX  = 20
 const COL_MAX  = 40
 const DEFAULT  = 4
 const BUFFER   = 25
-
+const PADDING  = 5;
+const WIDTH    = 1500;
+const HEIGHT   = 1000;
 /*
     Konva is in (c,r) format by default
     where (y,x) represent the horizontal & vertical axis respectively 
@@ -67,7 +69,7 @@ function drawWeaveDraft() {
     //Draw Threadling & Create Array (p x t)
     var treadlingGroup = new Konva.Group({
         x: 1025, 
-        y: 125,
+        y: num_shafts*BUFFER*1.15,
         id: 'treadlingGroup', 
         width: 400,
         height: 600
@@ -83,7 +85,7 @@ function drawWeaveDraft() {
     //Draw Drawdown & Create Array  (n x t)
     var drawdownGroup = new Konva.Group({
         x: 5, 
-        y: 125,
+        y: num_shafts*BUFFER*1.15,
         id: 'drawdownGroup', 
         width: 800,
         height: 800
@@ -95,6 +97,8 @@ function drawWeaveDraft() {
         }
     }
     window.ndarray.createArray(ROW_MAX, COL_MAX, 3)
+    
+    drawScrollBars()
 
     rectLayer.add(threadingGroup);
     rectLayer.add(tieUpGroup);
@@ -198,6 +202,107 @@ function createRectangle(i, x, y, group) {
 
     group.add(rect)
     group.add(label)
+}
+
+//Read & Apply Shaft & Pedal Input
+function configShaftsPedals() {
+    var shaft_form = document.getElementById('shafts-input')
+    var pedal_form = document.getElementById('pedals-input')
+
+    num_shafts = parseInt(shaft_form.value)
+    num_pedals = parseInt(pedal_form.value)
+
+    stage.destroyChildren()
+    drawWeaveDraft()
+}
+
+function drawScrollBars() {
+    var scrollLayers = new Konva.Layer();
+    stage.add(scrollLayers);
+
+    var verticalBar = new Konva.Rect({
+        width: 10,
+        height: 100,
+        fill: 'grey',
+        opacity: 0.8,
+        x: stage.width() - PADDING - 10,
+        y: PADDING,
+        draggable: true,
+        dragBoundFunc: function (pos) {
+            pos.x = stage.width() - PADDING - 10;
+            pos.y = Math.max(
+            Math.min(pos.y, stage.height() - this.height() - PADDING),PADDING);
+            return pos;
+        },
+    });
+
+    verticalBar.on('dragmove', function () {
+        // delta in %
+        const availableHeight =
+            stage.height() - PADDING * 2 - verticalBar.height();
+        var delta = (verticalBar.y() - PADDING) / availableHeight;
+
+        rectLayer.y(-(HEIGHT - stage.height()) * delta);
+    });
+    scrollLayers.add(verticalBar);
+
+    var horizontalBar = new Konva.Rect({
+    width: 100,
+    height: 10,
+    fill: 'grey',
+    opacity: 0.8,
+    x: PADDING,
+    y: stage.height() - PADDING - 10,
+    draggable: true,
+    dragBoundFunc: function (pos) {
+        pos.x = Math.max(
+        Math.min(pos.x, stage.width() - this.width() - PADDING),PADDING);
+        pos.y = stage.height() - PADDING - 10;
+        return pos;
+    },
+    });
+
+    scrollLayers.add(horizontalBar);
+
+    horizontalBar.on('dragmove', function () {
+    // delta in %
+    const availableWidth =
+        stage.width() - PADDING * 2 - horizontalBar.width();
+    var delta = (horizontalBar.x() - PADDING) / availableWidth;
+
+    rectLayer.x(-(WIDTH - stage.width()) * delta);
+    });
+
+    stage.on('wheel', function (e) {
+        // prevent parent scrolling
+        e.evt.preventDefault();
+        const dx = e.evt.deltaX;
+        const dy = e.evt.deltaY;
+
+        const minX = -(WIDTH - stage.width());
+        const maxX = 0;
+
+        const x = Math.max(minX, Math.min(rectLayer.x() - dx, maxX));
+
+        const minY = -(HEIGHT - stage.height());
+        const maxY = 0;
+
+        const y = Math.max(minY, Math.min(rectLayer.y() - dy, maxY));
+        rectLayer.position({ x, y });
+
+        const availableHeight =
+          stage.height() - PADDING * 2 - verticalBar.height();
+        const vy =
+          (rectLayer.y() / (-HEIGHT + stage.height())) * availableHeight + PADDING;
+        verticalBar.y(vy);
+
+        const availableWidth =
+          stage.width() - PADDING * 2 - horizontalBar.width();
+
+        const hx =
+          (rectLayer.x() / (-WIDTH + stage.width())) * availableWidth + PADDING;
+        horizontalBar.x(hx);
+      });
 }
 
 //Execute
