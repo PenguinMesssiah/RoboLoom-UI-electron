@@ -27,7 +27,7 @@ let num_pedals = DEFAULT
 let num_shafts = DEFAULT
 
 function initCanvas() {
-    stage.container().style.backgroundColor = 'green';
+    //stage.container().style.backgroundColor = 'green';
     drawWeaveDraft()
 }
 
@@ -69,7 +69,7 @@ function drawWeaveDraft() {
     //Draw Threadling & Create Array (p x t)
     var treadlingGroup = new Konva.Group({
         x: 1025, 
-        y: num_shafts*BUFFER*1.15,
+        y: num_shafts*BUFFER*1.13,
         id: 'treadlingGroup', 
         width: 400,
         height: 600
@@ -85,7 +85,7 @@ function drawWeaveDraft() {
     //Draw Drawdown & Create Array  (n x t)
     var drawdownGroup = new Konva.Group({
         x: 5, 
-        y: num_shafts*BUFFER*1.15,
+        y: num_shafts*BUFFER*1.13,
         id: 'drawdownGroup', 
         width: 800,
         height: 800

@@ -12,11 +12,34 @@
 </head>
 
 <body>
-    <h2>WeaveWise<sup><img src="./assets/icons/bi-badge-tm.svg"></sup></h2>
-    <h5><small class="text-body-secondary">Educational Mode: Shaft Loom Weaving</small></h5>
+    <h2 class="text-center">WeaveWise<sup><img src="./assets/icons/bi-badge-tm.svg"></sup></h2>
+    <h5 class="text-center"><small class="text-body-secondary">Educational Mode: Shaft Loom Weaving</small></h5>
 
     <!--Konva Canvas-->
-    <div id="konva-container"></div>
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-10"></div>
+        <div id="konva-container"></div>
+    
+    <!--Weaving Commands-->
+        <div class="col-2 weave-btn-group">
+            <div class="btn-group-vertical" role="group" aria-label="Weaving Button Group">
+                <button type="button" class="btn btn-outline-info">Send Threading Config</button>
+                <button type="button" class="btn btn-outline-info">Previous Row</button>
+                <button type="button" class="btn btn-outline-info">Next Row</button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Jump to Row
+                    </button>
+                    <ul class="dropdown-menu">
+                        <input type="number" class="dropdown-item" placeholder="row (r)" min="0" max="20" aria-label="Input Row" aria-describedby="Row Input Button">
+                        <a class="dropdown-item" href="#">Apply</a>
+                    </ul>
+                </div> 
+            </div>
+        </div>
+    </div>
+    </div>
     
     <!--Offcanvas-->
     <div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="settingsPanel" aria-labelledby="settingsPanelLabel">
@@ -33,21 +56,19 @@
                     </button>
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <strong>Welcome! To start weaving on the your newly assembled loom, follow this five step process:</strong>
-                        <p>
-                        <ol class="list-group list-group-numbered">
-                            <li class="list-group-item">Choose the number of shafts <i>(s)</i></li>
-                            <li class="list-group-item">Choose the number of pedals <i>(p)</i></li>
-                            <div class="fw-italics">
-                                <small class="text-body-secondary">These options are located in the <i>"Weaving Draft Operations" Subpanel.</i></small>
-                            </div>
-                            <li class="list-group-item">Experiment with various configurations for the <strong><i>threading</i></strong> matrix, pressing the <small class="text-body-secondary">Send New Threading</small> button once you are finished.</li> 
-                            <li class="list-group-item">Experiment with various configurations for the <strong><i>tie-up</i> and <i>treadling</i></strong> matrices, respectively, until you reach a desired pattern.</li>
-                            <li class="list-group-item">Begin weaving with the <small class="text-body-secondary">Next Row</small> and <small class="text-body-secondary">Previous Row</small> buttons, throwing your weft shuttle in the shed between every timestep!</li> 
-                        </ol>
-                        </p>
-                    </div>
+                        <div class="accordion-body">
+                            <div class="text-center"><strong>Welcome! To start weaving on the your newly assembled loom, follow this five step process:</strong></div>
+                            <ol class="list-group list-group-numbered">
+                                <li class="list-group-item">Choose the number of shafts <i>(s)</i></li>
+                                <li class="list-group-item">Choose the number of pedals <i>(p)</i></li>
+                                <div class="fw-italics">
+                                    <small class="text-body-secondary">These options are located in the <i>"Weaving Draft Operations" Subpanel.</i></small>
+                                </div>
+                                <li class="list-group-item">Experiment with various configurations for the <strong><i>threading</i></strong> matrix, pressing the <small class="text-body-secondary">Send New Threading</small> button once you are finished.</li> 
+                                <li class="list-group-item">Experiment with various configurations for the <strong><i>tie-up</i> and <i>treadling</i></strong> matrices, respectively, until you reach a desired pattern.</li>
+                                <li class="list-group-item">Begin weaving with the <small class="text-body-secondary">Next Row</small> and <small class="text-body-secondary">Previous Row</small> buttons, throwing your weft shuttle in the shed between every timestep!</li> 
+                            </ol>
+                        </div>
                     </div>
                 </div>
                 <div class="accordion-item">
@@ -73,8 +94,8 @@
                             <form class="row needs-validation" novalidate>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="shafts-input-label">Shafts:</span>
-                                <input type="number" class="form-control" id="shafts-input" placeholder="s" min="2" max="12" aria-label="Shafts" aria-describedby="basic-addon1">
-                                <div class="form-text" id="shaft-input-text"><small class="text-body-secondary">Minimum of 2, Maximum of 12</small></div>
+                                <input type="number" class="form-control" id="shafts-input" placeholder="s" min="2" max="8" aria-label="Shafts" aria-describedby="basic-addon1">
+                                <div class="form-text" id="shaft-input-text"><small class="text-body-secondary">Minimum of 2, Maximum of 8</small></div>
                                 <!--
                                 <div class="valid-feedback">Applied!</div>  
                                 <div class="invalid-feedback">Whoops! This software only supports a minimum and maximum of 2 & 12 shafts, respectively.</div>   
@@ -82,8 +103,8 @@
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="pedals-input-label">Pedals:</span>
-                                <input type="number" class="form-control" id="pedals-input" placeholder="p" min="2" max="8" aria-label="Pedals" aria-describedby="basic-addon1">
-                                <div class="form-text" id="shaft-input-text"><small class="text-body-secondary">Minimum of 2, Maximum of 8</small></div>
+                                <input type="number" class="form-control" id="pedals-input" placeholder="p" min="2" max="16" aria-label="Pedals" aria-describedby="basic-addon1">
+                                <div class="form-text" id="shaft-input-text"><small class="text-body-secondary">Minimum of 2, Maximum of 16</small></div>
                                 <!--
                                 <div class="valid-feedback">Applied!</div>
                                 <div class="invalid-feedback">Whoops! This software only supports a minimum and maximum of 2 & 8 pedals, respectively.</div>
@@ -110,7 +131,7 @@
         </div>
     </div>
 
-    <div class="imgButtonGroup">
+    <div class="imgButtonGroup ">
         <img src="./assets/icons/SoloPersonaje.png">
         <button class="btn btn-info" type="button" data-bs-toggle="offcanvas" data-bs-target="#settingsPanel" aria-controls="settingsPanel">
             <img src="./assets/icons/bi-gear-fill.svg">
