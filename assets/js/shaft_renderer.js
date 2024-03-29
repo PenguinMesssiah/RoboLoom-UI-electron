@@ -15,7 +15,7 @@ const stage = new Konva.Stage({
     height: 650,
     draggable: false
 });
-const rectLayer = new Konva.Layer();
+const rectLayer   = new Konva.Layer();
 
 const cmain       = 'black'
 const cmainFill   = 'white'
@@ -25,10 +25,13 @@ const cgreen      = 'green'
 
 let num_pedals = DEFAULT
 let num_shafts = DEFAULT
+let select_row     = null
+let highlightGroup = null
 
 function initCanvas() {
     //stage.container().style.backgroundColor = 'green';
     drawWeaveDraft()
+    linkCanvasEvents()
 }
 
 function drawWeaveDraft() {
@@ -98,20 +101,44 @@ function drawWeaveDraft() {
     }
     window.ndarray.createArray(ROW_MAX, COL_MAX, 3)
     
+    //Mirror Group on Top of Drawdown Group
+    highlightGroup = new Konva.Group({
+        x: 5, 
+        y: num_shafts*BUFFER*1.13,
+        id: 'highlightGroup', 
+        width: 800,
+        height: 800
+    });
+
     drawScrollBars()
 
     rectLayer.add(threadingGroup);
     rectLayer.add(tieUpGroup);
     rectLayer.add(treadlingGroup);
     rectLayer.add(drawdownGroup);
+    rectLayer.add(highlightGroup);
     stage.add(rectLayer);
-    
+}
+
+//Link Canvas Events
+function linkCanvasEvents() {
     stage.on('click', function (e) {
+        //Error Handling
+        if(typeof e.target.id() == 'string') {
+            console.log("Error Handler: Clicked on Invalid Canvas Location")
+            return
+        }
+
         //Decompose Event
         let text_obj = e.target
         let obj_id   = 'rect_' + text_obj.id().toString()
         let cRect    = stage.find("."+obj_id)[0]
 
+        //Disable Toggling for Drawdown
+        if(cRect.getAncestors()[0].id() == 'drawdownGroup'){
+            console.log("Error Handler: Cannot Toggle Drawdown Matrix")
+            return
+        }
         //console.log("cRect = ", cRect.getAncestors()[0].id())
         //console.log("printing cRect (", cRect.y()/BUFFER,",",cRect.x()/BUFFER,")")
 
@@ -147,7 +174,7 @@ function updateMatrixElement(pRect, pState) {
 //Toggle Rect & Text Obj
 function toggleObj(pText, pRect) {
     var bool = null
-    
+
     //Handle Click on Text
     if(pText.text() == '0') {
         bool = 1
@@ -214,6 +241,38 @@ function configShaftsPedals() {
 
     stage.destroyChildren()
     drawWeaveDraft()
+}
+
+//Highlight Current Row to Weave
+function highlightRow(pRow) {
+    if(pRow == 1  && (select_row == null || select_row+1 > 19)) {
+        select_row = 0
+    } else if (pRow == -1 && (select_row == null || select_row-1 < 0)) {
+        select_row = 19
+    } else if (pRow == 1 && select_row+1 <= 19) {
+        select_row++;
+    } else if (pRow == -1 && select_row-1 >= 0) {
+        select_row--;
+    } else if (pRow == 0) {
+        var row_form = document.getElementById('row-select-input')
+        //console.log("blank entry", parseInt(row_form.value))
+        select_row   = parseInt(row_form.value)
+    }
+
+    highlightGroup.destroyChildren()
+
+    rect = new Konva.Rect({
+        width: 25*COL_MAX,
+        height: 25,
+        cornerRadius: 1,
+        x: 0*BUFFER,
+        y: select_row*BUFFER,
+        stroke: 'blue',
+        strokeWidth: 3,
+        zindex: 15
+    })
+
+    highlightGroup.add(rect)
 }
 
 function drawScrollBars() {

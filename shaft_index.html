@@ -25,15 +25,15 @@
         <div class="col-2 weave-btn-group">
             <div class="btn-group-vertical" role="group" aria-label="Weaving Button Group">
                 <button type="button" class="btn btn-outline-info">Send Threading Config</button>
-                <button type="button" class="btn btn-outline-info">Previous Row</button>
-                <button type="button" class="btn btn-outline-info">Next Row</button>
+                <button type="button" class="btn btn-outline-info" onclick="highlightRow(-1)">Previous Row</button>
+                <button type="button" class="btn btn-outline-info" onclick="highlightRow(1)">Next Row</button>
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Jump to Row
                     </button>
                     <ul class="dropdown-menu">
-                        <input type="number" class="dropdown-item" placeholder="row (r)" min="0" max="20" aria-label="Input Row" aria-describedby="Row Input Button">
-                        <a class="dropdown-item" href="#">Apply</a>
+                        <input type="number" class="dropdown-item" id="row-select-input" placeholder="row (r)" min="0" max="19" aria-label="Input Row" aria-describedby="Row Input Button">
+                        <a class="dropdown-item" onclick="highlightRow(0)">Apply</a>
                     </ul>
                 </div> 
             </div>
