@@ -31,7 +31,7 @@ let highlightGroup = null
 function initCanvas() {
     //stage.container().style.backgroundColor = 'green';
     drawWeaveDraft()
-    linkCanvasEvents()
+    linkEvents()
 }
 
 function drawWeaveDraft() {
@@ -121,7 +121,7 @@ function drawWeaveDraft() {
 }
 
 //Link Canvas Events
-function linkCanvasEvents() {
+function linkEvents() {
     stage.on('click', function (e) {
         //Error Handling
         if(typeof e.target.id() == 'string') {
@@ -134,7 +134,7 @@ function linkCanvasEvents() {
         let obj_id   = 'rect_' + text_obj.id().toString()
         let cRect    = stage.find("."+obj_id)[0]
 
-        //Disable Toggling for Drawdown
+        //Disable Toggling for Drawdown Matrix
         if(cRect.getAncestors()[0].id() == 'drawdownGroup'){
             console.log("Error Handler: Cannot Toggle Drawdown Matrix")
             return
@@ -147,6 +147,11 @@ function linkCanvasEvents() {
         
         rectLayer.draw()
     })
+
+    var sendConfigBtn = document.getElementById('send-config-btn')
+    sendConfigBtn.onclick = (event) => {
+        window.ndarray.multiplyMatrix()
+    }
 }
 
 //Update Matrix

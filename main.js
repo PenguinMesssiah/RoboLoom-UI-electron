@@ -158,6 +158,13 @@ ipcMain.on('update-matrix', (event, {row, col, state, id}) => {
     matrix_child.postMessage(message)
 })
 
+ipcMain.on('multiply-matrix', (event, {}) => {
+    let message = {
+        type: 2
+    }
+    matrix_child.postMessage(message)
+})
+
 // Initialize & Create
 app.on('ready', () => {
     //createMainWindow()

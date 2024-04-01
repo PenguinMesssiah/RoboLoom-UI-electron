@@ -1,4 +1,13 @@
-const zeros = require("@stdlib/ndarray/zeros");
+const { create, all } = require('mathjs') 
+const config = {
+  epsilon: 1e-12,
+  matrix: 'Matrix',
+  number: 'number',
+  precision: 64,
+  predictable: false,
+  randomSeed: null
+}
+const math = create(all, config)
 
 const THREADING_ID = 0
 const TIEUP_ID     = 1
@@ -26,22 +35,25 @@ process.parentPort.on('message', (e) => {
         case 1:
             updateMatrix(row, col, state, id)
             break;
+        case 2:
+            matrixMultiply()
+            break;
     }
 })
 
 function createArray(pRow, pCol, pId) {
     switch(pId) {
         case THREADING_ID:
-            threadingArr = zeros([pRow, pCol], {'dtype': 'uint8'})
+            threadingArr = math.zeros(pRow, pCol)
             break;
         case TIEUP_ID:
-            tieUpArr = zeros([pRow, pCol], {'dtype': 'uint8'})
+            tieUpArr = math.zeros(pRow, pCol)
             break;
         case TREADLING_ID:
-            treadlingArr = zeros([pRow, pCol], {'dtype': 'uint8'})
+            treadlingArr = math.zeros(pRow, pCol)
             break;
         case DRAWDOWN_ID:
-            drawdownArr = zeros([pRow, pCol], {'dtype': 'uint8'})
+            drawdownArr = math.zeros(pRow, pCol)
             break;
     }
 }
@@ -49,22 +61,35 @@ function createArray(pRow, pCol, pId) {
 function updateMatrix (pRow, pCol, pState, pId) {
     switch(pId) {
         case THREADING_ID:
-            threadingArr.set(pRow, pCol, pState)
-            console.log('threadingArr @ ', pRow,", " ,pCol, " = ", threadingArr.get(pRow,pCol))
+            threadingArr.set([pRow, pCol], pState)
+            console.log('threadingArr @ ', pRow,", " ,pCol, " = ", threadingArr.get([pRow,pCol]))
             break;
         case TIEUP_ID:
-            tieUpArr.set(pRow, pCol, pState)
-            console.log('teiUpArr @ ', pRow,", " ,pCol, " = ", tieUpArr.get(pRow,pCol))
+            tieUpArr.set([pRow, pCol], pState)
+            console.log('teiUpArr @ ', pRow,", " ,pCol, " = ", tieUpArr.get([pRow,pCol]))
             break;
         case TREADLING_ID:
-            treadlingArr.set(pRow, pCol, pState)
-            console.log('treadlingArr @ ', pRow,", " ,pCol, " = ", treadlingArr.get(pRow,pCol))
+            treadlingArr.set([pRow, pCol], pState)
+            console.log('treadlingArr @ ', pRow,", " ,pCol, " = ", treadlingArr.get([pRow,pCol]))
             break;
         case DRAWDOWN_ID:
-            drawdownArr.set(pRow, pCol, pState)
-            console.log('drawdownArr @ ', pRow,", " ,pCol, " = ", drawdownArr.get(pRow,pCol))
+            drawdownArr.set([pRow, pCol], pState)
+            console.log('drawdownArr @ ', pRow,", " ,pCol, " = ", drawdownArr.get([pRow,pCol]))
             break;
     }
 }
+
+function matrixMultiply() {
+    var tieUpArr_Transpose = math.transpose(tieUpArr)
+    console.log("\nthreadingArr= ", threadingArr)
+    console.log("\ntieUpArrT= ", tieUpArr)
+    console.log("\ttreadling= ", treadlingArr)
+    console.log("\ndrawdown= ", drawdownArr)
+    
+    
+    var x = math.multiply(tieUpArr_Transpose, threadingArr)
+    console.log("\nx= ", x)
+}
+    
 
 
