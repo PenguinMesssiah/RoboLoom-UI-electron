@@ -71,6 +71,7 @@ function createCalWindow() {
 function createShaftWeaveWindow() {
     //Create Utility Service
     matrix_child = utilityProcess.fork(path.join(__dirname, './assets/util/ndarray_fnc'), {
+        stdio: ['ignore', 'inherit', 'inherit'],
         serviceName: 'Matrix Utility Process'
     })
 
@@ -94,7 +95,15 @@ function createShaftWeaveWindow() {
     }))
 
     appWindows.push(shaftWeaveWindow)
-    
+   
+    matrix_child.on('message', (message) => {
+        var drawdown_matrix = message.drawdown_matrix
+        //send message back to shaft renderer
+        if(drawdown_matrix !== null) {
+            shaftWeaveWindow.webContents.send('drawdown-update', drawdown_matrix)
+        }
+    })
+
     // Emitted when the window is closed.
     shaftWeaveWindow.on('closed', function() {
         matrix_child.kill()
@@ -154,13 +163,6 @@ ipcMain.on('update-matrix', (event, {row, col, state, id}) => {
         col: col, 
         id: id,
         state: state
-    }
-    matrix_child.postMessage(message)
-})
-
-ipcMain.on('multiply-matrix', (event, {}) => {
-    let message = {
-        type: 2
     }
     matrix_child.postMessage(message)
 })

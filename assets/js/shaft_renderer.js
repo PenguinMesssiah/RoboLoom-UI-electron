@@ -148,9 +148,29 @@ function linkEvents() {
         rectLayer.draw()
     })
 
+    //Update Drawdown
+    window.ndarray.onDrawdownUpdate((value) => {
+        //Get All Text Obj in DrawdownGroup
+        var drawdownGroupItems = stage.find(node => {
+            return node.getAncestors()[0].id() === 'drawdownGroup' 
+                && node.getClassName() === 'Text'
+        });
+
+        drawdownGroupItems.forEach((element) => {
+            let obj_id   = 'rect_' + element.id().toString()
+            let cRect    = stage.find("."+obj_id)[0]
+            
+            var y = element.getAttr('y')/BUFFER
+            var x = element.getAttr('x')/BUFFER
+            //Passing (y,x)
+            updateObj(element, cRect, value[y][x])
+        })        
+    })
+
     var sendConfigBtn = document.getElementById('send-config-btn')
     sendConfigBtn.onclick = (event) => {
-        window.ndarray.multiplyMatrix()
+        //TODO: Send Threading Config Command
+        //window.ndarray.multiplyMatrix()
     }
 }
 
@@ -199,6 +219,27 @@ function toggleObj(pText, pRect) {
     }
 
     return bool
+}
+
+//Manual Config Rect & Text Obj
+function updateObj(pText, pRect, value) {
+    //pText.text(value.toString())
+    if(pText.text() === value.toString()){
+        return
+    }
+
+    //Handle Click on Text & Rect
+    if(value === 0) {
+        pText.text('0')
+        pText.fill(cmain)
+        pRect.fill(cmainFill)
+    } else if(value === 1) {
+        pText.text('1')
+        pText.fill(calternate)
+        pRect.fill(calternativeFill)
+    }
+
+    rectLayer.draw()
 }
 
 //Create Rectangle with Label

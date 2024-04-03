@@ -18,6 +18,7 @@ let threadingArr = null
 let tieUpArr     = null
 let treadlingArr = null
 let drawdownArr  = null
+let drawdownArrOld = null
 
 process.parentPort.on('message', (e) => {
     let type  = e.data.type
@@ -35,25 +36,23 @@ process.parentPort.on('message', (e) => {
         case 1:
             updateMatrix(row, col, state, id)
             break;
-        case 2:
-            matrixMultiply()
-            break;
     }
 })
 
 function createArray(pRow, pCol, pId) {
     switch(pId) {
         case THREADING_ID:
-            threadingArr = math.zeros(pRow, pCol)
+            threadingArr = math.zeros(pRow, pCol, 'sparse')
             break;
         case TIEUP_ID:
-            tieUpArr = math.zeros(pRow, pCol)
+            tieUpArr = math.zeros(pRow, pCol, 'sparse')
             break;
         case TREADLING_ID:
-            treadlingArr = math.zeros(pRow, pCol)
+            treadlingArr = math.zeros(pRow, pCol, 'sparse')
             break;
         case DRAWDOWN_ID:
-            drawdownArr = math.zeros(pRow, pCol)
+            drawdownArr    = math.zeros(pRow, pCol, 'sparse')
+            drawdownArrOld = math.zeros(pRow, pCol, 'sparse')
             break;
     }
 }
@@ -77,18 +76,19 @@ function updateMatrix (pRow, pCol, pState, pId) {
             console.log('drawdownArr @ ', pRow,", " ,pCol, " = ", drawdownArr.get([pRow,pCol]))
             break;
     }
-}
 
-function matrixMultiply() {
+    //Compute Drawdown
     var tieUpArr_Transpose = math.transpose(tieUpArr)
-    console.log("\nthreadingArr= ", threadingArr)
-    console.log("\ntieUpArrT= ", tieUpArr)
-    console.log("\ttreadling= ", treadlingArr)
-    console.log("\ndrawdown= ", drawdownArr)
-    
-    
     var x = math.multiply(tieUpArr_Transpose, threadingArr)
-    console.log("\nx= ", x)
+    drawdownArr = math.multiply(treadlingArr, x)
+
+    if(!math.deepEqual(drawdownArr, drawdownArrOld)) {
+        let message = {
+            drawdown_matrix: drawdownArr.valueOf()
+        }
+        process.parentPort.postMessage(message)
+        drawdownArrOld = drawdownArr
+    }
 }
     
 
