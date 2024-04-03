@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="./assets/css/jacquard_styles.css">
+    
+    <title>"Jacquard" Loom Weaving</title>
+</head>
+
+<body>
+    <h2 class="text-center">WeaveWise<sup><img src="./assets/icons/bi-badge-tm.svg"></sup></h2>
+    <h5 class="text-center"><small class="text-body-secondary">Free Weave Mode: Jacquard Loom Weaving</small></h5>
+
+    <!--Konva Canvas-->
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-10"></div>
+        <div id="konva-container"></div>
+    
+    <!--Weaving Commands-->
+        <div class="col-2 weave-btn-group">
+            <div class="btn-group-vertical" role="group" aria-label="Weaving Button Group">
+                <button type="button" class="btn btn-outline-info" onclick="highlightRow(-1)">Previous Row</button>
+                <button type="button" class="btn btn-outline-info" onclick="highlightRow(1)">Next Row</button>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Jump to Row
+                    </button>
+                    <ul class="dropdown-menu">
+                        <input type="number" class="dropdown-item" id="row-select-input" placeholder="row (r)" min="0" max="19" aria-label="Input Row" aria-describedby="Row Input Button">
+                        <a class="dropdown-item" onclick="highlightRow(0)">Apply</a>
+                    </ul>
+                </div> 
+            </div>
+        </div>
+    </div>
+    </div>
+    
+    <!--Offcanvas-->
+    <div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="settingsPanel" aria-labelledby="settingsPanelLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="settingsPanelLabel">Settings Panel</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="accordion" id="configAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Introduction
+                    </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <div class="text-center"><strong>Welcome! To start weaving on the your newly assembled loom, follow this five step process:</strong></div>
+                            <ol class="list-group list-group-numbered">
+                                <li class="list-group-item">Choose the number of shafts <i>(s)</i></li>
+                                <li class="list-group-item">Choose the number of pedals <i>(p)</i></li>
+                                <div class="fw-italics">
+                                    <small class="text-body-secondary">These options are located in the <i>"Weaving Draft Operations" Subpanel.</i></small>
+                                </div>
+                                <li class="list-group-item">Experiment with various configurations for the <strong><i>threading</i></strong> matrix, pressing the <small class="text-body-secondary">Send New Threading</small> button once you are finished.</li> 
+                                <li class="list-group-item">Experiment with various configurations for the <strong><i>tie-up</i> and <i>treadling</i></strong> matrices, respectively, until you reach a desired pattern.</li>
+                                <li class="list-group-item">Begin weaving with the <small class="text-body-secondary">Next Row</small> and <small class="text-body-secondary">Previous Row</small> buttons, throwing your weft shuttle in the shed between every timestep!</li> 
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            File
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Weaving Draft Operations
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <form class="row needs-validation" novalidate>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="shafts-input-label">Shafts:</span>
+                                <input type="number" class="form-control" id="shafts-input" placeholder="s" min="2" max="8" aria-label="Shafts" aria-describedby="basic-addon1">
+                                <div class="form-text" id="shaft-input-text"><small class="text-body-secondary">Minimum of 2, Maximum of 8</small></div>
+                                <!--
+                                <div class="valid-feedback">Applied!</div>  
+                                <div class="invalid-feedback">Whoops! This software only supports a minimum and maximum of 2 & 12 shafts, respectively.</div>   
+                                -->                            
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="pedals-input-label">Pedals:</span>
+                                <input type="number" class="form-control" id="pedals-input" placeholder="p" min="2" max="16" aria-label="Pedals" aria-describedby="basic-addon1">
+                                <div class="form-text" id="shaft-input-text"><small class="text-body-secondary">Minimum of 2, Maximum of 16</small></div>
+                                <!--
+                                <div class="valid-feedback">Applied!</div>
+                                <div class="invalid-feedback">Whoops! This software only supports a minimum and maximum of 2 & 8 pedals, respectively.</div>
+                                -->                                 
+                            </div>
+                            <button type="button" class="btn btn-info mx-auto" onclick='configShaftsPedals()'>Apply</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Color Configuration
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <strong>This is the fourth item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="imgButtonGroup ">
+        <img src="./assets/icons/SoloPersonaje.png">
+        <button class="btn btn-info" type="button" data-bs-toggle="offcanvas" data-bs-target="#settingsPanel" aria-controls="settingsPanel">
+            <img src="./assets/icons/bi-gear-fill.svg">
+        </button>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/konva@9/konva.min.js"></script>
+<script src="./assets/js/jaquard_renderer.js"></script>
+
+</html>

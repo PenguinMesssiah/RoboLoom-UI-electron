@@ -5,11 +5,12 @@ const url   = require('url')
 const List  = require("collections/list");
 
 
-let mainWindow       = null
-let shaftWeaveWindow = null
-let activeSerialPort = null
-let matrix_child     = null
-let appWindows       = new List()
+let mainWindow          = null
+let shaftWeaveWindow    = null
+let jacquardWeaveWindow = null
+let activeSerialPort    = null
+let matrix_child        = null
+let appWindows          = new List()
 
 function createMainWindow() {
     // Create the browser window.
@@ -107,6 +108,34 @@ function createShaftWeaveWindow() {
     // Emitted when the window is closed.
     shaftWeaveWindow.on('closed', function() {
         matrix_child.kill()
+    })
+}
+
+function createJacquardWeaveWindow() {
+    jacquardWeaveWindow = new BrowserWindow({
+        width: 1920,
+        height: 1080,
+        //parent: calWindow,
+        backgroundColor: "#ccc",
+        webPreferences: {
+            nodeIntegration: false, // to allow require
+            contextIsolation: true,
+            enableRemoteModule: false,
+            preload: path.join(__dirname, 'jacquard_preload.js')
+        }
+    })
+
+    jacquardWeaveWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'jacquard_index.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
+
+    appWindows.push(jacquardWeaveWindow)
+
+    // Emitted when the window is closed.
+    jacquardWeaveWindow.on('closed', function() {
+        
     })
 }
 

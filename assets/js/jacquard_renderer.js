@@ -37,54 +37,6 @@ function initCanvas() {
 function drawWeaveDraft() {
     let idx = 0
     
-    //Draw Threading & Create Array (s x n)
-    var threadingGroup = new Konva.Group({
-        x: 5, 
-        y: 5,
-        id: 'threadingGroup',
-        width: 1000,
-        height: 250
-    });
-
-    for (let i = 0; i < COL_MAX; i++) {
-        for (let j = 0; j < num_shafts; j++) {
-            createRectangle(idx++, i, j, threadingGroup)
-        }
-    }
-    window.ndarray.createArray(num_shafts, COL_MAX, 0)
-
-    //Draw TieUp & Create Array (s x p)
-    var tieUpGroup = new Konva.Group({
-        x: 1025, 
-        y: 5,
-        id: 'tieUpGroup', 
-        width: 400,
-        height: 400
-    });
-
-    for (let i = 0; i < num_pedals; i++) {
-        for (let j = 0; j < num_shafts; j++) {
-            createRectangle(idx++, i, j, tieUpGroup)
-        }
-    }
-    window.ndarray.createArray(num_shafts, num_pedals, 1)
-    
-    //Draw Threadling & Create Array (p x t)
-    var treadlingGroup = new Konva.Group({
-        x: 1025, 
-        y: num_shafts*BUFFER*1.13,
-        id: 'treadlingGroup', 
-        width: 400,
-        height: 600
-    });
-
-    for (let i = 0; i < num_pedals; i++) {
-        for (let j = 0; j < ROW_MAX; j++) {
-            createRectangle(idx++, i, j, treadlingGroup)
-        }
-    }
-    window.ndarray.createArray(ROW_MAX, num_pedals, 2)
-
     //Draw Drawdown & Create Array  (n x t)
     var drawdownGroup = new Konva.Group({
         x: 5, 
@@ -112,9 +64,6 @@ function drawWeaveDraft() {
 
     drawScrollBars()
 
-    rectLayer.add(threadingGroup);
-    rectLayer.add(tieUpGroup);
-    rectLayer.add(treadlingGroup);
     rectLayer.add(drawdownGroup);
     rectLayer.add(highlightGroup);
     stage.add(rectLayer);
@@ -162,10 +111,8 @@ function linkEvents() {
             
             var y = element.getAttr('y')/BUFFER
             var x = element.getAttr('x')/BUFFER
-            if(element.text() !== value[y][x].toString()){
-                //Passing (y,x)
-                updateObj(element, cRect, value[y][x])
-            }
+            //Passing (y,x)
+            updateObj(element, cRect, value[y][x])
         })        
     })
 
@@ -225,6 +172,11 @@ function toggleObj(pText, pRect) {
 
 //Manual Config Rect & Text Obj
 function updateObj(pText, pRect, value) {
+    //pText.text(value.toString())
+    if(pText.text() === value.toString()){
+        return
+    }
+
     //Handle Click on Text & Rect
     if(value === 0) {
         pText.text('0')
