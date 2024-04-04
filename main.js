@@ -112,6 +112,12 @@ function createShaftWeaveWindow() {
 }
 
 function createJacquardWeaveWindow() {
+    //Create Utility Service
+    matrix_child = utilityProcess.fork(path.join(__dirname, './assets/util/ndarray_fnc'), {
+        stdio: ['ignore', 'inherit', 'inherit'],
+        serviceName: 'Matrix Utility Process'
+    })
+
     jacquardWeaveWindow = new BrowserWindow({
         width: 1920,
         height: 1080,
@@ -135,7 +141,7 @@ function createJacquardWeaveWindow() {
 
     // Emitted when the window is closed.
     jacquardWeaveWindow.on('closed', function() {
-        
+        matrix_child.kill()
     })
 }
 
@@ -199,7 +205,8 @@ ipcMain.on('update-matrix', (event, {row, col, state, id}) => {
 // Initialize & Create
 app.on('ready', () => {
     //createMainWindow()
-    createShaftWeaveWindow()
+    //createShaftWeaveWindow()
+    createJacquardWeaveWindow()
 })
 
 // Quit when all windows are closed.
@@ -216,5 +223,3 @@ app.on('activate', function() {
     }
 })
 */
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.

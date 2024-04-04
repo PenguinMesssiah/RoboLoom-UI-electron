@@ -1,18 +1,18 @@
-const ROW_MAX  = 20
+const ROW_MAX  = 30
 const COL_MAX  = 40
 const DEFAULT  = 4
 const BUFFER   = 25
 const PADDING  = 5;
-const WIDTH    = 1500;
-const HEIGHT   = 1000;
+const WIDTH    = 1100;
+const HEIGHT   = 800;
 /*
     Konva is in (c,r) format by default
     where (y,x) represent the horizontal & vertical axis respectively 
 */
 const stage = new Konva.Stage({
     container: 'konva-container',
-    width: 1250,
-    height: 650,
+    width: 1100,
+    height: 600,
     draggable: false
 });
 const rectLayer   = new Konva.Layer();
@@ -40,7 +40,7 @@ function drawWeaveDraft() {
     //Draw Drawdown & Create Array  (n x t)
     var drawdownGroup = new Konva.Group({
         x: 5, 
-        y: num_shafts*BUFFER*1.13,
+        y: 5,
         id: 'drawdownGroup', 
         width: 800,
         height: 800
@@ -56,7 +56,7 @@ function drawWeaveDraft() {
     //Mirror Group on Top of Drawdown Group
     highlightGroup = new Konva.Group({
         x: 5, 
-        y: num_shafts*BUFFER*1.13,
+        y: 5,
         id: 'highlightGroup', 
         width: 800,
         height: 800
@@ -115,12 +115,6 @@ function linkEvents() {
             updateObj(element, cRect, value[y][x])
         })        
     })
-
-    var sendConfigBtn = document.getElementById('send-config-btn')
-    sendConfigBtn.onclick = (event) => {
-        //TODO: Send Threading Config Command
-        //window.ndarray.multiplyMatrix()
-    }
 }
 
 //Update Matrix
@@ -226,18 +220,6 @@ function createRectangle(i, x, y, group) {
     group.add(label)
 }
 
-//Read & Apply Shaft & Pedal Input
-function configShaftsPedals() {
-    var shaft_form = document.getElementById('shafts-input')
-    var pedal_form = document.getElementById('pedals-input')
-
-    num_shafts = parseInt(shaft_form.value)
-    num_pedals = parseInt(pedal_form.value)
-
-    stage.destroyChildren()
-    drawWeaveDraft()
-}
-
 //Highlight Current Row to Weave
 function highlightRow(pRow) {
     if(pRow == 1  && (select_row == null || select_row+1 > 19)) {
@@ -300,33 +282,6 @@ function drawScrollBars() {
     });
     scrollLayers.add(verticalBar);
 
-    var horizontalBar = new Konva.Rect({
-    width: 100,
-    height: 10,
-    fill: 'grey',
-    opacity: 0.8,
-    x: PADDING,
-    y: stage.height() - PADDING - 10,
-    draggable: true,
-    dragBoundFunc: function (pos) {
-        pos.x = Math.max(
-        Math.min(pos.x, stage.width() - this.width() - PADDING),PADDING);
-        pos.y = stage.height() - PADDING - 10;
-        return pos;
-    },
-    });
-
-    scrollLayers.add(horizontalBar);
-
-    horizontalBar.on('dragmove', function () {
-    // delta in %
-    const availableWidth =
-        stage.width() - PADDING * 2 - horizontalBar.width();
-    var delta = (horizontalBar.x() - PADDING) / availableWidth;
-
-    rectLayer.x(-(WIDTH - stage.width()) * delta);
-    });
-
     stage.on('wheel', function (e) {
         // prevent parent scrolling
         e.evt.preventDefault();
@@ -349,13 +304,6 @@ function drawScrollBars() {
         const vy =
           (rectLayer.y() / (-HEIGHT + stage.height())) * availableHeight + PADDING;
         verticalBar.y(vy);
-
-        const availableWidth =
-          stage.width() - PADDING * 2 - horizontalBar.width();
-
-        const hx =
-          (rectLayer.x() / (-WIDTH + stage.width())) * availableWidth + PADDING;
-        horizontalBar.x(hx);
       });
 }
 
