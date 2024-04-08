@@ -26,6 +26,7 @@ process.parentPort.on('message', (e) => {
     let col   = e.data.col
     let id    = e.data.id
     let state = e.data?.state
+    let matrix = e.data?.drawdown_matrix
 
     //console.log('utilProcess message = ', e.data)
 
@@ -35,6 +36,9 @@ process.parentPort.on('message', (e) => {
             break;
         case 1:
             updateMatrix(row, col, state, id)
+            break;
+        case 2:
+            setDrawdownMatrix(matrix)
             break;
     }
 })
@@ -89,6 +93,11 @@ function updateMatrix (pRow, pCol, pState, pId) {
         process.parentPort.postMessage(message)
         drawdownArrOld = drawdownArr
     }
+}
+
+function setDrawdownMatrix(pMatrix) {
+    drawdownArr = math.matrix(pMatrix)
+    drawdownArr = math.sparse(drawdownArr)
 }
     
 

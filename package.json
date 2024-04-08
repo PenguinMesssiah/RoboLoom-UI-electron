@@ -24,6 +24,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "collections": "^5.1.13",
+    "jquery-csv": "^1.0.21",
     "konva": "^9.3.6",
     "mathjs": "^12.4.1",
     "serialport": "^10.3.0",

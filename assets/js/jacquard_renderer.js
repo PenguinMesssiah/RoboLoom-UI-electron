@@ -1,10 +1,9 @@
-const ROW_MAX  = 30
+const ROW_MAX  = 32
 const COL_MAX  = 40
-const DEFAULT  = 4
 const BUFFER   = 25
 const PADDING  = 5;
 const WIDTH    = 1100;
-const HEIGHT   = 800;
+const HEIGHT   = 825;
 /*
     Konva is in (c,r) format by default
     where (y,x) represent the horizontal & vertical axis respectively 
@@ -23,8 +22,6 @@ const calternate  = 'blue'
 const calternativeFill = '#0080FF'
 const cgreen      = 'green'
 
-let num_pedals = DEFAULT
-let num_shafts = DEFAULT
 let select_row     = null
 let highlightGroup = null
 
@@ -71,112 +68,64 @@ function drawWeaveDraft() {
 
 //Link Canvas Events
 function linkEvents() {
-    stage.on('click', function (e) {
-        //Error Handling
-        if(typeof e.target.id() == 'string') {
-            console.log("Error Handler: Clicked on Invalid Canvas Location")
-            return
-        }
+    var uploadBtn = document.getElementById("uploadFileBtn")
+    var fileForm  = document.getElementById("browseFileForm")
 
-        //Decompose Event
-        let text_obj = e.target
-        let obj_id   = 'rect_' + text_obj.id().toString()
-        let cRect    = stage.find("."+obj_id)[0]
+    uploadBtn.addEventListener('click', () => {
+        let file = fileForm.files[0]        
+        window.jquery.readFile(file.path)
 
-        //Disable Toggling for Drawdown Matrix
-        if(cRect.getAncestors()[0].id() == 'drawdownGroup'){
-            console.log("Error Handler: Cannot Toggle Drawdown Matrix")
-            return
-        }
-        //console.log("cRect = ", cRect.getAncestors()[0].id())
-        //console.log("printing cRect (", cRect.y()/BUFFER,",",cRect.x()/BUFFER,")")
-
-        let state = toggleObj(text_obj, cRect)
-        updateMatrixElement(cRect, state)
-        
-        rectLayer.draw()
     })
 
     //Update Drawdown
-    window.ndarray.onDrawdownUpdate((value) => {
-        //Get All Text Obj in DrawdownGroup
-        var drawdownGroupItems = stage.find(node => {
-            return node.getAncestors()[0].id() === 'drawdownGroup' 
-                && node.getClassName() === 'Text'
-        });
+    window.ndarray.onDrawdownUpdate((message) => {
+        //Clear Canvas
+        stage.destroyChildren()
+        drawWeaveDraft()
 
-        drawdownGroupItems.forEach((element) => {
-            let obj_id   = 'rect_' + element.id().toString()
-            let cRect    = stage.find("."+obj_id)[0]
-            
-            var y = element.getAttr('y')/BUFFER
-            var x = element.getAttr('x')/BUFFER
-            //Passing (y,x)
-            updateObj(element, cRect, value[y][x])
-        })        
+        //Decompose Message
+        let value = message.drawdown_matrix
+        let row   = message.row
+        let col   = message.col
+
+        //TODO: Find Better Solution Than Truncating
+        if(row >= ROW_MAX) { row = ROW_MAX }
+        if(col >= COL_MAX) { col = COL_MAX }
+        
+        for (let i = 0; i < col; i++) {
+            for (let j = 0; j < row; j++) {
+                /* Get Rect & Text Obj by (y,x) Position
+                *  Returns Array[2] where Arr[0] = Rect, Arr[1] = Text
+                */
+                let vObjects = stage.find(node => {
+                    return (node.getClassName() === 'Text' || node.getClassName() === 'Rect')
+                        && node.getAttr('x')/BUFFER === i
+                        && node.getAttr('y')/BUFFER === j 
+                });
+        
+                let vRect = vObjects[0]
+                let vText = vObjects[1]
+                //console.log("Looking at position ", i,", " ,j)
+                //console.log("updating vText, vRect, with ", vRect, vText, value[j][i])
+                updateObj(vText, vRect, value[j][i])
+            }
+        }     
     })
-}
-
-//Update Matrix
-function updateMatrixElement(pRect, pState) {
-    var row   = pRect.y()/BUFFER
-    var col   = pRect.x()/BUFFER
-    var group = pRect.getAncestors()[0].id()
-    
-    switch(group) {
-        case 'threadingGroup':
-            window.ndarray.updateMatrix(row, col, pState, 0)
-            break;
-        case 'tieUpGroup':
-            window.ndarray.updateMatrix(row, col, pState, 1)
-            break;
-        case 'treadlingGroup':
-            window.ndarray.updateMatrix(row, col, pState, 2)
-            break;
-        case 'drawdownGroup':
-            window.ndarray.updateMatrix(row, col, pState, 3)
-            break;
-    }
-}
-
-//Toggle Rect & Text Obj
-function toggleObj(pText, pRect) {
-    var bool = null
-
-    //Handle Click on Text
-    if(pText.text() == '0') {
-        bool = 1
-        pText.text('1')
-        pText.fill(calternate)
-    } else if(pText.text() == '1') {
-        bool = 0
-        pText.text('0')
-        pText.fill(cmain)
-    }
-
-    //Handle Click on Rect
-    if (pRect.fill() == cmainFill) {
-        pRect.fill(calternativeFill)
-    } else if (pRect.fill() == calternativeFill) {
-        pRect.fill(cmainFill);
-    }
-
-    return bool
 }
 
 //Manual Config Rect & Text Obj
 function updateObj(pText, pRect, value) {
     //pText.text(value.toString())
-    if(pText.text() === value.toString()){
+    if(pText.text() === value){
         return
     }
 
     //Handle Click on Text & Rect
-    if(value === 0) {
+    if(value === '0') {
         pText.text('0')
         pText.fill(cmain)
         pRect.fill(cmainFill)
-    } else if(value === 1) {
+    } else if(value === '1') {
         pText.text('1')
         pText.fill(calternate)
         pRect.fill(calternativeFill)
@@ -222,11 +171,11 @@ function createRectangle(i, x, y, group) {
 
 //Highlight Current Row to Weave
 function highlightRow(pRow) {
-    if(pRow == 1  && (select_row == null || select_row+1 > 19)) {
+    if(pRow == 1  && (select_row == null || select_row+1 > 29)) {
         select_row = 0
     } else if (pRow == -1 && (select_row == null || select_row-1 < 0)) {
-        select_row = 19
-    } else if (pRow == 1 && select_row+1 <= 19) {
+        select_row = 29
+    } else if (pRow == 1 && select_row+1 <= 29) {
         select_row++;
     } else if (pRow == -1 && select_row-1 >= 0) {
         select_row--;

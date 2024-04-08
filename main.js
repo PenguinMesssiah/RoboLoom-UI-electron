@@ -10,6 +10,7 @@ let shaftWeaveWindow    = null
 let jacquardWeaveWindow = null
 let activeSerialPort    = null
 let matrix_child        = null
+let jquery_child        = null
 let appWindows          = new List()
 
 function createMainWindow() {
@@ -112,10 +113,15 @@ function createShaftWeaveWindow() {
 }
 
 function createJacquardWeaveWindow() {
-    //Create Utility Service
+    //Create Utility Services
     matrix_child = utilityProcess.fork(path.join(__dirname, './assets/util/ndarray_fnc'), {
         stdio: ['ignore', 'inherit', 'inherit'],
         serviceName: 'Matrix Utility Process'
+    })
+
+    jquery_child = utilityProcess.fork(path.join(__dirname, './assets/util/jquery_csv'), {
+        stdio: ['ignore', 'inherit', 'inherit'],
+        serviceName: 'JQuery Utility Process'
     })
 
     jacquardWeaveWindow = new BrowserWindow({
@@ -137,11 +143,24 @@ function createJacquardWeaveWindow() {
         slashes: true
     }))
 
+    jquery_child.on('message', (message) => {
+        //send message back to jacquard renderer
+        jacquardWeaveWindow.webContents.send('drawdown-update', message)
+
+        //send message to matrix util to update drawdown matrix
+        let matrixMessage = {
+            type: 2,
+            drawdown_matrix: message.drawdown_matrix,
+        }
+        matrix_child.postMessage(matrixMessage)
+    })
+
     appWindows.push(jacquardWeaveWindow)
 
     // Emitted when the window is closed.
     jacquardWeaveWindow.on('closed', function() {
         matrix_child.kill()
+        jquery_child.kill()
     })
 }
 
@@ -190,7 +209,6 @@ ipcMain.on('create-array', (event, {row, col, id}) => {
     }
     matrix_child.postMessage(message)
 })
-
 ipcMain.on('update-matrix', (event, {row, col, state, id}) => {
     let message = {
         type: 1, 
@@ -200,6 +218,14 @@ ipcMain.on('update-matrix', (event, {row, col, state, id}) => {
         state: state
     }
     matrix_child.postMessage(message)
+})
+
+//Read CSV File
+ipcMain.on('read-file', (event, {filePath}) => {
+    let message = {
+        filePath: filePath 
+    }
+    jquery_child.postMessage(message)
 })
 
 // Initialize & Create
