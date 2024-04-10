@@ -74,7 +74,6 @@ function linkEvents() {
     uploadBtn.addEventListener('click', () => {
         let file = fileForm.files[0]        
         window.jquery.readFile(file.path)
-
     })
 
     //Update Drawdown

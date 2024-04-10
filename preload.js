@@ -2,13 +2,14 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('serial', {
-  getSerial: () => ipcRenderer.invoke('get-serial'),
-  sendSerialPath: (port) => ipcRenderer.send('send-serial-port', port)
+  parseSerialPorts: () => ipcRenderer.send('parse-serial-ports'),
+  onPostSerialPortParse: (callback) => ipcRenderer.on('post-serialPort-parse', (_event, value) => callback(value))
 })
 
 contextBridge.exposeInMainWorld('activeWindows', {
   getCalWindow: () => ipcRenderer.invoke('cal-window'),
-  getShaftWindow: () => ipcRenderer.invoke('shaft-window')
+  getShaftWindow: () => ipcRenderer.invoke('shaft-window'),
+  getJacquardWindow: () => ipcRenderer.invoke('jacquard-window')
 })
 
 window.addEventListener('DOMContentLoaded', () => {

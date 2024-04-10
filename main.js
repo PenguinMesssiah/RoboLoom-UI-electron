@@ -1,5 +1,4 @@
 const { app, BrowserWindow, ipcMain, utilityProcess } = require('electron')
-const { SerialPort } = require('serialport')
 const path  = require('path')
 const url   = require('url')
 const List  = require("collections/list");
@@ -8,12 +7,18 @@ const List  = require("collections/list");
 let mainWindow          = null
 let shaftWeaveWindow    = null
 let jacquardWeaveWindow = null
-let activeSerialPort    = null
 let matrix_child        = null
 let jquery_child        = null
+let serial_child        = null
 let appWindows          = new List()
 
 function createMainWindow() {
+    //Create Utility Services
+    serial_child = utilityProcess.fork(path.join(__dirname, './assets/util/serial_cmd'), {
+        stdio: ['ignore', 'inherit', 'inherit'],
+        serviceName: 'Serial Utility Process'
+    })
+
     // Create the browser window.
     mainWindow = new BrowserWindow({
         width: 600,
@@ -34,6 +39,11 @@ function createMainWindow() {
         protocol: 'file:',
         slashes: true
     }))
+
+    serial_child.on('message', (message) => {
+        //send message back to main renderer
+        mainWindow.webContents.send('post-serialPort-parse', message)
+    })
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {
@@ -164,38 +174,15 @@ function createJacquardWeaveWindow() {
     })
 }
 
-function openSerialConnetion(event, path) {
-    //console.log("path = ", path)
-    if(activeSerialPort == null) {
-        activeSerialPort = new SerialPort({
-            path: path,
-            baudRate: 115200,
-            autoOpen: true
-        })
-    }
-
-    /*
-    activeSerialPort.open(function (err) {
-        if (err) {
-            return console.log('Error opening port: ', err.message)
-        }
-        else {
-            //Because there's no callback to write, write errors will be emitted on the port:
-            //port.write('main screen turn on')
-            console.log('Serial Port Open on ', activeSerialPort.path, ' and baudrate: ', activeSerialPort.baudRate)
-        }
-    })
-    */
-}
-
 //Inter-Process Communication
-ipcMain.on('send-serial-port', openSerialConnetion)
-ipcMain.handle('get-serial', async () => { return SerialPort.list()})
 ipcMain.handle('cal-window', async () => {
     await app.isReady('ready', createCalWindow())
 })
 ipcMain.handle('shaft-window', async () => {
     await app.isReady('ready', createShaftWeaveWindow())
+})
+ipcMain.handle('jacquard-window', async () => {
+    await app.isReady('ready', createJacquardWeaveWindow())
 })
 
 //Matrix Operations
@@ -220,6 +207,14 @@ ipcMain.on('update-matrix', (event, {row, col, state, id}) => {
     matrix_child.postMessage(message)
 })
 
+//Serial Commands
+ipcMain.on('parse-serial-ports', async () => {
+    let message = {
+        type: 0
+    }
+    serial_child.postMessage(message)
+})
+
 //Read CSV File
 ipcMain.on('read-file', (event, {filePath}) => {
     let message = {
@@ -230,13 +225,14 @@ ipcMain.on('read-file', (event, {filePath}) => {
 
 // Initialize & Create
 app.on('ready', () => {
-    //createMainWindow()
+    createMainWindow()
     //createShaftWeaveWindow()
-    createJacquardWeaveWindow()
+    //createJacquardWeaveWindow()
 })
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
+    serial_child.kill()
     app.quit()
 })
 

@@ -1,55 +1,22 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.s
-
-activeSerialConnection = 0
-activeSerialPort       = null
-
-async function parseSerialPorts() {
-  await window.serial.getSerial().then((ports, err) => { 
-    if(err) {
-      document.getElementById('error').textContent = err.message
-      resetConnection()
-      return
-    } else {
-      document.getElementById('error').textContent = ''
-    }
-
-    if (ports.length === 0) {
-      document.getElementById('error').textContent = 'No ports discovered'
-      resetConnection()
-      return
-    }
-
-    for (let x in ports) {
-      x = parseInt(x)
-      if(ports[x].manufacturer == 'Arduino (www.arduino.cc)') {
-        activeSerialConnection = 1 
-        activeSerialPort = ports[x]        
-
-        window.serial.sendSerialPath(ports[x].path)
-        setConnectionHTML(activeSerialPort)
-        //console.log("activeSerialConnection = ", activeSerialConnection)
-        break
-      } else if (x+1 == ports.length) {
-        resetConnection()
-      }
-    }
-    //console.log("activeSerialConnection = ", activeSerialConnection)
-  })
-}
 
 function linkEventHandlers() {
   document.getElementById("continue-btn").addEventListener('click', () => {
     window.activeWindows.getCalWindow()
   })
+
+  window.serial.onPostSerialPortParse((message) => {
+    document.getElementById('error').textContent = message.error_msg
+    
+    if(message.activeSerialConnection === 0) {
+      resetConnection()
+    } else {
+      setConnectionHTML(message.activeSerialPort)
+    }
+  })
 }
 
-// Helper Functions for Updating index.html
-function resetConnection() {
-  activeSerialConnection = 0
-  activeSerialPort       = null
-  
+// Helper Functions
+function resetConnection() {  
   document.getElementById("spinner-container").style.display = 'block'
   document.getElementById("spinner").style.display = 'inline'
   document.getElementById("connecting-message").style.display = 'block'
@@ -67,7 +34,7 @@ function setConnectionHTML(currentArduinoPort) {
 }
 
 function parsePorts() {
-  parseSerialPorts()
+  window.serial.parseSerialPorts()
   setTimeout(parsePorts, 3000)
 }
 
