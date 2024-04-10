@@ -13,30 +13,34 @@
 </head>
 
 <body>
-    <h1>Calibration Mode</h1>
+    <h1 class="text-center">Calibration Mode</h1>
     <div class="card" id="calibration-menu-container">
-        <div class="card-body">
-            <h5 class="card-title">Automatic Calibration</h5>
-            <p class="card-text"><i>To Automatically Calibrate the Jaquard Loom,
+        <div class="card-body text-center">
+            <h5 class="card-title text-center">Automatic Calibration</h5>
+            <p class="card-text"><i>To Automatically Calibrate the Jacquard Loom,
                 <br><b>ALL</b> the motor heddles must be set to the <b>DOWN</b> position.</i>
             </p>
             <button type="button" id="automatic-btn" class="btn btn-outline-info">Automaically Calibrate</button>      
         </div>
     </div>
     
-    <div class="card" id="calibration-menu-container">
-        <h5 class="card-title">Manual Calibration
-            <button class="btn btn-outline-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContainer" role="button" aria-expanded="false" aria-controls="collapseContainer">
+    <div class="card text-center" id="calibration-menu-container">
+        <h5 class="card-title mt-1">Manual Calibration
+            <button class="btn btn-outline-light mt-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContainer" role="button" aria-expanded="false" aria-controls="collapseContainer">
             <img src="./assets/icons/bi-arrows-collapse.svg">
         </button></h5>
             <div class="collapse card-body" id="collapseContainer">
-                <p class="card-text">Use manual calibration in the event ANY of the Jaquard Loom's heddles are not in the DOWN position.</p>
+                <p class="card-text">Use manual calibration in the event ANY of the Jacquard Loom's heddles are not in the DOWN position.</p>
                 <button type="button" id="manual-btn" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#calModal">Manual Calibration</button>
             </div>
     </div>
   
-    <div class="d-grid col-6 mx-auto">
-        <button type="button" id="continue-btn" class="btn btn-outline-success" style="display:none">Continue</button>
+    <div class="dropdown d-grid col-6 mx-auto mt-3">
+        <button type="button" class="btn btn-outline-success dropdown-toggle" id="continue-btn" data-bs-toggle="dropdown" style="display:none">Select Weaving Mode</button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" id='shaft-btn' href="#">Shaft Loom Weaving</a></li>
+            <li><a class="dropdown-item" id='jacquard-btn' href="#">Jacquard Loom Weaving</a></li>
+          </ul>
     </div>
 
 <!-- Modal -->

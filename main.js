@@ -63,7 +63,7 @@ function createCalWindow() {
         webPreferences: {
             nodeIntegration: false, // to allow require
             contextIsolation: true,
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'cal_preload.js')
         }
     })
 

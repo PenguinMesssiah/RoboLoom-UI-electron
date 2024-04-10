@@ -7,9 +7,7 @@ contextBridge.exposeInMainWorld('serial', {
 })
 
 contextBridge.exposeInMainWorld('activeWindows', {
-  getCalWindow: () => ipcRenderer.invoke('cal-window'),
-  getShaftWindow: () => ipcRenderer.invoke('shaft-window'),
-  getJacquardWindow: () => ipcRenderer.invoke('jacquard-window')
+  getCalWindow: () => ipcRenderer.invoke('cal-window')
 })
 
 window.addEventListener('DOMContentLoaded', () => {

@@ -9,8 +9,11 @@ function linkEventHandlers() {
       document.getElementById("continue-btn").style.display = 'block'
     })
 
-    document.getElementById("continue-btn").addEventListener('click', () => {
+    document.getElementById("shaft-btn").addEventListener('click', () => {
       window.activeWindows.getShaftWindow()
+    })
+    document.getElementById("jacquard-btn").addEventListener('click', () => {
+      window.activeWindows.getJacquardWindow()
     })
 }
 

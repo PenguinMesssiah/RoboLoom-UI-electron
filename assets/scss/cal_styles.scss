@@ -48,8 +48,8 @@ $success: #7952b3;
 // @import "../../node_modules/bootstrap/scss/tooltip";
 @import "../../node_modules/bootstrap/scss/popover";
 // @import "../../node_modules/bootstrap/scss/carousel";
-@import "../../node_modules/bootstrap/scss/spinners";
-//@import "../../node_modules/bootstrap/scss/offcanvas"; // Requires transitions
+// @import "../../node_modules/bootstrap/scss/spinners";
+// @import "../../node_modules/bootstrap/scss/offcanvas"; // Requires transitions
 // @import "../../node_modules/bootstrap/scss/placeholders";
 
 // Helpers
@@ -67,16 +67,4 @@ $success: #7952b3;
     width: 90%;  
     justify-content: center;
     justify-self: center;
-}
-.card-body {
-    text-align: center;
-}
-.card-title {
-    text-align: center;
-}
-h1 {
-    text-align: center;
-}
-p {
-    text-align: center;
 }
