@@ -27,18 +27,22 @@ process.parentPort.on('message', (e) => {
     let id    = e.data.id
     let state = e.data?.state
     let matrix = e.data?.drawdown_matrix
+    let rowIndex = e.data?.rowIndex
 
     //console.log('utilProcess message = ', e.data)
 
     switch (type) {
-        case 0:
+        case 0: //Create Array Cmd
             createArray(row, col, id)
             break;
-        case 1:
+        case 1: //Update Single Matrix Element
             updateMatrix(row, col, state, id)
             break;
-        case 2:
+        case 2: //Initialize Drawdown Matrix w/ Data
             setDrawdownMatrix(matrix)
+            break;
+        case 3: //Getter for Single Row of Drawdown Matrix
+            getDrawdownMatrixRow(rowIndex)
             break;
     }
 })
@@ -88,11 +92,22 @@ function updateMatrix (pRow, pCol, pState, pId) {
 
     if(!math.deepEqual(drawdownArr, drawdownArrOld)) {
         let message = {
+            type: 0,
             drawdown_matrix: drawdownArr.valueOf()
         }
         process.parentPort.postMessage(message)
         drawdownArrOld = drawdownArr
     }
+}
+
+function getDrawdownMatrixRow(rowIndex) {
+    let row = drawdownArr.valueOf()[rowIndex]
+    
+    let message = {
+        type: 1,
+        rowToMove: row
+    }
+    process.parentPort.postMessage(message)
 }
 
 function setDrawdownMatrix(pMatrix) {

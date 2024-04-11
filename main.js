@@ -109,11 +109,22 @@ function createShaftWeaveWindow() {
     appWindows.push(shaftWeaveWindow)
    
     matrix_child.on('message', (message) => {
-        var drawdown_matrix = message.drawdown_matrix
-        //send message back to shaft renderer
-        if(drawdown_matrix !== null) {
-            shaftWeaveWindow.webContents.send('drawdown-update', drawdown_matrix)
-        }
+        let type            = message.type
+        let drawdown_matrix = message?.drawdown_matrix
+        let rowToMove       = message?.rowToMove
+
+        switch(type) {
+            case 0: //send message back to shaft renderer
+                shaftWeaveWindow.webContents.send('drawdown-update', drawdown_matrix)
+                break;
+            case 1: //send message to serial util process
+                let msg = {
+                    type: 3,
+                    rowToMove: rowToMove
+                }
+                serial_child.postMessage(msg)
+                break;
+        } 
     })
 
     // Emitted when the window is closed.
@@ -213,6 +224,27 @@ ipcMain.on('parse-serial-ports', async () => {
         type: 0
     }
     serial_child.postMessage(message)
+})
+ipcMain.on('send-motor-cmd', (event, {motorInt, dir}) => {
+    let message = {
+        type: 1,
+        motorInt: motorInt,
+        direction: dir
+    }
+    serial_child.postMessage(message)
+})
+ipcMain.on('send-autoCal-cmd', () => {
+    let message = {
+        type: 2
+    }
+    serial_child.postMessage(message)
+})
+ipcMain.on('send-row-cmd', (event, {rowIndex}) => {
+    let message = {
+        type: 3,
+        rowIndex: rowIndex
+    }
+    matrix_child.postMessage(message)
 })
 
 //Read CSV File

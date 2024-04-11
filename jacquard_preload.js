@@ -8,3 +8,7 @@ contextBridge.exposeInMainWorld('ndarray', {
 contextBridge.exposeInMainWorld('jquery', {
     readFile: (filePath) => ipcRenderer.send('read-file', {filePath})
 })
+
+contextBridge.exposeInMainWorld('serial', {
+    sendRowCmd: (rowIndex) => ipcRenderer.send('send-row-cmd', {rowIndex})
+})

@@ -1,5 +1,10 @@
+const UP   = 0
+const DOWN = 1
+
 function linkEventHandlers() {
     document.getElementById("automatic-btn").addEventListener('click', () => {
+      //Send Calibrate All Cmd
+      window.serial.sendAutoCalCmd()
       //Enable/Show Continue Button
       document.getElementById("continue-btn").style.display = 'block'
     })
@@ -18,12 +23,12 @@ function linkEventHandlers() {
 }
 
 function sendMotorUpCommand(motorInt) {
-  //Invoke a Channel, Send Command over Serial in Main
+  window.serial.sendMotorCmd(motorInt, UP)
   console.log("Send UP on motor number: ", motorInt)
 }
 
 function sendMotorDownCommand(motorInt) {
-  //Invoke a Channel, Send Command over Serial in Main
+  window.serial.sendMotorCmd(motorInt, DOWN)
   console.log("Send DOWN on motor number: ", motorInt)
 }
 

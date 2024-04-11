@@ -1,17 +1,55 @@
-const { SerialPort } = require('serialport')
+const { SerialPort }     = require('serialport')
+const { ReadlineParser } = require('@serialport/parser-readline')
+
+//Constants
+const MOVE      = 1
+const FRAME     = 2
+const UP        = 0
+const DOWN      = 1
+const CALIBRATE = 0
+const numMotors = 40
+const numFrames = 4     //TODO: Make Dynamic
+const NOCALIBRATION  = 0
+const CALIBRATION    = 1
+//const FRAME_CONFIG   = '101101'
+const readLineParser = new ReadlineParser({ 
+    delimiter: '\n',
+    encoding: 'utf-8'
+})
+
+//Globals
+let motor_pos = Array(numMotors).fill(-1)
+let frame_pos = Array(numFrames).fill(-1)
 
 let error_msg              = null
 let activeSerialPort       = null
 let activeSerialConnection = null
 
+//Read Data From Serial, Transformed by Parser
+readLineParser.on('data', (data) => {
+    console.log("received data: ", data)
+})
+
 process.parentPort.on('message', (e) => {
-    let type = e.data.type
+    let type      = e.data.type
+    let motorInt  = e.data?.motorInt
+    let direction = e.data?.dir
+    let rowToMove = e.data?.rowToMove
     
     //console.log("Serial Utility Process: Message w/ type ", type)
 
     switch(type) {
-        case 0:
+        case 0: //Parse Ports
             parseSerialPorts()
+            break;
+        case 1: //Calibration Single Motor Cmd
+            moveMotor(motorInt, NOCALIBRATION, direction, CALIBRATE)
+            break;
+        case 2: //Calibrate All Motors Cmd
+            calibrateAll()
+            break;
+        case 3: //Move Row Cmd
+            moveRow(rowToMove)
             break;
     }
 })
@@ -61,6 +99,8 @@ function openSerialConnetion(path) {
             baudRate: 115200,
             autoOpen: true
         })
+
+        activeSerialPort.pipe(readLineParser)
     }
     /*
     activeSerialPort.open(function (err) {
@@ -74,4 +114,54 @@ function openSerialConnetion(path) {
         }
     })
     */
+}
+
+function convertToMsgString(motor, calibration, direction, mode) {
+    return String(motor << 4 | direction << 3 | mode << 1 | calibration)
+}
+
+//Send Single Motor Or Fram Move Command
+function moveMotor(motor, calibration, direction, mode) {
+    activeSerialPort.write(convertToMsgString(motor, calibration, direction, mode))
+    if (mode === MOVE) {
+        motor_pos[motor] = direction
+    } else if (mode === FRAME){
+        frame_pos[motor] = direction
+    }
+}
+
+function moveRow(row) {
+    for (let [index, motorPos] of row.entries()) {
+        if(motorPos == 1 && motor_pos[index] !== UP) {
+            moveMotor(index, NOCALIBRATION, UP, MOVE)
+        }
+    }
+    for (let [index, motorPos] of row.entries()) {
+        if(motorPos == 0 && motor_pos[index] !== DOWN)  {
+            moveMotor(index, NOCALIBRATION, DOWN, MOVE)
+         }
+    }
+}
+
+function moveFrame(frames) {
+    for (let [index, framePos] of frames.entries()) {
+        if(framePos == 1 && frame_pos[index] !== UP) {
+            moveMotor(index, NOCALIBRATION, UP, FRAME)
+        }
+    }
+    for (let [index, framePos] of frames.entries()) {
+        if(framePos == 0 && frame_pos[index] !== DOWN)  {
+            moveMotor(index, NOCALIBRATION, DOWN, FRAME)
+         }
+    }
+}
+
+function calibrateAll() {
+    for (let i = 0; i < numMotors; i++) {
+        print(write_read(get_message_str(i, CALIBRATION, 0, 0)))
+        motor_pos[i] = DOWN
+    }
+    for (let i = 0; i < numFrames; i++){
+        frame_pos[i] = DOWN
+    }
 }
