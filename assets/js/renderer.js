@@ -10,7 +10,7 @@ function linkEventHandlers() {
     if(message.activeSerialConnection === 0) {
       resetConnection()
     } else {
-      setConnectionHTML(message.activeSerialPort)
+      setConnectionHTML(message.activeSerialPortPath)
     }
   })
 }
@@ -24,13 +24,13 @@ function resetConnection() {
   document.getElementById("continue-btn").style.display = 'none'
 }
 
-function setConnectionHTML(currentArduinoPort) {
+function setConnectionHTML(currentArduinoPortPath) {
   document.getElementById("spinner-container").style.display = 'none'
   document.getElementById("spinner").style.display = 'none'
   document.getElementById("connecting-message").style.display = 'none'
   document.getElementById("connected-message").style.display = 'block'
   document.getElementById("continue-btn").style.display = 'block'
-  document.getElementById("serial-port").innerText = currentArduinoPort.path
+  document.getElementById("serial-port").innerText = currentArduinoPortPath
 }
 
 function parsePorts() {

@@ -33,7 +33,7 @@ readLineParser.on('data', (data) => {
 process.parentPort.on('message', (e) => {
     let type      = e.data.type
     let motorInt  = e.data?.motorInt
-    let direction = e.data?.dir
+    let direction = e.data?.direction
     let rowToMove = e.data?.rowToMove
     
     //console.log("Serial Utility Process: Message w/ type ", type)
@@ -43,6 +43,7 @@ process.parentPort.on('message', (e) => {
             parseSerialPorts()
             break;
         case 1: //Calibration Single Motor Cmd
+            console.log("sending with direction: ", direction)
             moveMotor(motorInt, NOCALIBRATION, direction, CALIBRATE)
             break;
         case 2: //Calibrate All Motors Cmd
@@ -67,9 +68,8 @@ async function parseSerialPorts() {
         }
   
         for (let x in ports) {
-            x = parseInt(x)
-            if(ports[x].manufacturer == 'Arduino (www.arduino.cc)') {
-                activeSerialPort       = ports[x]        
+            x = parseInt(x) 
+            if(ports[x].manufacturer == 'Arduino (www.arduino.cc)') {       
                 activeSerialConnection = 1 
 
                 openSerialConnetion(ports[x].path)
@@ -83,7 +83,7 @@ async function parseSerialPorts() {
 
         let message = {
             error_msg: error_msg,
-            activeSerialPort: activeSerialPort,
+            activeSerialPortPath: activeSerialPort.path,
             activeSerialConnection: activeSerialConnection
         }
         process.parentPort.postMessage(message)
@@ -101,6 +101,7 @@ function openSerialConnetion(path) {
         })
 
         activeSerialPort.pipe(readLineParser)
+        console.log("Serial Connection Open")
     }
     /*
     activeSerialPort.open(function (err) {
@@ -158,7 +159,7 @@ function moveFrame(frames) {
 
 function calibrateAll() {
     for (let i = 0; i < numMotors; i++) {
-        print(write_read(get_message_str(i, CALIBRATION, 0, 0)))
+        print(write_read(get_message_str(i+1, CALIBRATION, 0, 0)))
         motor_pos[i] = DOWN
     }
     for (let i = 0; i < numFrames; i++){
