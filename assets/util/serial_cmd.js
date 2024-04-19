@@ -84,7 +84,7 @@ async function parseSerialPorts() {
 
         let message = {
             error_msg: error_msg,
-            activeSerialPortPath: activeSerialPort.path,
+            activeSerialPortPath: activeSerialPort?.path,
             activeSerialConnection: activeSerialConnection
         }
         process.parentPort.postMessage(message)

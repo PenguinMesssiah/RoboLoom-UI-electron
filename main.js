@@ -27,7 +27,7 @@ function createMainWindow() {
         webPreferences: {
             nodeIntegration: false, // to allow require
             contextIsolation: true, // allow use with Electron 12+
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, './assets/preload/preload.js')
         }
     })
     appWindows.push(mainWindow)
@@ -63,7 +63,7 @@ function createCalWindow() {
         webPreferences: {
             nodeIntegration: false, // to allow require
             contextIsolation: true,
-            preload: path.join(__dirname, 'cal_preload.js')
+            preload: path.join(__dirname, './assets/preload/cal_preload.js')
         }
     })
 
@@ -96,7 +96,7 @@ function createShaftWeaveWindow() {
             nodeIntegration: false, // to allow require
             contextIsolation: true,
             enableRemoteModule: false,
-            preload: path.join(__dirname, 'shaft_preload.js')
+            preload: path.join(__dirname, './assets/preload/shaft_preload.js')
         }
     })
 
@@ -154,7 +154,7 @@ function createJacquardWeaveWindow() {
             nodeIntegration: false, // to allow require
             contextIsolation: true,
             enableRemoteModule: false,
-            preload: path.join(__dirname, 'jacquard_preload.js')
+            preload: path.join(__dirname, './assets/preload/jacquard_preload.js')
         }
     })
 

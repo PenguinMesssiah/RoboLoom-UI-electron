@@ -75,10 +75,12 @@ function linkEvents() {
     var nextRowBtn = document.getElementById("nextRowBtn")
 
     prevRowBtn.addEventListener('click', () => {
+        console.log("selec row = ", select_row)
         window.serial.sendRowCmd(select_row)
     })
-    
+
     nextRowBtn.addEventListener('click', () => {
+        console.log("selec row = ", select_row)
         window.serial.sendRowCmd(select_row)
     })
 
