@@ -70,6 +70,17 @@ function drawWeaveDraft() {
 function linkEvents() {
     var uploadBtn = document.getElementById("uploadFileBtn")
     var fileForm  = document.getElementById("browseFileForm")
+    
+    var prevRowBtn = document.getElementById("previousRowBtn")
+    var nextRowBtn = document.getElementById("nextRowBtn")
+
+    prevRowBtn.addEventListener('click', () => {
+        window.serial.sendRowCmd(select_row)
+    })
+    
+    nextRowBtn.addEventListener('click', () => {
+        window.serial.sendRowCmd(select_row)
+    })
 
     uploadBtn.addEventListener('click', () => {
         let file = fileForm.files[0]        

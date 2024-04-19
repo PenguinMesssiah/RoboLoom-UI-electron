@@ -25,8 +25,8 @@ process.parentPort.on('message', (e) => {
     let row   = e.data.row
     let col   = e.data.col
     let id    = e.data.id
-    let state = e.data?.state
-    let matrix = e.data?.drawdown_matrix
+    let state    = e.data?.state
+    let matrix   = e.data?.drawdown_matrix
     let rowIndex = e.data?.rowIndex
 
     //console.log('utilProcess message = ', e.data)
