@@ -4,8 +4,8 @@ const { ReadlineParser } = require('@serialport/parser-readline')
 //Constants
 const MOVE      = 1
 const FRAME     = 2
-const UP        = 0
-const DOWN      = 1
+const UP        = 1
+const DOWN      = 0
 const CALIBRATE = 0
 const numMotors = 40
 const numFrames = 4     //TODO: Make Dynamic
@@ -43,7 +43,7 @@ process.parentPort.on('message', (e) => {
             parseSerialPorts()
             break;
         case 1: //Calibration Single Motor Cmd
-            console.log("sending with direction: ", direction)
+            console.log("sending on motor: ", motorInt, " with dir ", direction)
             moveMotor(motorInt, NOCALIBRATION, direction, CALIBRATE)
             break;
         case 2: //Calibrate All Motors Cmd
@@ -159,7 +159,7 @@ function moveFrame(frames) {
 
 function calibrateAll() {
     for (let i = 0; i < numMotors; i++) {
-        print(write_read(get_message_str(i+1, CALIBRATION, 0, 0)))
+        activeSerialPort.write(convertToMsgString(i+1, CALIBRATION, 0, 0))
         motor_pos[i] = DOWN
     }
     for (let i = 0; i < numFrames; i++){

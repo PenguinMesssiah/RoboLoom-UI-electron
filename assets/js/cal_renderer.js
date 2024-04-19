@@ -1,5 +1,5 @@
-const UP   = 0
-const DOWN = 1
+const UP   = 1
+const DOWN = 0
 
 function linkEventHandlers() {
     document.getElementById("automatic-btn").addEventListener('click', () => {
@@ -24,12 +24,12 @@ function linkEventHandlers() {
 
 function sendMotorUpCommand(motorInt) {
   window.serial.sendMotorCmd(motorInt, UP)
-  console.log("Send UP on motor number: ", motorInt)
+  //console.log("Send UP on motor number: ", motorInt)
 }
 
 function sendMotorDownCommand(motorInt) {
   window.serial.sendMotorCmd(motorInt, DOWN)
-  console.log("Send DOWN on motor number: ", motorInt)
+  //console.log("Send DOWN on motor number: ", motorInt)
 }
 
 //Execute
