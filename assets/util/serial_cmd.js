@@ -2,16 +2,17 @@ const { SerialPort }     = require('serialport')
 const { ReadlineParser } = require('@serialport/parser-readline')
 
 //Constants
+const CALIBRATE = 0
 const MOVE      = 1
 const FRAME     = 2
 const UP        = 1
 const DOWN      = 0
-const CALIBRATE = 0
 const numMotors = 40
 const numFrames = 4     //TODO: Make Dynamic
-const NOCALIBRATION  = 0
 const CALIBRATION    = 1
+const NOCALIBRATION  = 0
 //const FRAME_CONFIG   = '101101'
+const AUTO_CAL = 51
 const readLineParser = new ReadlineParser({ 
     delimiter: '\n',
     encoding: 'utf-8'
@@ -44,7 +45,7 @@ process.parentPort.on('message', (e) => {
             break;
         case 1: //Calibration Single Motor Cmd
             console.log("sending on motor: ", motorInt, " with dir ", direction)
-            moveMotor(motorInt, NOCALIBRATION, direction, CALIBRATE)
+            moveMotor(motorInt, direction, CALIBRATE, NOCALIBRATION)
             break;
         case 2: //Calibrate All Motors Cmd
             calibrateAll()
@@ -117,13 +118,16 @@ function openSerialConnetion(path) {
     */
 }
 
-function convertToMsgString(motor, calibration, direction, mode) {
+function convertToMsgString(motor, direction, mode, calibration) {
     return String(motor << 4 | direction << 3 | mode << 1 | calibration)
 }
 
+// function moveMotor(motor, direction, mode, calibration) NEW
+// function moveMotor(motor, calibration, direction, mode) old
+
 //Send Single Motor Or Fram Move Command
-function moveMotor(motor, calibration, direction, mode) {
-    activeSerialPort.write(convertToMsgString(motor, calibration, direction, mode))
+function moveMotor(motor, direction, mode, calibration) {
+    activeSerialPort.write(convertToMsgString(motor, direction, mode, calibration))
     if (mode === MOVE) {
         motor_pos[motor] = direction
     } else if (mode === FRAME){
@@ -134,12 +138,12 @@ function moveMotor(motor, calibration, direction, mode) {
 function moveRow(row) {
     for (let [index, motorPos] of row.entries()) {
         if(motorPos == 1 && motor_pos[index] !== UP) {
-            moveMotor(index, NOCALIBRATION, UP, MOVE)
+            moveMotor(index, UP, MOVE, NOCALIBRATION)
         }
     }
     for (let [index, motorPos] of row.entries()) {
         if(motorPos == 0 && motor_pos[index] !== DOWN)  {
-            moveMotor(index, NOCALIBRATION, DOWN, MOVE)
+            moveMotor(index, DOWN, MOVE, NOCALIBRATION)
          }
     }
 }
@@ -147,19 +151,19 @@ function moveRow(row) {
 function moveFrame(frames) {
     for (let [index, framePos] of frames.entries()) {
         if(framePos == 1 && frame_pos[index] !== UP) {
-            moveMotor(index, NOCALIBRATION, UP, FRAME)
+            moveMotor(index, UP, FRAME, NOCALIBRATION)
         }
     }
     for (let [index, framePos] of frames.entries()) {
         if(framePos == 0 && frame_pos[index] !== DOWN)  {
-            moveMotor(index, NOCALIBRATION, DOWN, FRAME)
+            moveMotor(index, DOWN, FRAME, NOCALIBRATION)
          }
     }
 }
 
 function calibrateAll() {
+    activeSerialPort.write(convertToMsgString(AUTO_CAL, DOWN, CALIBRATE, CALIBRATION))
     for (let i = 0; i < numMotors; i++) {
-        activeSerialPort.write(convertToMsgString(i+1, CALIBRATION, 0, 0))
         motor_pos[i] = DOWN
     }
     for (let i = 0; i < numFrames; i++){
