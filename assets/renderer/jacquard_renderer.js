@@ -4,6 +4,9 @@ const BUFFER   = 25
 const PADDING  = 5;
 const WIDTH    = 1100;
 const HEIGHT   = 825;
+const TRUE     = 1
+const FALSE    = 0
+
 /*
     Konva is in (c,r) format by default
     where (y,x) represent the horizontal & vertical axis respectively 
@@ -27,11 +30,11 @@ let highlightGroup = null
 
 function initCanvas() {
     //stage.container().style.backgroundColor = 'green';
-    drawWeaveDraft()
+    drawWeaveDraft(TRUE)
     linkEvents()
 }
 
-function drawWeaveDraft() {
+function drawWeaveDraft(makeNewMatrix) {
     let idx = 0
     
     //Draw Drawdown & Create Array  (n x t)
@@ -48,7 +51,9 @@ function drawWeaveDraft() {
             createRectangle(idx++, i, j, drawdownGroup)
         }
     }
-    window.ndarray.createArray(ROW_MAX, COL_MAX, 3)
+    if(makeNewMatrix){
+        window.ndarray.createArray(ROW_MAX, COL_MAX, 3)
+    }
     
     //Mirror Group on Top of Drawdown Group
     highlightGroup = new Konva.Group({
@@ -93,7 +98,7 @@ function linkEvents() {
     window.ndarray.onDrawdownUpdate((message) => {
         //Clear Canvas
         stage.destroyChildren()
-        drawWeaveDraft()
+        drawWeaveDraft(FALSE)
 
         //Decompose Message
         let value = message.drawdown_matrix

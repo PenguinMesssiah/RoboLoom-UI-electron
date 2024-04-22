@@ -51,6 +51,7 @@ process.parentPort.on('message', (e) => {
             calibrateAll()
             break;
         case 3: //Move Row Cmd
+            console.log("Serial Utility Process: Message w/ type ", type)
             moveRow(rowToMove)
             break;
     }
@@ -119,14 +120,15 @@ function openSerialConnetion(path) {
 }
 
 function convertToMsgString(motor, direction, mode, calibration) {
-    return String(motor << 4 | direction << 3 | mode << 1 | calibration)
+    temp = String(motor << 4 | direction << 3 | mode << 1 | calibration)
+    console.log("sending string of ", temp)
+    console.log("sending string of ", (temp >>> 0).toString(2))
+    return String(motor << 4 | direction << 3 | mode << 1 | calibration) + '\r'
 }
-
-// function moveMotor(motor, direction, mode, calibration) NEW
-// function moveMotor(motor, calibration, direction, mode) old
 
 //Send Single Motor Or Fram Move Command
 function moveMotor(motor, direction, mode, calibration) {
+    activeSerialPort.write(convertToMsgString(motor, direction, mode, calibration))
     activeSerialPort.write(convertToMsgString(motor, direction, mode, calibration))
     if (mode === MOVE) {
         motor_pos[motor] = direction
@@ -136,13 +138,16 @@ function moveMotor(motor, direction, mode, calibration) {
 }
 
 function moveRow(row) {
+    console.log("Row = ", row)
     for (let [index, motorPos] of row.entries()) {
         if(motorPos == 1 && motor_pos[index] !== UP) {
+            console.log("sending UP on motor, ", index)
             moveMotor(index, UP, MOVE, NOCALIBRATION)
         }
     }
     for (let [index, motorPos] of row.entries()) {
         if(motorPos == 0 && motor_pos[index] !== DOWN)  {
+            console.log("sending DOWN on motor, ", index)
             moveMotor(index, DOWN, MOVE, NOCALIBRATION)
          }
     }

@@ -164,6 +164,25 @@ function createJacquardWeaveWindow() {
         slashes: true
     }))
 
+    matrix_child.on('message', (message) => {
+        let type            = message.type
+        let drawdown_matrix = message?.drawdown_matrix
+        let rowToMove       = message?.rowToMove
+
+        switch(type) {
+            case 0: //send message back to shaft renderer
+                shaftWeaveWindow.webContents.send('drawdown-update', drawdown_matrix)
+                break;
+            case 1: //send message to serial util process
+                let msg = {
+                    type: 3,
+                    rowToMove: rowToMove
+                }
+                serial_child.postMessage(msg)
+                break;
+        } 
+    })
+
     jquery_child.on('message', (message) => {
         //send message back to jacquard renderer
         jacquardWeaveWindow.webContents.send('drawdown-update', message)
