@@ -4,7 +4,8 @@ const DOWN = 0
 function linkEventHandlers() {
     document.getElementById("automatic-btn").addEventListener('click', () => {
       //Send Calibrate All Cmd
-      window.serial.sendAutoCalCmd()
+      //TODO: Make Configurable
+      window.serial.sendAutoCalCmd(DOWN)
       //Enable/Show Continue Button
       document.getElementById("continue-btn").style.display = 'block'
     })

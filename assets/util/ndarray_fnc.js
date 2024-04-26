@@ -29,7 +29,7 @@ process.parentPort.on('message', (e) => {
     let matrix   = e.data?.drawdown_matrix
     let rowIndex = e.data?.rowIndex
 
-    console.log('Matrix Utility Process Message w/ type ', type)
+    //console.log('Matrix Utility Process Message w/ type ', type)
 
     switch (type) {
         case 0: //Create Array Cmd

@@ -252,9 +252,10 @@ ipcMain.on('send-motor-cmd', (event, {motorInt, dir}) => {
     }
     serial_child.postMessage(message)
 })
-ipcMain.on('send-autoCal-cmd', () => {
+ipcMain.on('send-autoCal-cmd', (event, {dir}) => {
     let message = {
-        type: 2
+        type: 2,
+        direction: dir
     }
     serial_child.postMessage(message)
 })

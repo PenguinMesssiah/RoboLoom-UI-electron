@@ -8,5 +8,5 @@ contextBridge.exposeInMainWorld('activeWindows', {
 
 contextBridge.exposeInMainWorld('serial', {
   sendMotorCmd: (motorInt, dir) => ipcRenderer.send('send-motor-cmd', {motorInt, dir}),
-  sendAutoCalCmd: () => ipcRenderer.send('send-autoCal-cmd')
+  sendAutoCalCmd: (dir) => ipcRenderer.send('send-autoCal-cmd', {dir})
 })

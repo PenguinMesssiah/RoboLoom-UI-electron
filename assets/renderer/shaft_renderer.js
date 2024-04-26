@@ -169,7 +169,21 @@ function linkEvents() {
         })        
     })
 
+    //Link Buttons
+    var prevRowBtn    = document.getElementById("previousRowBtn")
+    var nextRowBtn    = document.getElementById("nextRowBtn")
     var sendConfigBtn = document.getElementById('send-config-btn')
+
+    prevRowBtn.addEventListener('click', () => {
+        console.log("selec row = ", select_row)
+        window.serial.sendRowCmd(select_row)
+    })
+
+    nextRowBtn.addEventListener('click', () => {
+        console.log("selec row = ", select_row)
+        window.serial.sendRowCmd(select_row)
+    })
+
     sendConfigBtn.onclick = (event) => {
         //TODO: Send Threading Config Command
         //window.ndarray.multiplyMatrix()

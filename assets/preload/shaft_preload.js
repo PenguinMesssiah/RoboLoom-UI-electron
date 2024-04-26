@@ -5,3 +5,7 @@ contextBridge.exposeInMainWorld('ndarray', {
     updateMatrix: (row, col, state, id) => ipcRenderer.send('update-matrix', {row, col, state, id}),
     onDrawdownUpdate: (callback) => ipcRenderer.on('drawdown-update', (_event, value) => callback(value))
 })
+
+contextBridge.exposeInMainWorld('serial', {
+    sendRowCmd: (rowIndex) => ipcRenderer.send('send-row-cmd', {rowIndex})
+})
