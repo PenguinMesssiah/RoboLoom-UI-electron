@@ -18,13 +18,11 @@
     <!--Konva Canvas-->
     <div class="container-fluid">
     <div class="row">
-        <div class="col-10"></div>
         <div id="konva-container"></div>
     
     <!--Weaving Commands-->
-        <div class="col-2 weave-btn-group">
+        <div class="weave-btn-group d-flex justify-content-end">
             <div class="btn-group-vertical" role="group" aria-label="Weaving Button Group">
-                <button type="button" id='send-config-btn' class="btn btn-outline-info">Send Threading Config</button>
                 <button type="button" id="previousRowBtn" class="btn btn-outline-info" onclick="highlightRow(-1)">Previous Row</button>
                 <button type="button" id="nextRowBtn" class="btn btn-outline-info" onclick="highlightRow(1)">Next Row</button>
                 <div class="btn-group" role="group">
@@ -33,7 +31,7 @@
                     </button>
                     <ul class="dropdown-menu">
                         <input type="number" class="dropdown-item" id="row-select-input" placeholder="row (r)" min="0" max="19" aria-label="Input Row" aria-describedby="Row Input Button">
-                        <a class="dropdown-item" onclick="highlightRow(0)">Apply</a>
+                        <a class="dropdown-item" id='applyRowJump' onclick="highlightRow(0)">Apply</a>
                     </ul>
                 </div> 
             </div>
@@ -64,8 +62,7 @@
                                 <div class="fw-italics">
                                     <small class="text-body-secondary">These options are located in the <i>"Weaving Draft Operations" Subpanel.</i></small>
                                 </div>
-                                <li class="list-group-item">Experiment with various configurations for the <strong><i>threading</i></strong> matrix, pressing the <small class="text-body-secondary">Send New Threading</small> button once you are finished.</li> 
-                                <li class="list-group-item">Experiment with various configurations for the <strong><i>tie-up</i> and <i>treadling</i></strong> matrices, respectively, until you reach a desired pattern.</li>
+                                <li class="list-group-item">Experiment with various configurations for the <strong><i>threading</i></strong>, <strong><i>tie-up</i></strong>  and <strong><i>treadling</i></strong> matrices, respectively, until you reach a desired pattern.</li>
                                 <li class="list-group-item">Begin weaving with the <small class="text-body-secondary">Next Row</small> and <small class="text-body-secondary">Previous Row</small> buttons, throwing your weft shuttle in the shed between every timestep!</li> 
                             </ol>
                         </div>
@@ -79,7 +76,11 @@
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                            <div class="input-group mb-1">
+                                <input class="form-control" type="file" id="browseFileForm" accept=".JSON,.json">
+                                <button class="btn btn-outline-info" type="button" id="uploadFileBtn">Load File</button>
+                            </div>  
+                            <button type="button" id="save-btn" class="btn btn-info mb-2">Save</button>
                         </div>
                     </div>
                 </div>

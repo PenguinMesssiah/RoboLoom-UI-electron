@@ -78,6 +78,7 @@ function linkEvents() {
     
     var prevRowBtn = document.getElementById("previousRowBtn")
     var nextRowBtn = document.getElementById("nextRowBtn")
+    var jumpRowBtn = document.getElementById("applyRowJump")
 
     prevRowBtn.addEventListener('click', () => {
         console.log("selec row = ", select_row)
@@ -86,6 +87,11 @@ function linkEvents() {
 
     nextRowBtn.addEventListener('click', () => {
         console.log("selec row = ", select_row)
+        window.serial.sendRowCmd(select_row)
+    })
+
+    jumpRowBtn.addEventListener('click', () => {
+        //console.log("selec row = ", select_row)
         window.serial.sendRowCmd(select_row)
     })
 

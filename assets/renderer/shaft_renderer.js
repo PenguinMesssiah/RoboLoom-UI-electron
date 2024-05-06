@@ -15,7 +15,12 @@ const stage = new Konva.Stage({
     height: 650,
     draggable: false
 });
-const rectLayer   = new Konva.Layer();
+const rectLayer    = new Konva.Layer({
+    id: "rectLayer" 
+});
+const scrollLayer = new Konva.Layer({
+    id: "scrollLayer"
+});
 
 const cmain       = 'black'
 const cmainFill   = 'white'
@@ -29,9 +34,8 @@ let select_row     = null
 let highlightGroup = null
 
 function initCanvas() {
-    //stage.container().style.backgroundColor = 'green';
     drawWeaveDraft()
-    linkEvents()
+    linkAllEvents()
 }
 
 function drawWeaveDraft() {
@@ -120,8 +124,7 @@ function drawWeaveDraft() {
     stage.add(rectLayer);
 }
 
-//Link Canvas Events
-function linkEvents() {
+function linkAllEvents() {
     stage.on('click', function (e) {
         //Error Handling
         if(typeof e.target.id() == 'string') {
@@ -170,9 +173,13 @@ function linkEvents() {
     })
 
     //Link Buttons
-    var prevRowBtn    = document.getElementById("previousRowBtn")
-    var nextRowBtn    = document.getElementById("nextRowBtn")
-    var sendConfigBtn = document.getElementById('send-config-btn')
+    var prevRowBtn = document.getElementById("previousRowBtn")
+    var nextRowBtn = document.getElementById("nextRowBtn")
+    var jumpRowBtn = document.getElementById("applyRowJump")
+    var saveBtn    = document.getElementById('save-btn')
+
+    var uploadBtn = document.getElementById("uploadFileBtn")
+    var fileForm  = document.getElementById("browseFileForm")
 
     prevRowBtn.addEventListener('click', () => {
         console.log("selec row = ", select_row)
@@ -184,10 +191,21 @@ function linkEvents() {
         window.serial.sendRowCmd(select_row)
     })
 
-    sendConfigBtn.onclick = (event) => {
-        //TODO: Send Threading Config Command
-        //window.ndarray.multiplyMatrix()
-    }
+    jumpRowBtn.addEventListener('click', () => {
+        //console.log("selec row = ", select_row)
+        window.serial.sendRowCmd(select_row)
+    })
+
+    saveBtn.addEventListener('click', () => {
+        //Message to Matrix or Jquery Util
+    })
+
+    uploadBtn.addEventListener('click', () => {
+        /*
+        let file = fileForm.files[0]        
+        window.fs.readFile(file.path)
+        */
+    })
 }
 
 //Update Matrix
@@ -333,12 +351,12 @@ function highlightRow(pRow) {
 }
 
 function drawScrollBars() {
-    var scrollLayers = new Konva.Layer();
-    stage.add(scrollLayers);
+    stage.add(scrollLayer);
 
     var verticalBar = new Konva.Rect({
         width: 10,
         height: 100,
+        id: 'verticalBar',
         fill: 'grey',
         opacity: 0.8,
         x: stage.width() - PADDING - 10,
@@ -360,25 +378,26 @@ function drawScrollBars() {
 
         rectLayer.y(-(HEIGHT - stage.height()) * delta);
     });
-    scrollLayers.add(verticalBar);
+    scrollLayer.add(verticalBar);
 
     var horizontalBar = new Konva.Rect({
-    width: 100,
-    height: 10,
-    fill: 'grey',
-    opacity: 0.8,
-    x: PADDING,
-    y: stage.height() - PADDING - 10,
-    draggable: true,
-    dragBoundFunc: function (pos) {
-        pos.x = Math.max(
-        Math.min(pos.x, stage.width() - this.width() - PADDING),PADDING);
-        pos.y = stage.height() - PADDING - 10;
-        return pos;
-    },
+        width: 100,
+        height: 10,
+        id: 'horizontalBar',
+        fill: 'grey',
+        opacity: 0.8,
+        x: PADDING,
+        y: stage.height() - PADDING - 10,
+        draggable: true,
+        dragBoundFunc: function (pos) {
+            pos.x = Math.max(
+            Math.min(pos.x, stage.width() - this.width() - PADDING),PADDING);
+            pos.y = stage.height() - PADDING - 10;
+            return pos;
+        },
     });
 
-    scrollLayers.add(horizontalBar);
+    scrollLayer.add(horizontalBar);
 
     horizontalBar.on('dragmove', function () {
     // delta in %

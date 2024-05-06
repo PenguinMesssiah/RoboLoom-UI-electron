@@ -2,9 +2,25 @@ const fs  = require('fs');
 const csv = require('jquery-csv');
 
 process.parentPort.on('message', (e) => {
-    let file  = e.data.filePath
+    let type = e.data.type
+    let file = e.data?.filePath
+    
     //console.log('JQuery UtilProcess message = ', e.data)
+    
+    switch (type) {
+        case 0: // Read a CSV File
+            readCSV(file);
+            break;
+        case 1:
+            //readJSON(file);
+            break;
+        case 2: //
+            //exportToFile(json);
+            break;
+    }
+})
 
+function readCSV(file) {
     fs.readFile(file, 'UTF-8', function (err, fileData) {
         if (err) { console.log("JQuery Utility Process ERROR: ", err); }
 
@@ -19,4 +35,4 @@ process.parentPort.on('message', (e) => {
             process.parentPort.postMessage(message)
         });
     });
-})
+}

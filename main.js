@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain, utilityProcess } = require('electron')
 const path  = require('path')
 const url   = require('url')
 const List  = require("collections/list");
+//const {Konva} = require("konva")
 
 
 let mainWindow          = null
@@ -81,10 +82,15 @@ function createCalWindow() {
 }
 
 function createShaftWeaveWindow() {
-    //Create Utility Service
+    //Create Utility Services
     matrix_child = utilityProcess.fork(path.join(__dirname, './assets/util/ndarray_fnc'), {
         stdio: ['ignore', 'inherit', 'inherit'],
         serviceName: 'Matrix Utility Process'
+    })
+
+    jquery_child = utilityProcess.fork(path.join(__dirname, './assets/util/jquery_csv'), {
+        stdio: ['ignore', 'inherit', 'inherit'],
+        serviceName: 'JQuery Utility Process'
     })
 
     shaftWeaveWindow = new BrowserWindow({
@@ -127,9 +133,15 @@ function createShaftWeaveWindow() {
         } 
     })
 
+    jquery_child.on('message', (message) => {
+        //send message back to shaft renderer
+        shaftWeaveWindow.webContents.send('load-JSON-file', message)
+    })
+
     // Emitted when the window is closed.
     shaftWeaveWindow.on('closed', function() {
         matrix_child.kill()
+        jquery_child.kill()
     })
 }
 
@@ -267,9 +279,10 @@ ipcMain.on('send-row-cmd', (event, {rowIndex}) => {
     matrix_child.postMessage(message)
 })
 
-//Read CSV File
-ipcMain.on('read-file', (event, {filePath}) => {
+//JQuery & FS Commands
+ipcMain.on('read-CSV-file', (event, {filePath}) => {
     let message = {
+        type: 0,
         filePath: filePath 
     }
     jquery_child.postMessage(message)
@@ -277,9 +290,9 @@ ipcMain.on('read-file', (event, {filePath}) => {
 
 // Initialize & Create
 app.on('ready', () => {
-    createMainWindow()
+    //createMainWindow()
     //createCalWindow()
-    //createShaftWeaveWindow()
+    createShaftWeaveWindow()
     //createJacquardWeaveWindow()
 })
 

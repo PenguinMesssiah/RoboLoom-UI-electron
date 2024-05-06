@@ -6,7 +6,7 @@ contextBridge.exposeInMainWorld('ndarray', {
 })
 
 contextBridge.exposeInMainWorld('jquery', {
-    readFile: (filePath) => ipcRenderer.send('read-file', {filePath})
+    readFile: (filePath) => ipcRenderer.send('read-CSV-file', {filePath})
 })
 
 contextBridge.exposeInMainWorld('serial', {

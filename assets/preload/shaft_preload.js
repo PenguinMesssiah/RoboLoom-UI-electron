@@ -9,3 +9,10 @@ contextBridge.exposeInMainWorld('ndarray', {
 contextBridge.exposeInMainWorld('serial', {
     sendRowCmd: (rowIndex) => ipcRenderer.send('send-row-cmd', {rowIndex})
 })
+
+/*
+    TODO: Determine File Type They Will Upload
+contextBridge.exposeInMainWorld('fs', {
+    readFile: (filePath) => ipcRenderer.send('read-JSON-file', {filePath})
+})
+*/
