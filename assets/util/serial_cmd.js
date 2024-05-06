@@ -104,7 +104,7 @@ function openSerialConnetion(path) {
         })
 
         activeSerialPort.pipe(readLineParser)
-        console.log("Serial Connection Open")
+        console.log("Serial Utility Process: Serial Connection Open")
     }
     /*
     activeSerialPort.open(function (err) {
@@ -118,15 +118,6 @@ function openSerialConnetion(path) {
         }
     })
     */
-}
-
-function convertToMsgString(motor, direction, mode, calibration) {
-    /*
-    serialMsg = String(motor << 4 | direction << 3 | mode << 1 | calibration)
-    console.log("sending string of ", serialMsg)
-    console.log("sending string of ", (serialMsg >>> 0).toString(2))
-    return String(motor << 4 | direction << 3 | mode << 1 | calibration) + '\r'
-    */    
 }
 
 function sendSerialCommand(msg) {
