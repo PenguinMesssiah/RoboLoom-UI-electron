@@ -28,6 +28,8 @@ process.parentPort.on('message', (e) => {
     let state    = e.data?.state
     let matrix   = e.data?.drawdown_matrix
     let rowIndex = e.data?.rowIndex
+    let numShaft = e.data?.num_shafts
+    let numPedal = e.data?.num_pedals
 
     //console.log('Matrix Utility Process Message w/ type ', type)
 
@@ -43,6 +45,9 @@ process.parentPort.on('message', (e) => {
             break;
         case 3: //Getter for Single Row of Drawdown Matrix
             getDrawdownMatrixRow(rowIndex)
+            break;
+        case 4: //Getter for Threading, Tie-up, & Treadling
+            getMatricies(numShaft, numPedal)
             break;
     }
 })
@@ -73,7 +78,7 @@ function updateMatrix (pRow, pCol, pState, pId) {
             break;
         case TIEUP_ID:
             tieUpArr.set([pRow, pCol], pState)
-            console.log('teiUpArr @ ', pRow,", " ,pCol, " = ", tieUpArr.get([pRow,pCol]))
+            console.log('tieUpArr @ ', pRow,", " ,pCol, " = ", tieUpArr.get([pRow,pCol]))
             break;
         case TREADLING_ID:
             treadlingArr.set([pRow, pCol], pState)
@@ -114,6 +119,22 @@ function setDrawdownMatrix(pMatrix) {
     drawdownArr = math.matrix(pMatrix)
     drawdownArr = math.sparse(drawdownArr)
 }
-    
+ 
+function getMatricies(numShaft, numPedal) {
+    let threading_arr = threadingArr.valueOf() 
+    let tieup_arr     = tieUpArr.valueOf()
+    let treadling_arr = treadlingArr.valueOf()
+
+    let message = {
+        type: 2,
+        num_pedals: numShaft,
+        num_shafts: numPedal,
+        threading: threading_arr,
+        tieUp:     tieup_arr,
+        treadling: treadling_arr
+    }
+
+    process.parentPort.postMessage(message)
+}
 
 

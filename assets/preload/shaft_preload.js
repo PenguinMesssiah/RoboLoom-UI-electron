@@ -10,9 +10,8 @@ contextBridge.exposeInMainWorld('serial', {
     sendRowCmd: (rowIndex) => ipcRenderer.send('send-row-cmd', {rowIndex})
 })
 
-/*
-    TODO: Determine File Type They Will Upload
 contextBridge.exposeInMainWorld('fs', {
-    readFile: (filePath) => ipcRenderer.send('read-JSON-file', {filePath})
+    readFile: (filePath) => ipcRenderer.send('read-txt-file', {filePath}),
+    saveWeaveDraft: (num_shafts, num_pedals)   => ipcRenderer.send('save-weave-draft', {num_shafts, num_pedals})
 })
-*/
+

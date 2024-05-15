@@ -88,7 +88,7 @@ function createShaftWeaveWindow() {
         serviceName: 'Matrix Utility Process'
     })
 
-    jquery_child = utilityProcess.fork(path.join(__dirname, './assets/util/jquery_csv'), {
+    jquery_child = utilityProcess.fork(path.join(__dirname, './assets/util/jquery_fs'), {
         stdio: ['ignore', 'inherit', 'inherit'],
         serviceName: 'JQuery Utility Process'
     })
@@ -118,24 +118,37 @@ function createShaftWeaveWindow() {
         let type            = message.type
         let drawdown_matrix = message?.drawdown_matrix
         let rowToMove       = message?.rowToMove
+        let num_pedals      = message?.num_pedals
+        let num_shafts      = message?.num_shafts
+        let threading       = message?.threading
+        let tieUp           = message?.tieUp
+        let treadling       = message?.treadling
+
 
         switch(type) {
             case 0: //send message back to shaft renderer
                 shaftWeaveWindow.webContents.send('drawdown-update', drawdown_matrix)
                 break;
             case 1: //send message to serial util process
-                let msg = {
+                let serial_msg = {
                     type: 3,
                     rowToMove: rowToMove
                 }
-                serial_child.postMessage(msg)
+                serial_child.postMessage(serial_msg)
+                break;
+            case 2: //Save Weave Draft to File
+                let jquery_msg = {
+                    type: 1,
+                    num_pedals: num_pedals,
+                    num_shafts: num_shafts,
+                    threading: threading,
+                    tieUp:     tieUp,
+                    treadling: treadling
+                }
+
+                jquery_child.postMessage(jquery_msg)
                 break;
         } 
-    })
-
-    jquery_child.on('message', (message) => {
-        //send message back to shaft renderer
-        shaftWeaveWindow.webContents.send('load-JSON-file', message)
     })
 
     // Emitted when the window is closed.
@@ -152,7 +165,7 @@ function createJacquardWeaveWindow() {
         serviceName: 'Matrix Utility Process'
     })
 
-    jquery_child = utilityProcess.fork(path.join(__dirname, './assets/util/jquery_csv'), {
+    jquery_child = utilityProcess.fork(path.join(__dirname, './assets/util/jquery_fs'), {
         stdio: ['ignore', 'inherit', 'inherit'],
         serviceName: 'JQuery Utility Process'
     })
@@ -280,12 +293,21 @@ ipcMain.on('send-row-cmd', (event, {rowIndex}) => {
 })
 
 //JQuery & FS Commands
-ipcMain.on('read-CSV-file', (event, {filePath}) => {
+ipcMain.on('read-txt-file', (event, {filePath}) => {
     let message = {
         type: 0,
         filePath: filePath 
     }
     jquery_child.postMessage(message)
+})
+ipcMain.on('save-weave-draft', (event, {num_shafts, num_pedals}) => {
+    let message = {
+        type: 4,
+        num_shafts: num_shafts,
+        num_pedals: num_pedals
+    }
+
+    matrix_child.postMessage(message)
 })
 
 // Initialize & Create

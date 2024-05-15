@@ -28,10 +28,10 @@ const calternate  = 'blue'
 const calternativeFill = '#0080FF'
 const cgreen      = 'green'
 
-let num_pedals = DEFAULT
-let num_shafts = DEFAULT
-let select_row     = null
-let highlightGroup = null
+var num_pedals = DEFAULT
+var num_shafts = DEFAULT
+var select_row     = null
+var highlightGroup = null
 
 function initCanvas() {
     drawWeaveDraft()
@@ -197,14 +197,12 @@ function linkAllEvents() {
     })
 
     saveBtn.addEventListener('click', () => {
-        //Message to Matrix or Jquery Util
+        window.fs.saveWeaveDraft(num_shafts, num_pedals)
     })
 
     uploadBtn.addEventListener('click', () => {
-        /*
         let file = fileForm.files[0]        
         window.fs.readFile(file.path)
-        */
     })
 }
 
