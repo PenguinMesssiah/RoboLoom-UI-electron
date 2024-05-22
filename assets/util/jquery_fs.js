@@ -21,7 +21,7 @@ process.parentPort.on('message', (e) => {
             writeToFile(numShaft, numPedal, threading, tieUp, treadling);
             break;
         case 2: //
-            //exportToFile(json);
+            readCSV(file);
             break;
     }
 })
@@ -64,5 +64,22 @@ function writeToFile(numShaft, numPedal, threading, tieUp, treadling) {
 
     fs.writeFile('./assets/data/weavingDraft.txt', temp, function (err) {
         if (err) throw err;
+    });
+}
+
+function readCSV(file) {
+    fs.readFile(file, 'UTF-8', function (err, fileData) {
+        if (err) { console.log("JQuery Utility Process ERROR: ", err); }
+
+        csv.toArrays(fileData, {}, function (err, data) {
+            if (err) { console.log("JQuery Utility Process CSV ERROR: ", err); }
+
+            let message = {
+                drawdown_matrix: data,
+                row: data.length,
+                col: data[0].length
+            }
+            process.parentPort.postMessage(message)
+        });
     });
 }

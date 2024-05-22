@@ -300,6 +300,13 @@ ipcMain.on('read-txt-file', (event, {filePath}) => {
     }
     jquery_child.postMessage(message)
 })
+ipcMain.on('read-CSV-file', (event, {filePath}) => {
+    let message = {
+        type: 2,
+        filePath: filePath 
+    }
+    jquery_child.postMessage(message)
+})
 ipcMain.on('save-weave-draft', (event, {num_shafts, num_pedals}) => {
     let message = {
         type: 4,
@@ -312,9 +319,9 @@ ipcMain.on('save-weave-draft', (event, {num_shafts, num_pedals}) => {
 
 // Initialize & Create
 app.on('ready', () => {
-    //createMainWindow()
+    createMainWindow()
     //createCalWindow()
-    createShaftWeaveWindow()
+    //createShaftWeaveWindow()
     //createJacquardWeaveWindow()
 })
 
