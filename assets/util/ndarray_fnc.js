@@ -13,6 +13,8 @@ const THREADING_ID = 0
 const TIEUP_ID     = 1
 const TREADLING_ID = 2
 const DRAWDOWN_ID  = 3
+const COL_MAX      = 40
+const ROW_MAX      = 20
 
 let threadingArr = null
 let tieUpArr     = null
@@ -22,16 +24,19 @@ let drawdownArrOld = null
 
 process.parentPort.on('message', (e) => {
     let type  = e.data.type
-    let row   = e.data.row
-    let col   = e.data.col
-    let id    = e.data.id
+    let row   = e.data?.row
+    let col   = e.data?.col
+    let id    = e.data?.id
     let state    = e.data?.state
     let matrix   = e.data?.drawdown_matrix
     let rowIndex = e.data?.rowIndex
     let numShaft = e.data?.num_shafts
     let numPedal = e.data?.num_pedals
+    let threading = e.data?.threading
+    let tieUp     = e.data?.tieUp
+    let treadling = e.data?.treadling
 
-    //console.log('Matrix Utility Process Message w/ type ', type)
+    //console.log('Matrix Utility Process Message w/ type ', e.data, {'maxArrayLength': null})
 
     switch (type) {
         case 0: //Create Array Cmd
@@ -48,6 +53,9 @@ process.parentPort.on('message', (e) => {
             break;
         case 4: //Getter for Threading, Tie-up, & Treadling
             getMatricies(numShaft, numPedal)
+            break;
+        case 5: //Initialize Threading, TieUp, & Treadling w/ Data
+            setAll(numShaft, numPedal, threading, tieUp, treadling)
             break;
     }
 })
@@ -127,8 +135,8 @@ function getMatricies(numShaft, numPedal) {
 
     let message = {
         type: 2,
-        num_pedals: numShaft,
-        num_shafts: numPedal,
+        num_pedals: numPedal,
+        num_shafts: numShaft,
         threading: threading_arr,
         tieUp:     tieup_arr,
         treadling: treadling_arr
@@ -137,4 +145,59 @@ function getMatricies(numShaft, numPedal) {
     process.parentPort.postMessage(message)
 }
 
+function setAll(numShaft, numPedal, threading, tieUp, treadling) {
+    //Create Temp Arrays
+    var threadingArr_Transpose = math.zeros(COL_MAX, numShaft, 'sparse')
+    var tieUpArr_Transpose     = math.zeros(numPedal, numShaft, 'sparse')
+    var treadlingArr_Transpose = math.zeros(numPedal, ROW_MAX, 'sparse')
+    
+    //Populate then Transpose
+    var count = 0;
+    threadingArr_Transpose = threadingArr_Transpose.map(function(value, index, threadingArr_Transpose) {
+        return threading[count++]
+    })
+    count = 0;
+    tieUpArr_Transpose = tieUpArr_Transpose.map(function() {
+        return tieUp[count++]
+    })
+    count = 0;
+    treadlingArr_Transpose = treadlingArr_Transpose.map(function() {
+        return treadling[count++]
+    })
+
+    threadingArr = math.transpose(threadingArr_Transpose)
+    tieUpArr     = math.transpose(tieUpArr_Transpose)
+    treadlingArr = math.transpose(treadlingArr_Transpose)
+
+    //Send Message to Update Shaft Renderer
+    let message = {
+        type: 3,
+        numShaft: numShaft,
+        numPedal: numPedal,
+        threading: threadingArr.valueOf(),
+        tieUp:     tieUpArr.valueOf(),
+        treadling: treadlingArr.valueOf()
+    }
+    process.parentPort.postMessage(message)
+
+    //Compute Drawdown
+    var x = math.multiply(tieUpArr_Transpose, threadingArr)
+    drawdownArr = math.multiply(treadlingArr, x)
+
+    if(!math.deepEqual(drawdownArr, drawdownArrOld)) {
+        let message = {
+            type: 0,
+            drawdown_matrix: drawdownArr.valueOf()
+        }
+        process.parentPort.postMessage(message)
+        drawdownArrOld = drawdownArr
+    }
+
+    /* Error Printing
+    console.dir(threading, {'maxArrayLength': null});
+    threadingArr.forEach(function (value, index, threadingArr) {
+        console.log('value:', value, 'index:', index) 
+    })
+    */
+}
 

@@ -34,11 +34,11 @@ var select_row     = null
 var highlightGroup = null
 
 function initCanvas() {
-    drawWeaveDraft()
+    drawWeaveDraft(true)
     linkAllEvents()
 }
 
-function drawWeaveDraft() {
+function drawWeaveDraft(resetMatricies) {
     let idx = 0
     
     //Draw Threading & Create Array (s x n)
@@ -55,7 +55,9 @@ function drawWeaveDraft() {
             createRectangle(idx++, i, j, threadingGroup)
         }
     }
-    window.ndarray.createArray(num_shafts, COL_MAX, 0)
+    if(resetMatricies) {
+        window.ndarray.createArray(num_shafts, COL_MAX, 0)
+    }
 
     //Draw TieUp & Create Array (s x p)
     var tieUpGroup = new Konva.Group({
@@ -71,7 +73,9 @@ function drawWeaveDraft() {
             createRectangle(idx++, i, j, tieUpGroup)
         }
     }
-    window.ndarray.createArray(num_shafts, num_pedals, 1)
+    if(resetMatricies) { 
+        window.ndarray.createArray(num_shafts, num_pedals, 1)
+    }
     
     //Draw Threadling & Create Array (p x t)
     var treadlingGroup = new Konva.Group({
@@ -87,7 +91,9 @@ function drawWeaveDraft() {
             createRectangle(idx++, i, j, treadlingGroup)
         }
     }
-    window.ndarray.createArray(ROW_MAX, num_pedals, 2)
+    if(resetMatricies) {
+        window.ndarray.createArray(ROW_MAX, num_pedals, 2)
+    }
 
     //Draw Drawdown & Create Array  (n x t)
     var drawdownGroup = new Konva.Group({
@@ -103,8 +109,10 @@ function drawWeaveDraft() {
             createRectangle(idx++, i, j, drawdownGroup)
         }
     }
-    window.ndarray.createArray(ROW_MAX, COL_MAX, 3)
-    
+    if(resetMatricies) {
+        window.ndarray.createArray(ROW_MAX, COL_MAX, 3)
+    }
+
     //Mirror Group on Top of Drawdown Group
     highlightGroup = new Konva.Group({
         x: 5, 
@@ -151,26 +159,28 @@ function linkAllEvents() {
         rectLayer.draw()
     })
 
-    //Update Drawdown
+    //Process Drawdown Update
     window.ndarray.onDrawdownUpdate((value) => {
-        //Get All Text Obj in DrawdownGroup
-        var drawdownGroupItems = stage.find(node => {
-            return node.getAncestors()[0].id() === 'drawdownGroup' 
-                && node.getClassName() === 'Text'
-        });
-
-        drawdownGroupItems.forEach((element) => {
-            let obj_id   = 'rect_' + element.id().toString()
-            let cRect    = stage.find("."+obj_id)[0]
-            
-            var y = element.getAttr('y')/BUFFER
-            var x = element.getAttr('x')/BUFFER
-            if(element.text() !== value[y][x].toString()){
-                //Passing (y,x)
-                updateObj(element, cRect, value[y][x])
-            }
-        })        
+        populateDrawdown(value);       
     })
+
+    //Load Matricies from Txt File
+    window.fs.onLoadFile((value) => {
+        let threadingTemp = value.threading
+        let tieUpTemp     = value.tieUp
+        let treadlingTemp = value.treadling
+        
+        num_shafts = value.numShaft
+        num_pedals = value.numPedal
+
+        stage.destroyChildren()
+        drawWeaveDraft(false)
+        
+        //Load Matricies
+        populateThreading(threadingTemp);
+        populateTieUp(tieUpTemp);
+        populateTreadling(treadlingTemp);
+    });
 
     //Link Buttons
     var prevRowBtn = document.getElementById("previousRowBtn")
@@ -313,7 +323,7 @@ function configShaftsPedals() {
     num_pedals = parseInt(pedal_form.value)
 
     stage.destroyChildren()
-    drawWeaveDraft()
+    drawWeaveDraft(true)
 }
 
 //Highlight Current Row to Weave
@@ -348,6 +358,82 @@ function highlightRow(pRow) {
     highlightGroup.add(rect)
 }
 
+//Functions to Populate Matricies w/ Data
+function populateThreading(threadingTemp) {
+    var threadingGroupItems = stage.find(node => {
+        return node.getAncestors()[0].id() === 'threadingGroup' 
+            && node.getClassName() === 'Text'
+    });
+    threadingGroupItems.forEach((element) => {
+        let obj_id   = 'rect_' + element.id().toString()
+        let cRect    = stage.find("."+obj_id)[0]
+        
+        var y = element.getAttr('y')/BUFFER
+        var x = element.getAttr('x')/BUFFER
+        if(element.text() !== threadingTemp[y][x].toString()){
+            //Passing (y,x)
+            updateObj(element, cRect, threadingTemp[y][x])
+        }
+    })
+}
+
+function populateTieUp(tieUpTemp) {
+    var tieUpGroupItems = stage.find(node => {
+        return node.getAncestors()[0].id() === 'tieUpGroup' 
+            && node.getClassName() === 'Text'
+    });
+    tieUpGroupItems.forEach((element) => {
+        let obj_id   = 'rect_' + element.id().toString()
+        let cRect    = stage.find("."+obj_id)[0]
+        
+        var y = element.getAttr('y')/BUFFER
+        var x = element.getAttr('x')/BUFFER
+        if(element.text() !== tieUpTemp[y][x].toString()){
+            //Passing (y,x)
+            updateObj(element, cRect, tieUpTemp[y][x])
+        }
+    })
+}
+
+function populateTreadling(treadlingTemp) {
+    var treadlingGroupItems = stage.find(node => {
+        return node.getAncestors()[0].id() === 'treadlingGroup' 
+            && node.getClassName() === 'Text'
+    });
+    treadlingGroupItems.forEach((element) => {
+        let obj_id   = 'rect_' + element.id().toString()
+        let cRect    = stage.find("."+obj_id)[0]
+        
+        var y = element.getAttr('y')/BUFFER
+        var x = element.getAttr('x')/BUFFER
+        if(element.text() !== treadlingTemp[y][x].toString()){
+            //Passing (y,x)
+            updateObj(element, cRect, treadlingTemp[y][x])
+        }
+    })
+}
+
+function populateDrawdown(drawdownTemp) {
+    //Get All Text Obj in DrawdownGroup
+    var drawdownGroupItems = stage.find(node => {
+        return node.getAncestors()[0].id() === 'drawdownGroup' 
+            && node.getClassName() === 'Text'
+    });
+
+    drawdownGroupItems.forEach((element) => {
+        let obj_id   = 'rect_' + element.id().toString()
+        let cRect    = stage.find("."+obj_id)[0]
+        
+        var y = element.getAttr('y')/BUFFER
+        var x = element.getAttr('x')/BUFFER
+        if(element.text() !== drawdownTemp[y][x].toString()){
+            //Passing (y,x)
+            updateObj(element, cRect, drawdownTemp[y][x])
+        }
+    })  
+}
+
+//Draw Scroll Bars
 function drawScrollBars() {
     stage.add(scrollLayer);
 

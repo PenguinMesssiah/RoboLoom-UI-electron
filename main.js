@@ -114,19 +114,13 @@ function createShaftWeaveWindow() {
 
     appWindows.push(shaftWeaveWindow)
    
-    matrix_child.on('message', (message) => {
-        let type            = message.type
-        let drawdown_matrix = message?.drawdown_matrix
-        let rowToMove       = message?.rowToMove
-        let num_pedals      = message?.num_pedals
-        let num_shafts      = message?.num_shafts
-        let threading       = message?.threading
-        let tieUp           = message?.tieUp
-        let treadling       = message?.treadling
-
+    matrix_child.on('message', (msg) => {
+        let type            = msg.type
+        let drawdown_matrix = msg?.drawdown_matrix
+        let rowToMove       = msg?.rowToMove
 
         switch(type) {
-            case 0: //send message back to shaft renderer
+            case 0: //Send Drawdown to Shaft Renderer
                 shaftWeaveWindow.webContents.send('drawdown-update', drawdown_matrix)
                 break;
             case 1: //send message to serial util process
@@ -137,18 +131,24 @@ function createShaftWeaveWindow() {
                 serial_child.postMessage(serial_msg)
                 break;
             case 2: //Save Weave Draft to File
-                let jquery_msg = {
-                    type: 1,
-                    num_pedals: num_pedals,
-                    num_shafts: num_shafts,
-                    threading: threading,
-                    tieUp:     tieUp,
-                    treadling: treadling
-                }
-
-                jquery_child.postMessage(jquery_msg)
+                msg.type = 1;
+                jquery_child.postMessage(msg)
                 break;
+            case 3: //Load Weave Draft from File
+                shaftWeaveWindow.webContents.send('load-from-file', msg)
+                break;    
         } 
+    })
+
+    jquery_child.on('message', (msg) => {
+        let type = msg.type 
+
+        switch(type) {
+            case 0: //Load Weave Draft (Send to FileData to ndArray)
+                msg.type = 5
+                matrix_child.postMessage(msg)
+                break;
+        }
     })
 
     // Emitted when the window is closed.
