@@ -20,7 +20,6 @@ const readLineParser = new ReadlineParser({
 
 //Globals
 let motor_pos = Array(numMotors).fill(-1)
-let frame_pos = Array(numFrames).fill(-1)
 
 let error_msg              = null
 let activeSerialPort       = null
@@ -76,11 +75,21 @@ async function parseSerialPorts() {
                 activeSerialConnection = 1 
 
                 openSerialConnetion(ports[x].path)
-                //console.log("activeSerialConnection = ", activeSerialConnection)
+                //Send Modal Close Cmd
+                let msg = {
+                    type: 0
+                }
+                process.parentPort.postMessage(msg)
                 break
             } else if (x+1 == ports.length) {
                 activeSerialPort       = null     
                 activeSerialConnection = 0 
+
+                //Send Modal Open Cmd
+                let msg = {
+                    type: 999
+                }
+                process.parentPort.postMessage(msg)
             }
         }
 

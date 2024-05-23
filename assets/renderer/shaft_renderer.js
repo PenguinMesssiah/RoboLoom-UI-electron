@@ -28,6 +28,8 @@ const calternate  = 'blue'
 const calternativeFill = '#0080FF'
 const cgreen      = 'green'
 
+const sleep       = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+
 var num_pedals = DEFAULT
 var num_shafts = DEFAULT
 var select_row     = null
@@ -181,6 +183,41 @@ function linkAllEvents() {
         populateTieUp(tieUpTemp);
         populateTreadling(treadlingTemp);
     });
+
+    window.serial.onSerialDisconnect(() => {
+        let serialModal      = document.getElementById('serialDisconnectModal')
+        let serialModalBody  = document.getElementById("serial-modal-body")
+        let serialModalTitle = document.getElementById("staticBackdropLabel")
+        let serialModalImg   = document.getElementById("modal-img")
+        let backdrop         = document.getElementById("backdrop")
+
+        serialModalTitle.innerText = "Warning: Arduino Disconnected"
+        serialModalImg.src         = "./assets/icons/bi-exclimation-triangle.svg"
+        serialModalBody.innerText = "Uh oh! Your arduino has been disconnected; Please reconnect your loom to this PC to continue."
+        backdrop.style.display    = "block"
+        serialModal.style.display = "block"
+        serialModal.classList.add("show")
+    })
+
+    window.serial.onSerialReconnect(() => {
+        let serialModal      = document.getElementById('serialDisconnectModal')
+        let serialModalBody  = document.getElementById("serial-modal-body")
+        let serialModalTitle = document.getElementById("staticBackdropLabel")
+        let serialModalImg   = document.getElementById("modal-img")
+        let backdrop         = document.getElementById("backdrop")
+       
+        let updateAction = async () => {
+            serialModalTitle.innerText = "Resolved: Serial Connection"
+            serialModalBody.innerText  = "Success! Arduino Connection Re-Established; Happy Weaving!"
+            serialModalImg.src         = "./assets/icons/SoloPersonaje.png"
+            await sleep(1750)
+            backdrop.style.display    = "none"
+            serialModal.style.display = "none"
+            serialModal.classList.remove("show")
+        }
+
+        updateAction();
+    })    
 
     //Link Buttons
     var prevRowBtn = document.getElementById("previousRowBtn")

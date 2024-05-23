@@ -151,6 +151,20 @@ function createShaftWeaveWindow() {
         }
     })
 
+    serial_child.on('message', (msg) => {
+        let type = msg.type
+
+        switch(type) {
+            case 0:
+                shaftWeaveWindow.webContents.send("serial-reconnect")
+                break;
+            case 999:
+                console.log("Serial Port Deactivated")
+                shaftWeaveWindow.webContents.send("serial-disconnect")
+                break;
+        }
+    })
+
     // Emitted when the window is closed.
     shaftWeaveWindow.on('closed', function() {
         matrix_child.kill()
@@ -218,6 +232,20 @@ function createJacquardWeaveWindow() {
             drawdown_matrix: message.drawdown_matrix,
         }
         matrix_child.postMessage(matrixMessage)
+    })
+
+    serial_child.on('message', (msg) => {
+        let type = msg.type
+
+        switch(type) {
+            case 0:
+                jacquardWeaveWindow.webContents.send("serial-reconnect")
+                break;
+            case 999:
+                console.log("Serial Port Deactivated")
+                jacquardWeaveWindow.webContents.send("serial-disconnect")
+                break;
+        }
     })
 
     appWindows.push(jacquardWeaveWindow)
