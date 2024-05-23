@@ -35,5 +35,9 @@ function sendMotorDownCommand(motorInt) {
   //console.log("Send DOWN on motor number: ", motorInt)
 }
 
+function setMotorPos(motorInt) {
+  window.serial.setMotorPosCmd(motorInt, DOWN)
+  //console.log("Set DOWN on motor number: ", motorInt)
+}
 //Execute
 linkEventHandlers()

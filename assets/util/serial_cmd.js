@@ -44,7 +44,7 @@ process.parentPort.on('message', (e) => {
             break;
         case 1: //Calibration Single Motor Cmd
             console.log("Sending Cal Motor motor: ", motorInt, " with dir ", direction)
-            moveMotor(CAL, CAL_MOVE_SMALL, motorInt, direction)
+            sendSingleMotorCmd(CAL, CAL_MOVE_SMALL, motorInt, direction)
             break;
         case 2: //Calibrate All Motors Cmd
             console.log("Sending Cal All Motor's w/ dir ", direction)
@@ -53,6 +53,10 @@ process.parentPort.on('message', (e) => {
         case 3: //Move Row Cmd
             console.log("Serial Utility Process: Message w/ type ", type)
             moveRow(rowToMove)
+            break;
+        case 4: //Set Motor Calibrate Cmd
+            //console.log("Setting Cal Motor motor: ", motorInt, " with dir ", direction)
+            sendSingleMotorCmd(CAL, CAL_SET_MOTOR, motorInt, direction);
             break;
     }
 })
@@ -146,14 +150,15 @@ function sendSerialCommand(msg) {
             break;
         case CAL:
             switch(cal_mode) {
-                case (CAL_MOVE_SMALL || CAL_SET_MOTOR): //move single motor small increment cmd | bi-directinal
+                case CAL_MOVE_SMALL: //move single motor small increment cmd | bi-directinal
+                case CAL_SET_MOTOR: 
                     serialMsg = String(mode) + String(cal_mode) + String(direction) + String(motor).padStart(2, '0') + '\n';
-                    //console.log(serialMsg)
+                    //console.log("MoveSmall/Set Cal Cmd  w/ ", serialMsg)
                     activeSerialPort.write(serialMsg)
                     break;
                 case CAL_SET_ALL: // set single motor or all motor's calibration state | bi-directional
                     serialMsg = String(mode) + String(cal_mode) + String(direction) + '\n'
-                    //console.log("Send Cal Set w/ ", serialMsg)
+                    //console.log("Sending Cal Set All w/ ", serialMsg)
                     activeSerialPort.write(serialMsg)
                     break;
             }    
@@ -162,7 +167,7 @@ function sendSerialCommand(msg) {
 }
 
 //Send Cmd For Operating Single Motor
-function moveMotor(mode, cal_mode, motor, direction) {
+function sendSingleMotorCmd(mode, cal_mode, motor, direction) {
     let msg = {
         mode:      mode,
         cal_mode:  cal_mode,
