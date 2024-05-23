@@ -48,8 +48,6 @@ function createMainWindow() {
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function() {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows
         mainWindow = null
     })
     //mainWindow.webContents.openDevTools();
@@ -267,6 +265,11 @@ ipcMain.handle('shaft-window', async () => {
 ipcMain.handle('jacquard-window', async () => {
     await app.isReady('ready', createJacquardWeaveWindow())
 })
+ipcMain.handle('hide-main-window', async () => {
+    mainWindow.hide();
+    calWindow.close();
+})
+
 
 //Matrix Operations
 ipcMain.on('create-array', (event, {row, col, id}) => {

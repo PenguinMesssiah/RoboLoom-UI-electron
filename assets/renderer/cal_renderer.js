@@ -17,9 +17,11 @@ function linkEventHandlers() {
 
     document.getElementById("shaft-btn").addEventListener('click', () => {
       window.activeWindows.getShaftWindow()
+      window.activeWindows.hideMainWindow()
     })
     document.getElementById("jacquard-btn").addEventListener('click', () => {
       window.activeWindows.getJacquardWindow()
+      window.activeWindows.hideMainWindow()
     })
 }
 
