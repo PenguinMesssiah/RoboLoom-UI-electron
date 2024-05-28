@@ -9,6 +9,7 @@ let mainWindow          = null
 let calWindow           = null
 let shaftWeaveWindow    = null
 let jacquardWeaveWindow = null
+let weaveWorldWindow    = null
 let matrix_child        = null
 let jquery_child        = null
 let serial_child        = null
@@ -258,7 +259,35 @@ function createJacquardWeaveWindow() {
     })
 }
 
+function createWeavingWorldWindow() {
+    weaveWorldWindow = new BrowserWindow({
+        width: 1200,
+        height: 1080,
+        //parent: calWindow,
+        backgroundColor: "#ccc",
+        webPreferences: {
+            nodeIntegration: false, // to allow require
+            contextIsolation: true,
+            enableRemoteModule: false,
+            preload: path.join(__dirname, './assets/preload/weavingWorld_preload.js')
+        }
+    })
+
+    weaveWorldWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'weavingWorld_index.html'),
+        protocol: 'file:',
+        slashes: true
+    }))
+
+    appWindows.push(weaveWorldWindow)
+
+    weaveWorldWindow.on('closed', function() {
+        weaveWorldWindow = null
+    })
+}
+
 //Inter-Process Communication
+//To-Do: Centeralize to a Singlular Handle Method
 ipcMain.handle('cal-window', async () => {
     mainWindow.hide()
     await app.isReady('ready', createCalWindow())
@@ -275,6 +304,13 @@ ipcMain.handle('jacquard-window', async () => {
         await app.isReady('ready', createJacquardWeaveWindow())
     } else {
         await app.isReady('ready', jacquardWeaveWindow.show())
+    }
+})
+ipcMain.handle('weavingWorld-window', async () => {
+    if(weaveWorldWindow == null) {
+        await app.isReady('ready', createWeavingWorldWindow())
+    } else {
+        await app.isReady('ready', weaveWorldWindow.show())
     }
 })
 ipcMain.handle('hide-cal-window', async () => {
@@ -396,6 +432,7 @@ app.on('ready', () => {
     //createCalWindow()
     //createShaftWeaveWindow()
     //createJacquardWeaveWindow()
+    createWeavingWorldWindow()
 })
 
 // Quit when all windows are closed.
