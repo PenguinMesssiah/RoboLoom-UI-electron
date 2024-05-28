@@ -14,7 +14,7 @@ contextBridge.exposeInMainWorld('serial', {
 
 contextBridge.exposeInMainWorld('fs', {
     readFile: (filePath) => ipcRenderer.send('read-txt-file', {filePath}),
-    saveWeaveDraft: (num_shafts, num_pedals)   => ipcRenderer.send('save-weave-draft', {num_shafts, num_pedals}),
+    saveWeaveDraft: (num_shafts, num_pedals) => ipcRenderer.send('save-weave-draft', {num_shafts, num_pedals}),
     onLoadFile: (callback) => ipcRenderer.on('load-from-file', (_event, value) => callback(value))
 })
 

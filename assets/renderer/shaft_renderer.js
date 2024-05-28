@@ -192,7 +192,7 @@ function linkAllEvents() {
         let backdrop         = document.getElementById("backdrop")
 
         serialModalTitle.innerText = "Warning: Arduino Disconnected"
-        serialModalImg.src         = "./assets/icons/bi-exclimation-triangle.svg"
+        serialModalImg.src         = "./assets/svg/bi-exclimation-triangle.svg"
         serialModalBody.innerText = "Uh oh! Your arduino has been disconnected; Please reconnect your loom to this PC to continue."
         backdrop.style.display    = "block"
         serialModal.style.display = "block"
@@ -209,7 +209,7 @@ function linkAllEvents() {
         let updateAction = async () => {
             serialModalTitle.innerText = "Resolved: Serial Connection"
             serialModalBody.innerText  = "Success! Arduino Connection Re-Established; Happy Weaving!"
-            serialModalImg.src         = "./assets/icons/SoloPersonaje.png"
+            serialModalImg.src         = "./assets/svg/SoloPersonaje.png"
             await sleep(1750)
             backdrop.style.display    = "none"
             serialModal.style.display = "none"
