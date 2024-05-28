@@ -17,26 +17,31 @@
     
     <!--Controls-->
     <div class="d-flex justify-content-center">
-    <div class="input-group mb-1">
-        <input class="form-control" type="file" id="browseFileForm" accept=".csv,.CSV">
-        <button class="btn btn-outline-info" type="button" id="uploadFileBtn">Upload</button>
-    </div>     
+        <div class="input-group mb-1">
+            <input class="form-control" type="file" id="browseFileForm" accept=".csv,.CSV">
+            <button class="btn btn-outline-info" type="button" id="uploadFileBtn">Upload</button>
+        </div>     
     </div>
+
     <!--Weaving Commands-->
-    <div class="d-flex justify-content-center mt-1">
-        <div class="btn-group-horizontal" role="group" aria-label="Weaving Button Group">
-            <button type="button" id="previousRowBtn" class="btn btn-outline-info" onclick="highlightRow(-1)">Previous Row</button>
-            <button type="button" id="nextRowBtn" class="btn btn-outline-info" onclick="highlightRow(1)">Next Row</button>
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Jump to Row
-                </button>
-                <ul class="dropdown-menu">
-                    <input type="number" class="dropdown-item" id="row-select-input" placeholder="row (r)" min="0" max="29" aria-label="Input Row" aria-describedby="Row Input Button">
-                    <a class="dropdown-item" id="applyRowJump" onclick="highlightRow(0)">Apply</a>
-                </ul>
-            </div> 
-        </div>
+    <div class="d-flex justify-content-center flex-sm-wrap mt-1" role="group" aria-label="Weaving Button Group">
+        <button type="button" id="worldWeaveBtn" class="btn btn-outline-info" onclick=""><img src="./assets/icons/bi-globe.svg"> World of Weaving</button>
+        <button type="button" id="previousRowBtn" class="btn btn-outline-info" onclick="highlightRow(-1)">Previous Row</button>
+        <button type="button" id="nextRowBtn" class="btn btn-outline-info" onclick="highlightRow(1)">Next Row</button>
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Jump to Row
+            </button>
+            <ul class="dropdown-menu">
+                <input type="number" class="dropdown-item" id="row-select-input" placeholder="row (r)" min="0" max="29" aria-label="Input Row" aria-describedby="Row Input Button">
+                <a class="dropdown-item" id="applyRowJump" onclick="highlightRow(0)">Apply</a>
+            </ul>
+        </div> 
+        <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><img src="./assets/icons/bi-arrow-right-square.svg"> Change Mode</button>
+        <ul class="dropdown-menu">
+            <a class="dropdown-item" id='calModeBtn'>Calibration Mode</a>
+            <a class="dropdown-item" id='shaftModeBtn'>Shaft Weaving Mode</button>
+        </ul>
     </div>
 
     <!--Konva Canvas-->

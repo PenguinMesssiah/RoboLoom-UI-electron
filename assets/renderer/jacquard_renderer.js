@@ -81,6 +81,8 @@ function linkEvents() {
     var prevRowBtn = document.getElementById("previousRowBtn")
     var nextRowBtn = document.getElementById("nextRowBtn")
     var jumpRowBtn = document.getElementById("applyRowJump")
+    var calBtn     = document.getElementById('calModeBtn')
+    var shaftBtn   = document.getElementById('shaftModeBtn')
 
     prevRowBtn.addEventListener('click', () => {
         console.log("selec row = ", select_row)
@@ -100,6 +102,14 @@ function linkEvents() {
     uploadBtn.addEventListener('click', () => {
         let file = fileForm.files[0]        
         window.jquery.readFile(file.path)
+    })
+
+    shaftBtn.addEventListener('click', () => {
+        window.app.openShaftWindow()
+    })
+
+    calBtn.addEventListener('click', () => {
+        window.app.openCalibrationWindow()
     })
 
     //Update Drawdown

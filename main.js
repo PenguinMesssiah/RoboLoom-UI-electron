@@ -6,6 +6,7 @@ const List  = require("collections/list");
 
 
 let mainWindow          = null
+let calWindow           = null
 let shaftWeaveWindow    = null
 let jacquardWeaveWindow = null
 let matrix_child        = null
@@ -57,7 +58,6 @@ function createCalWindow() {
     calWindow = new BrowserWindow({
         width: 600,
         height: 500,
-        parent: mainWindow,
         backgroundColor: "#ccc",
         webPreferences: {
             nodeIntegration: false, // to allow require
@@ -76,6 +76,7 @@ function createCalWindow() {
     
     // Emitted when the window is closed.
     calWindow.on('closed', function() {
+        calWindow = null
     })
 }
 
@@ -167,6 +168,7 @@ function createShaftWeaveWindow() {
     shaftWeaveWindow.on('closed', function() {
         matrix_child.kill()
         jquery_child.kill()
+        shaftWeaveWindow = null
     })
 }
 
@@ -252,24 +254,56 @@ function createJacquardWeaveWindow() {
     jacquardWeaveWindow.on('closed', function() {
         matrix_child.kill()
         jquery_child.kill()
+        jacquardWeaveWindow = null
     })
 }
 
 //Inter-Process Communication
 ipcMain.handle('cal-window', async () => {
+    mainWindow.hide()
     await app.isReady('ready', createCalWindow())
 })
 ipcMain.handle('shaft-window', async () => {
-    await app.isReady('ready', createShaftWeaveWindow())
+    if(shaftWeaveWindow == null) {
+        await app.isReady('ready', createShaftWeaveWindow())
+    } else {
+        await app.isReady('ready', shaftWeaveWindow.show())
+    }
 })
 ipcMain.handle('jacquard-window', async () => {
-    await app.isReady('ready', createJacquardWeaveWindow())
+    if(jacquardWeaveWindow == null) {
+        await app.isReady('ready', createJacquardWeaveWindow())
+    } else {
+        await app.isReady('ready', jacquardWeaveWindow.show())
+    }
 })
-ipcMain.handle('hide-main-window', async () => {
-    mainWindow.hide();
-    calWindow.close();
+ipcMain.handle('hide-cal-window', async () => {
+    calWindow.hide();
 })
-
+ipcMain.handle('shaft-to-cal-window', async () => {
+    shaftWeaveWindow.hide()
+    await app.isReady('ready', calWindow.show())
+})
+ipcMain.handle('shaft-to-jacquard-window', async() => {
+    shaftWeaveWindow.hide()
+    if(jacquardWeaveWindow == null) {
+        await app.isReady('ready', createJacquardWeaveWindow())
+    } else {
+        await app.isReady('ready', jacquardWeaveWindow.show())
+    }
+})
+ipcMain.handle('jacquard-to-cal-window', async () => {
+    jacquardWeaveWindow.hide()
+    await app.isReady('ready', calWindow.show())
+})
+ipcMain.handle('jacquard-to-shaft-window', async() => {
+    jacquardWeaveWindow.hide()
+    if(shaftWeaveWindow == null) {
+        await app.isReady('ready', createShaftWeaveWindow())
+    } else {
+        await app.isReady('ready', shaftWeaveWindow.show())
+    }
+})
 
 //Matrix Operations
 ipcMain.on('create-array', (event, {row, col, id}) => {

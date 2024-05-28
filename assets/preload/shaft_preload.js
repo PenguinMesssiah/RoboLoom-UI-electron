@@ -18,3 +18,7 @@ contextBridge.exposeInMainWorld('fs', {
     onLoadFile: (callback) => ipcRenderer.on('load-from-file', (_event, value) => callback(value))
 })
 
+contextBridge.exposeInMainWorld('app', {
+    openCalibrationWindow: () => ipcRenderer.invoke('shaft-to-cal-window'),
+    openJacquardWindow: () => ipcRenderer.invoke('shaft-to-jacquard-window')
+})

@@ -5761,6 +5761,11 @@ textarea.form-control-lg {
   margin-top: 3rem !important;
 }
 
+.mt-6 {
+  margin-top: 19rem !important;
+}
+
+
 .mt-auto {
   margin-top: auto !important;
 }
@@ -9768,6 +9773,13 @@ body {
   position: absolute;
   width: max-content;
   right: 10px;
+}
+
+.weave-btn-group-2 {
+  position: absolute;
+  width: max-content;
+  right: 10px;
+  margin-top: 10%;
 }
 
 p {

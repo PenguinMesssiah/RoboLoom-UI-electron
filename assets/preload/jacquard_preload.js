@@ -14,3 +14,8 @@ contextBridge.exposeInMainWorld('serial', {
     onSerialDisconnect: (callback) => ipcRenderer.on('serial-disconnect', (_event, value) => callback(value)),
     onSerialReconnect: (callback) => ipcRenderer.on('serial-reconnect', (_event, value) => callback(value))
 })
+
+contextBridge.exposeInMainWorld('app', {
+    openCalibrationWindow: () => ipcRenderer.invoke('jacquard-to-cal-window'),
+    openShaftWindow: () => ipcRenderer.invoke('jacquard-to-shaft-window')
+})

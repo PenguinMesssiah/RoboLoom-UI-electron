@@ -224,6 +224,8 @@ function linkAllEvents() {
     var nextRowBtn = document.getElementById("nextRowBtn")
     var jumpRowBtn = document.getElementById("applyRowJump")
     var saveBtn    = document.getElementById('save-btn')
+    var calBtn     = document.getElementById('calModeBtn')
+    var jacBtn     = document.getElementById('jacquardModeBtn')
 
     var uploadBtn = document.getElementById("uploadFileBtn")
     var fileForm  = document.getElementById("browseFileForm")
@@ -250,6 +252,14 @@ function linkAllEvents() {
     uploadBtn.addEventListener('click', () => {
         let file = fileForm.files[0]        
         window.fs.readFile(file.path)
+    })
+
+    jacBtn.addEventListener('click', () => {
+        window.app.openJacquardWindow()
+    })
+
+    calBtn.addEventListener('click', () => {
+        window.app.openCalibrationWindow()
     })
 }
 

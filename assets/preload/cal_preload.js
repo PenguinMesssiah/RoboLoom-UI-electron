@@ -4,7 +4,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('activeWindows', {
   getShaftWindow: () => ipcRenderer.invoke('shaft-window'),
   getJacquardWindow: () => ipcRenderer.invoke('jacquard-window'),
-  hideMainWindow: () => ipcRenderer.invoke('hide-main-window')
+  hideMainWindow: () => ipcRenderer.invoke('hide-cal-window')
 })
 
 contextBridge.exposeInMainWorld('serial', {
