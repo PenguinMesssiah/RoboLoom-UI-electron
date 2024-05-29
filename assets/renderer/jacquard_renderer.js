@@ -83,20 +83,25 @@ function linkEvents() {
     var jumpRowBtn = document.getElementById("applyRowJump")
     var calBtn     = document.getElementById('calModeBtn')
     var shaftBtn   = document.getElementById('shaftModeBtn')
+    var worldWeave = document.getElementById('worldWeaveBtn')
 
     prevRowBtn.addEventListener('click', () => {
-        console.log("selec row = ", select_row)
+        //console.log("selec row = ", select_row)
         window.serial.sendRowCmd(select_row)
     })
 
     nextRowBtn.addEventListener('click', () => {
-        console.log("selec row = ", select_row)
+        //console.log("selec row = ", select_row)
         window.serial.sendRowCmd(select_row)
     })
 
     jumpRowBtn.addEventListener('click', () => {
         //console.log("selec row = ", select_row)
         window.serial.sendRowCmd(select_row)
+    })
+
+    worldWeave.addEventListener('click', () => {
+        window.app.openWorldOfWeaving()
     })
 
     uploadBtn.addEventListener('click', () => {

@@ -7,15 +7,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="./assets/css/weavingWorld_styles.css">
-    
-    <title>Wrold of Weaving</title>
+    <title>World of Weaving</title>
 </head>
 
 <body>
-    <h1 class="text-center">World of Weaving</h1>
-    <embed src="./assets/svg/Alkebulan.svg"/>
+    <h2 class="text-center">World of Weaving</h2>
+    <div class="mt-5 d-flex justify-content-center">
+        <!--CC BY 4.0 Deed: No Modifications to Original Work-->
+        <embed id='mapEmbed' src=""/>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="weavingWorldModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="weavingWorldModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="weavingWorldLabel">World of Weaving | <small class="text-body-secondary">History & Culture</small></h3>
+          <button type="button" id="modalClose" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <h5 class="text-decoration-underline">Overview</h5>
+            <p class="lead">
+                Welcome to the World of Weaving, an <strong>interactive tool</strong> to <strong>discover, learn, and practice</strong> historically and culturally relevant weaving patterns.
+            </p>
+
+            <h5 class="text-decoration-underline">How to Use This Tool</h5>
+            <p class="lead">
+                This tool arranges weaving patterns by their respective geographic region of origin. To explore these traditional patterns and the indigenous communities who produced them, <strong>simply click on the desired map region</strong> to read about their society and contributions to the field of weaving! 
+            </p>
+        </div>
+        <div class="modal-footer">
+          <div class="btn-group" role="group">
+            <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Select a Region
+            </button>
+            <ul class="dropdown-menu">
+                <a class="dropdown-item" id="Alkebulan">Alkebulan</a>
+                <a class="dropdown-item" id="TurtleIsland">Turtle Island</a>
+                <a class="dropdown-item" id="AbyaYala">Abya Yala</a>
+            </ul>
+          </div> 
+          <button type="button" class="btn btn-primary" id="modalCloseBtn">Discover & Explore</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 </body>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="./assets/renderer/weavingWorld_renderer.js"></script>
 
 </html>

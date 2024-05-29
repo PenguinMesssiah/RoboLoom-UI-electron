@@ -20,5 +20,6 @@ contextBridge.exposeInMainWorld('fs', {
 
 contextBridge.exposeInMainWorld('app', {
     openCalibrationWindow: () => ipcRenderer.invoke('shaft-to-cal-window'),
-    openJacquardWindow: () => ipcRenderer.invoke('shaft-to-jacquard-window')
+    openJacquardWindow: () => ipcRenderer.invoke('shaft-to-jacquard-window'),
+    openWorldOfWeaving: () => ipcRenderer.invoke('weavingWorld-window')
 })

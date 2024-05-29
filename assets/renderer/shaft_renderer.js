@@ -226,6 +226,7 @@ function linkAllEvents() {
     var saveBtn    = document.getElementById('save-btn')
     var calBtn     = document.getElementById('calModeBtn')
     var jacBtn     = document.getElementById('jacquardModeBtn')
+    var worldWeave = document.getElementById('worldWeaveBtn')
 
     var uploadBtn = document.getElementById("uploadFileBtn")
     var fileForm  = document.getElementById("browseFileForm")
@@ -238,6 +239,10 @@ function linkAllEvents() {
     nextRowBtn.addEventListener('click', () => {
         console.log("selec row = ", select_row)
         window.serial.sendRowCmd(select_row)
+    })
+
+    worldWeave.addEventListener('click', () => {
+        window.app.openWorldOfWeaving()
     })
 
     jumpRowBtn.addEventListener('click', () => {

@@ -5,12 +5,21 @@
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    mapsvg:geoViewBox="-25.360994 37.343521 59.838547 -34.833225"
-   width="239.05701"
-   height="217.31789"
-   id="svg2"
+   width="800"
+   height="700"
+   viewBox="25 0 200 230"
+   xml:space="preserve"
+   enable-background="new -15 0 290 320"
+   id="mapsection"
    version="1.1">
+   <link
+      xmlns="http://www.w3.org/1999/xhtml"
+      rel="stylesheet"
+      href="Alkebulan.css"
+      type="text/css" />
   <metadata
      id="metadata263">
     <rdf:RDF>

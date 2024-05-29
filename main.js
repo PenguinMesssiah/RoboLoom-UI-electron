@@ -261,9 +261,8 @@ function createJacquardWeaveWindow() {
 
 function createWeavingWorldWindow() {
     weaveWorldWindow = new BrowserWindow({
-        width: 1200,
-        height: 1080,
-        //parent: calWindow,
+        width: 1000,
+        height: 900,
         backgroundColor: "#ccc",
         webPreferences: {
             nodeIntegration: false, // to allow require
@@ -432,7 +431,7 @@ app.on('ready', () => {
     //createCalWindow()
     //createShaftWeaveWindow()
     //createJacquardWeaveWindow()
-    createWeavingWorldWindow()
+    //createWeavingWorldWindow()
 })
 
 // Quit when all windows are closed.
