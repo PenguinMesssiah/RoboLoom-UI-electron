@@ -20,7 +20,7 @@
             <p class="card-text"><i>To Automatically Calibrate the Jacquard Loom,
                 <br><b>ALL</b> the motor heddles must be set to the <b>DOWN</b> position.</i>
             </p>
-            <button type="button" id="automatic-btn" class="btn btn-outline-info">Automaically Calibrate</button>      
+            <button type="button" id="automatic-btn" class="btn btn-outline-info">Automatically Calibrate</button>      
         </div>
     </div>
     
@@ -43,7 +43,6 @@
           </ul>
     </div>
 
-    <!--Fix Numbering to Match Yarn Numbers-->
 <!-- Modal -->
 <div class="modal fade" id="calModal" tabindex="-1" aria-labelledby="calModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen-md-down modal-dialog-centered modal-dialog-scrollable">
@@ -57,6 +56,57 @@
             <div class="float-sm-end">
                 <div class="btn-toolbar mt-3 mb-1" role="toolbar" aria-label="Row 0 Up">
                     <div class="btn-group btn-group-sm" role="group" aria-label="Row 0 Up Btn Group">
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(36);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(32);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(28);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(24);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(20);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(16);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(12);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(8);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(4);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(0);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="float-sm-start mt-5"><small class="text-body-secondary"><em>Row 0</em></small></h4>
+            <div class="float-sm-end">
+                <div class="btn-toolbar mb-1" role="toolbar" aria-label="Row 0 Label">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 0 Button Labels">
+                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(36)">36</button>
+                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(32)">32</button>
+                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(28)">28</button>
+                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(24)">24</button>
+                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(20)">20</button>
+                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(16)">16</button>
+                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(12)">12</button>
+                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(8)">08</button>
+                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(4)">04</button>
+                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(0)">00</button>
+                    </div>
+                </div>
+
+                <div class="btn-toolbar mb-3" role="toolbar" aria-label="Row 0 Down">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 0 Down Btn Group">
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(36);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(32);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(28);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(24);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(20);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(16);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(12);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(8);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(4);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
+                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(0);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
+                    </div>
+                </div>
+            </div>
+
+            <!--Row 1-->
+            <div class="float-sm-end">
+                <div class="btn-toolbar mt-3 mb-1" role="toolbar" aria-label="Row 1 Up">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 1 Up Btn Group">
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(37);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(33);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(29);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
@@ -71,13 +121,13 @@
                 </div>
             </div>
 
-            <h4 class="float-sm-start mt-5"><small class="text-body-secondary"><em>Row 0</em></small></h4>
+            <h4 class="float-sm-start mt-5"><small class="text-body-secondary"><em>Row 1</em></small></h4>
             <div class="float-sm-end">
-                <div class="btn-toolbar mb-1" role="toolbar" aria-label="Row 0 Label">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 0 Button Labels">
+                <div class="btn-toolbar mb-1" role="toolbar" aria-label="Row 1 Label">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 1 Button Labels">
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(37)">37</button>
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(33)">33</button>
-                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(29)">29</button>
+                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(29)">30</button>
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(25)">25</button>
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(21)">21</button>
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(17)">17</button>
@@ -87,9 +137,10 @@
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(1)">01</button>
                     </div>
                 </div>
+            
 
-                <div class="btn-toolbar mb-3" role="toolbar" aria-label="Row 0 Down">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 0 Down Btn Group">
+                <div class="btn-toolbar mb-1" role="toolbar" aria-label="Row 1 Down">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 1 Down Btn Group">
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(37);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(33);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(29);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
@@ -101,13 +152,13 @@
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(5);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(1);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                     </div>
-                </div>
-            </div>
-
-            <!--Row 1-->
+                </div>   
+            </div>  
+            
+            <!--Row 2-->
             <div class="float-sm-end">
-                <div class="btn-toolbar mt-3 mb-1" role="toolbar" aria-label="Row 1 Up">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 1 Up Btn Group">
+                <div class="btn-toolbar mt-3 mb-1" role="toolbar" aria-label="Row 2 Up">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 2 Up Btn Group">
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(38);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(34);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(30);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
@@ -122,10 +173,10 @@
                 </div>
             </div>
 
-            <h4 class="float-sm-start mt-5"><small class="text-body-secondary"><em>Row 1</em></small></h4>
+            <h4 class="float-sm-start mt-5"><small class="text-body-secondary"><em>Row 2</em></small></h4>
             <div class="float-sm-end">
-                <div class="btn-toolbar mb-1" role="toolbar" aria-label="Row 1 Label">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 1 Button Labels">
+                <div class="btn-toolbar mb-1" role="toolbar" aria-label="Row 2 Label">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 2 Button Labels">
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(38)">38</button>
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(34)">34</button>
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(30)">30</button>
@@ -139,9 +190,8 @@
                     </div>
                 </div>
             
-
-                <div class="btn-toolbar mb-1" role="toolbar" aria-label="Row 1 Down">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 1 Down Btn Group">
+                <div class="btn-toolbar mb-1" role="toolbar" aria-label="Row 2 Down">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 2 Down Btn Group">
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(38);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(34);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(30);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
@@ -153,13 +203,13 @@
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(6);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(2);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                     </div>
-                </div>   
-            </div>  
-            
-            <!--Row 2-->
+                </div>
+            </div>
+
+            <!--Row 3-->
             <div class="float-sm-end">
-                <div class="btn-toolbar mt-3 mb-1" role="toolbar" aria-label="Row 2 Up">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 2 Up Btn Group">
+                <div class="btn-toolbar mt-3 mb-1" role="toolbar" aria-label="Row 3 Up">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 3 Up Btn Group">
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(39);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(35);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(31);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
@@ -174,10 +224,10 @@
                 </div>
             </div>
 
-            <h4 class="float-sm-start mt-5"><small class="text-body-secondary"><em>Row 2</em></small></h4>
+            <h4 class="float-sm-start mt-5"><small class="text-body-secondary"><em>Row 3</em></small></h4>
             <div class="float-sm-end">
-                <div class="btn-toolbar mb-1" role="toolbar" aria-label="Row 2 Label">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 2 Button Labels">
+                <div class="btn-toolba mb-1" role="toolbar" aria-label="Row 3 Label">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 3 Button Labels">
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(39)">39</button>
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(35)">35</button>
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(31)">31</button>
@@ -190,9 +240,10 @@
                         <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(3)">03</button>
                     </div>
                 </div>
-            
-                <div class="btn-toolbar mb-1" role="toolbar" aria-label="Row 2 Down">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 2 Down Btn Group">
+
+                
+                <div class="btn-toolbar mb-1" role="toolbar" aria-label="Row 3 Down">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 3 Down Btn Group">
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(39);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(35);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(31);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
@@ -203,58 +254,6 @@
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(11);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(7);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                         <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(3);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
-                    </div>
-                </div>
-            </div>
-
-            <!--Row 3-->
-            <div class="float-sm-end">
-                <div class="btn-toolbar mt-3 mb-1" role="toolbar" aria-label="Row 3 Up">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 3 Up Btn Group">
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(40);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(36);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(32);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(28);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(24);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(20);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(16);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(12);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(8);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorUpCommand(4);"><img src="./assets/svg/bi-arrow-bar-up.svg"></button>
-                    </div>
-                </div>
-            </div>
-
-            <h4 class="float-sm-start mt-5"><small class="text-body-secondary"><em>Row 3</em></small></h4>
-            <div class="float-sm-end">
-                <div class="btn-toolba mb-1" role="toolbar" aria-label="Row 3 Label">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 3 Button Labels">
-                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(40)">40</button>
-                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(36)">36</button>
-                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(32)">32</button>
-                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(28)">28</button>
-                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(24)">24</button>
-                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(20)">20</button>
-                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(16)">16</button>
-                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(12)">12</button>
-                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(8)">08</button>
-                        <button type="button" id='btnLabe' class="btn btn-outline-secondary" onclick="setMotorPos(4)">04</button>
-                    </div>
-                </div>
-
-                
-                <div class="btn-toolbar mb-1" role="toolbar" aria-label="Row 3 Down">
-                    <div class="btn-group btn-group-sm" role="group" aria-label="Row 3 Down Btn Group">
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(40);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(36);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(32);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(28);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(24);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(20);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(16);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(12);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(8);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
-                        <button type="button" class="btn btn-outline-primary" onclick="sendMotorDownCommand(4);"><img src="./assets/svg/bi-arrow-bar-down.svg"></button>
                     </div>
                 </div>
             </div>

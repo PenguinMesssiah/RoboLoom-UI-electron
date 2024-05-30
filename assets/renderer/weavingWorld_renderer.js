@@ -22,7 +22,6 @@ function linkEventHandlers() {
     })
 
     alkebulanBtn.addEventListener('click', () => {
-        console.log("changed src for embed")
         mapEmbed.src = './assets/svg/Alkebulan.svg'
     })
 
