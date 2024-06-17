@@ -185,7 +185,60 @@ function linkEvents() {
         }
 
         updateAction();
-    })   
+    })
+    
+    stage.on('click', function (e) {
+        //Error Handling
+        if(typeof e.target.id() == 'string') {
+            console.log("Error Handler: Clicked on Invalid Canvas Location")
+            return
+        }
+
+        //Decompose Event
+        let text_obj = e.target
+        let obj_id   = 'rect_' + text_obj.id().toString()
+        let cRect    = stage.find("."+obj_id)[0]
+
+        //console.log("cRect = ", cRect.getAncestors()[0].id())
+        //console.log("printing cRect (", cRect.y()/BUFFER,",",cRect.x()/BUFFER,")")
+
+        let state = toggleObj(text_obj, cRect)
+        updateMatrixElement(cRect, state)
+        
+        rectLayer.draw()
+    })
+}
+
+function updateMatrixElement(pRect, pState) {
+    var row   = pRect.y()/BUFFER
+    var col   = pRect.x()/BUFFER
+    //Only Ever Updating Drawdown from Jaquard Window    
+    window.ndarray.updateMatrix(row, col, pState, 3)
+}
+
+//Toggle Rect & Text Obj
+function toggleObj(pText, pRect) {
+    var bool = null
+
+    //Handle Click on Text
+    if(pText.text() == '0') {
+        bool = 1
+        pText.text('1')
+        pText.fill(calternate)
+    } else if(pText.text() == '1') {
+        bool = 0
+        pText.text('0')
+        pText.fill(cmain)
+    }
+
+    //Handle Click on Rect
+    if (pRect.fill() == cmainFill) {
+        pRect.fill(calternativeFill)
+    } else if (pRect.fill() == calternativeFill) {
+        pRect.fill(cmainFill);
+    }
+
+    return bool
 }
 
 //Manual Config Rect & Text Obj

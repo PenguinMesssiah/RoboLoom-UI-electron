@@ -95,9 +95,9 @@ function updateMatrix (pRow, pCol, pState, pId) {
         case DRAWDOWN_ID:
             drawdownArr.set([pRow, pCol], pState)
             console.log('drawdownArr @ ', pRow,", " ,pCol, " = ", drawdownArr.get([pRow,pCol]))
-            break;
+            return;
     }
-
+    
     //Compute Drawdown
     var tieUpArr_Transpose = math.transpose(tieUpArr)
     var x = math.multiply(tieUpArr_Transpose, threadingArr)
