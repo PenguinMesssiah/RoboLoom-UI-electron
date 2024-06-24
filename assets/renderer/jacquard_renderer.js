@@ -29,6 +29,8 @@ const cgreen      = 'green'
 
 let select_row     = null
 let highlightGroup = null
+let activeRow      = ROW_MAX-1
+let activeCol      = COL_MAX
 
 function initCanvas() {
     //stage.container().style.backgroundColor = 'green';
@@ -84,6 +86,8 @@ function linkEvents() {
     var calBtn     = document.getElementById('calModeBtn')
     var shaftBtn   = document.getElementById('shaftModeBtn')
     var worldWeave = document.getElementById('worldWeaveBtn')
+    var totalRow   = document.getElementById('availableRows')
+    var row_form   = document.getElementById('row-select-input')
 
     prevRowBtn.addEventListener('click', () => {
         //console.log("selec row = ", select_row)
@@ -97,6 +101,13 @@ function linkEvents() {
 
     jumpRowBtn.addEventListener('click', () => {
         //console.log("selec row = ", select_row)
+        if(parseInt(row_form.value) > activeRow) {
+            console.log("Error: Invalid Row Selected for Jump Command | Input Row ", parseInt(row_form.value), " Maximum of ", activeRow, "available rows.")
+            return
+        } else if (parseInt(row_form.value) < 0) {
+            console.log("Error: Invalid Row Selected for Jump Command | Input Row ", parseInt(row_form.value), ", Rows start at index 0.")
+            return  
+        }
         window.serial.sendRowCmd(select_row)
     })
 
@@ -125,15 +136,19 @@ function linkEvents() {
 
         //Decompose Message
         let value = message.drawdown_matrix
-        let row   = message.row
-        let col   = message.col
+        activeRow = message.row - 1;
+        activeCol = message.col
 
         //TODO: Find Better Solution Than Truncating
-        if(row >= ROW_MAX) { row = ROW_MAX }
-        if(col >= COL_MAX) { col = COL_MAX }
+        if(activeRow >= ROW_MAX) { activeRow = ROW_MAX-1 }
+        if(activeCol >= COL_MAX) { activeCol = COL_MAX }
+
+        //Lock JumpToRow Input
+        totalRow.innerText = "Total Number of Rows = " + activeRow
+        row_form.max       = activeRow
         
-        for (let i = 0; i < col; i++) {
-            for (let j = 0; j < row; j++) {
+        for (let i = 0; i < activeCol; i++) {
+            for (let j = 0; j < activeRow; j++) {
                 /* Get Rect & Text Obj by (y,x) Position
                 *  Returns Array[2] where Arr[0] = Rect, Arr[1] = Text
                 */
@@ -299,17 +314,16 @@ function createRectangle(i, x, y, group) {
 
 //Highlight Current Row to Weave
 function highlightRow(pRow) {
-    if(pRow == 1  && (select_row == null || select_row+1 > 29)) {
+    if(pRow == 1  && (select_row == null || select_row+1 > activeRow)) {
         select_row = 0
     } else if (pRow == -1 && (select_row == null || select_row-1 < 0)) {
-        select_row = 29
-    } else if (pRow == 1 && select_row+1 <= 29) {
+        select_row = activeRow
+    } else if (pRow == 1 && select_row+1 <= activeRow) {
         select_row++;
     } else if (pRow == -1 && select_row-1 >= 0) {
         select_row--;
     } else if (pRow == 0) {
         var row_form = document.getElementById('row-select-input')
-        //console.log("blank entry", parseInt(row_form.value))
         select_row   = parseInt(row_form.value)
     }
 
