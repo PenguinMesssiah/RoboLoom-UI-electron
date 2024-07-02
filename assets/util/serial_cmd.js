@@ -75,7 +75,7 @@ async function parseSerialPorts() {
   
         for (let x in ports) {
             x = parseInt(x) 
-            if(ports[x].manufacturer == 'Arduino (www.arduino.cc)') {       
+            if(ports[x].manufacturer == 'Arduino (www.arduino.cc)' || ports[x].manufacturer == 'Arduino LLC (www.arduino.cc)') {       
                 activeSerialConnection = 1 
 
                 openSerialConnetion(ports[x].path)
