@@ -37,6 +37,7 @@
             </div>
         </div>
 
+    <!--Weaving Commands 2-->
         <div class="weave-btn-group-2">
             <div class="btn-group-vertical" role="group" aria-label="Navigation Button Group">
                 <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><img src="./assets/svg/bi-arrow-right-square.svg"> Change Mode</button>
@@ -47,6 +48,14 @@
                 <button type="button" id="worldWeaveBtn" class="btn btn-outline-info" onclick=""><img src="./assets/svg/bi-globe.svg"> World of Weaving</button>
             </div>
 
+            <div class="input-group mt-5">
+                <span class="input-group-text" id="">Warp Color</span>
+                <input type="color" class="form-control form-control-color" id="warpColorInputSelector" value="#563d7c" title="Choose a Warp Color">
+            </div>
+            <div class="input-group">
+                <span class="input-group-text" id="">Weft Color</span>
+                <input type="color" class="form-control form-control-color" id="weftColorInputSelector" value="#00C2BF" title="Choose a Warp Color">
+            </div>
             <a class="icon-link d-flex justify-content-end mt-6" href="#settingsPanel" data-bs-toggle="offcanvas">
                 <img src="./assets/svg/SoloPersonaje.png">
             </a>
@@ -139,7 +148,7 @@
                     </h2>
                     <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
-                            <strong>This is the fourth item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                            <button type="button" class="btn btn-outline-info" aria-label="Reset Colors" onclick="resetColors(TRUE)">Reset Colors</button>
                         </div>
                     </div>
                 </div>

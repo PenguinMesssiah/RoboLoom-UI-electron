@@ -136,7 +136,9 @@ function createShaftWeaveWindow() {
                 break;
             case 3: //Load Weave Draft from File
                 shaftWeaveWindow.webContents.send('load-from-file', msg)
-                break;    
+                break;
+            case 99:
+                shaftWeaveWindow.webContents.send('on-color-reset', msg)  
         } 
     })
 
@@ -219,6 +221,9 @@ function createJacquardWeaveWindow() {
                     rowToMove: rowToMove
                 }
                 serial_child.postMessage(msg)
+                break;
+            case 99: //send message back to jacquard renderer
+                jacquardWeaveWindow.webContents.send('drawdown-update', message)
                 break;
         } 
     })
@@ -358,6 +363,18 @@ ipcMain.on('update-matrix', (event, {row, col, state, id}) => {
         col: col, 
         id: id,
         state: state
+    }
+    matrix_child.postMessage(message)
+})
+ipcMain.on('envoke-drawdown-update', () => {
+    let message = {
+        type: 6 
+    }
+    matrix_child.postMessage(message)
+})
+ipcMain.on('reset-colors', () => {
+    let message = {
+        type: 7 
     }
     matrix_child.postMessage(message)
 })

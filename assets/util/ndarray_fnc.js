@@ -57,6 +57,12 @@ process.parentPort.on('message', (e) => {
         case 5: //Initialize Threading, TieUp, & Treadling w/ Data
             setAll(numShaft, numPedal, threading, tieUp, treadling)
             break;
+        case 6: //Getter for Drawdown Matrix for Jacquard Color Reset
+            sendDrawdownMatrix();
+            break;
+        case 7: //Getter for All Matricies for Shaft Color Reset
+            getAll();
+            break;
     }
 })
 
@@ -145,6 +151,23 @@ function getMatricies(numShaft, numPedal) {
     process.parentPort.postMessage(message)
 }
 
+function getAll() {
+    let threading_arr = threadingArr.valueOf() 
+    let tieup_arr     = tieUpArr.valueOf()
+    let treadling_arr = treadlingArr.valueOf()
+    let drawdown_arr  = drawdownArr.valueOf()
+
+    let message = {
+        type: 99,
+        threading: threading_arr,
+        tieUp:     tieup_arr,
+        treadling: treadling_arr,
+        drawdown: drawdown_arr,
+    }
+
+    process.parentPort.postMessage(message)
+}
+
 function setAll(numShaft, numPedal, threading, tieUp, treadling) {
     //Create Temp Arrays
     var threadingArr_Transpose = math.zeros(COL_MAX, numShaft, 'sparse')
@@ -199,5 +222,17 @@ function setAll(numShaft, numPedal, threading, tieUp, treadling) {
         console.log('value:', value, 'index:', index) 
     })
     */
+}
+
+function sendDrawdownMatrix() {
+    let message = {
+        type: 99,
+        drawdown_matrix: drawdownArr.valueOf(),
+        row: drawdownArr.valueOf().length,
+        col: drawdownArr.valueOf()[0].length
+    }
+
+    console.log("row = ", drawdownArr.valueOf().length, "col = ", drawdownArr.valueOf()[0].length)
+    process.parentPort.postMessage(message)
 }
 

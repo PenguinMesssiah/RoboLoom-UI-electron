@@ -3,7 +3,9 @@ const { contextBridge, ipcRenderer} = require('electron');
 contextBridge.exposeInMainWorld('ndarray', {
     createArray: (row, col, id) => ipcRenderer.send('create-array', {row, col, id}),
     updateMatrix: (row, col, state, id) => ipcRenderer.send('update-matrix', {row, col, state, id}),
-    onDrawdownUpdate: (callback) => ipcRenderer.on('drawdown-update', (_event, value) => callback(value))
+    onDrawdownUpdate: (callback) => ipcRenderer.on('drawdown-update', (_event, value) => callback(value)),
+    resetColors: () => ipcRenderer.send('reset-colors'),
+    onColorReset: (callback) => ipcRenderer.on('on-color-reset', (_event, value) => callback(value))
 })
 
 contextBridge.exposeInMainWorld('serial', {

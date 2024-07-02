@@ -7,6 +7,11 @@ const HEIGHT   = 825;
 const TRUE     = 1
 const FALSE    = 0
 
+const defaultMainColor    = 'black'
+const defaultFillColor    = 'white'
+const defaultAltMainColor = 'blue'
+const defaultAltFillColor = '#0080FF'
+
 /*
     Konva is in (c,r) format by default
     where (y,x) represent the horizontal & vertical axis respectively 
@@ -20,20 +25,51 @@ const stage = new Konva.Stage({
 const rectLayer   = new Konva.Layer();
 
 const sleep       = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+/*Hex Color Modifier | 4.1
+PimpTrizkit, PJs: Shade, Blend, and Convert a Web Color, (2021), GitHub repository, https://github.com/PimpTrizkit/PJs.wiki.git
+*/
+const pSBC=(p,c0,c1,l)=>{
+	let r,g,b,P,f,t,h,m=Math.round,a=typeof(c1)=="string";
+	if(typeof(p)!="number"||p<-1||p>1||typeof(c0)!="string"||(c0[0]!='r'&&c0[0]!='#')||(c1&&!a))return null;
+	h=c0.length>9,h=a?c1.length>9?true:c1=="c"?!h:false:h,f=pSBC.pSBCr(c0),P=p<0,t=c1&&c1!="c"?pSBC.pSBCr(c1):P?{r:0,g:0,b:0,a:-1}:{r:255,g:255,b:255,a:-1},p=P?p*-1:p,P=1-p;
+	if(!f||!t)return null;
+	if(l)r=m(P*f.r+p*t.r),g=m(P*f.g+p*t.g),b=m(P*f.b+p*t.b);
+	else r=m((P*f.r**2+p*t.r**2)**0.5),g=m((P*f.g**2+p*t.g**2)**0.5),b=m((P*f.b**2+p*t.b**2)**0.5);
+	a=f.a,t=t.a,f=a>=0||t>=0,a=f?a<0?t:t<0?a:a*P+t*p:0;
+	if(h)return"rgb"+(f?"a(":"(")+r+","+g+","+b+(f?","+m(a*1000)/1000:"")+")";
+	else return"#"+(4294967296+r*16777216+g*65536+b*256+(f?m(a*255):0)).toString(16).slice(1,f?undefined:-2)
+}
+pSBC.pSBCr=(d)=>{
+	const i=parseInt;
+	let n=d.length,x={};
+	if(n>9){
+		const [r, g, b, a] = (d = d.split(','));
+	        n = d.length;
+		if(n<3||n>4)return null;
+		x.r=i(r[3]=="a"?r.slice(5):r.slice(4)),x.g=i(g),x.b=i(b),x.a=a?parseFloat(a):-1
+	}else{
+		if(n==8||n==6||n<4)return null;
+		if(n<6)d="#"+d[1]+d[1]+d[2]+d[2]+d[3]+d[3]+(n>4?d[4]+d[4]:"");
+		d=i(d.slice(1),16);
+		if(n==9||n==5)x.r=d>>24&255,x.g=d>>16&255,x.b=d>>8&255,x.a=Math.round((d&255)/0.255)/1000;
+		else x.r=d>>16,x.g=d>>8&255,x.b=d&255,x.a=-1
+	}return x
+};
 
-const cmain       = 'black'
-const cmainFill   = 'white'
-const calternate  = 'blue'
-const calternativeFill = '#0080FF'
-const cgreen      = 'green'
-
+//Dynamic Properties
 let select_row     = null
 let highlightGroup = null
 let activeRow      = ROW_MAX-1
 let activeCol      = COL_MAX
 
+//Dynamic Color Properties
+let currentWarpMainColor = defaultMainColor
+let currentWarpFillColor = defaultFillColor
+
+let currentWeftMainColor = defaultMainColor
+let currentWeftFillColor = defaultFillColor
+
 function initCanvas() {
-    //stage.container().style.backgroundColor = 'green';
     drawWeaveDraft(TRUE)
     linkEvents()
 }
@@ -41,10 +77,23 @@ function initCanvas() {
 function drawWeaveDraft(makeNewMatrix) {
     let idx = 0
     
+    //Draw Warp Color Selector Row
+    var warpColorSelectorGroup = new Konva.Group({
+        x: 5, 
+        y: 5,
+        id: 'warpColorSelectorGroup', 
+        width: 800,
+        height: 25
+    });
+
+    for (let i = 0; i < COL_MAX; i++) {
+        warpColorPickerRectangle(idx++, i, 5, warpColorSelectorGroup)
+    }
+
     //Draw Drawdown & Create Array  (n x t)
     var drawdownGroup = new Konva.Group({
         x: 5, 
-        y: 5,
+        y: 50,
         id: 'drawdownGroup', 
         width: 800,
         height: 800
@@ -62,16 +111,31 @@ function drawWeaveDraft(makeNewMatrix) {
     //Mirror Group on Top of Drawdown Group
     highlightGroup = new Konva.Group({
         x: 5, 
-        y: 5,
+        y: 50,
         id: 'highlightGroup', 
         width: 800,
         height: 800
     });
 
+    //Draw Weft Color Selector Row
+    var weftColorSelectorGroup = new Konva.Group({
+        x: 520, 
+        y: 50,
+        id: 'weftColorSelectorGroup', 
+        width: 25,
+        height: 800
+    });
+
+    for (let i = 0; i < ROW_MAX; i++) {
+        weftColorPickerRectangle(idx++, 520, i, weftColorSelectorGroup)
+    }
+
     drawScrollBars()
 
+    rectLayer.add(warpColorSelectorGroup);
     rectLayer.add(drawdownGroup);
     rectLayer.add(highlightGroup);
+    rectLayer.add(weftColorSelectorGroup);
     stage.add(rectLayer);
 }
 
@@ -132,6 +196,7 @@ function linkEvents() {
     window.ndarray.onDrawdownUpdate((message) => {
         //Clear Canvas
         stage.destroyChildren()
+        resetColors(FALSE)
         drawWeaveDraft(FALSE)
 
         //Decompose Message
@@ -209,17 +274,28 @@ function linkEvents() {
             return
         }
 
-        //Decompose Event
-        let text_obj = e.target
-        let obj_id   = 'rect_' + text_obj.id().toString()
-        let cRect    = stage.find("."+obj_id)[0]
+        let groupId = e.target.getAncestors()[0].id()
 
-        //console.log("cRect = ", cRect.getAncestors()[0].id())
-        //console.log("printing cRect (", cRect.y()/BUFFER,",",cRect.x()/BUFFER,")")
+        switch(groupId) {
+            case 'warpColorSelectorGroup':
+                updateWarpThreads(e); 
+                break;
 
-        let state = toggleObj(text_obj, cRect)
-        updateMatrixElement(cRect, state)
-        
+            case 'weftColorSelectorGroup':
+                updateWeftThreads(e);
+                break;
+
+            case 'drawdownGroup':
+                //Decompose Event
+                let text_obj = e.target
+                let obj_id   = 'rect_' + text_obj.id().toString()
+                let cRect    = stage.find("."+obj_id)[0]
+                //Perform Update
+                let state = toggleObj(text_obj, cRect)
+                updateMatrixElement(cRect, state)
+                break;
+        }
+
         rectLayer.draw()
     })
 }
@@ -236,21 +312,26 @@ function toggleObj(pText, pRect) {
     var bool = null
 
     //Handle Click on Text
-    if(pText.text() == '0') {
+    if(pText.text() == '0' && currentWarpMainColor != defaultMainColor) {
         bool = 1
         pText.text('1')
-        pText.fill(calternate)
-    } else if(pText.text() == '1') {
+        pText.fill(currentWarpMainColor)
+        pRect.fill(currentWarpFillColor)
+    } else if(pText.text() == '0' && currentWarpMainColor == defaultMainColor) {
+        bool = 1
+        pText.text('1')
+        pText.fill(defaultAltMainColor)
+        pRect.fill(defaultAltFillColor)
+    } else if(pText.text() == '1' && currentWeftMainColor != defaultMainColor) {
         bool = 0
         pText.text('0')
-        pText.fill(cmain)
-    }
-
-    //Handle Click on Rect
-    if (pRect.fill() == cmainFill) {
-        pRect.fill(calternativeFill)
-    } else if (pRect.fill() == calternativeFill) {
-        pRect.fill(cmainFill);
+        pText.fill(currentWeftMainColor)
+        pRect.fill(currentWeftFillColor);
+    } else if (pText.text() == '1' && currentWeftMainColor == defaultMainColor) {
+        bool = 0
+        pText.text('0')
+        pText.fill(defaultMainColor)
+        pRect.fill(defaultFillColor);
     }
 
     return bool
@@ -258,7 +339,6 @@ function toggleObj(pText, pRect) {
 
 //Manual Config Rect & Text Obj
 function updateObj(pText, pRect, value) {
-    //pText.text(value.toString())
     if(pText.text() === value){
         return
     }
@@ -266,12 +346,12 @@ function updateObj(pText, pRect, value) {
     //Handle Click on Text & Rect
     if(value === '0') {
         pText.text('0')
-        pText.fill(cmain)
-        pRect.fill(cmainFill)
+        pText.fill(defaultFillColor)
+        pRect.fill(defaultMainColor)
     } else if(value === '1') {
         pText.text('1')
-        pText.fill(calternate)
-        pRect.fill(calternativeFill)
+        pText.fill(defaultAltMainColor)
+        pRect.fill(defaultAltFillColor)
     }
 
     rectLayer.draw()
@@ -280,6 +360,7 @@ function updateObj(pText, pRect, value) {
 //Create Rectangle with Label
 function createRectangle(i, x, y, group) {
     var name = "rect_" + i.toString()
+    var text_name = "text_" + i.toString()
     
     rect = new Konva.Rect({
         width: 25,
@@ -288,8 +369,8 @@ function createRectangle(i, x, y, group) {
         cornerRadius: 1,
         x: x*BUFFER,
         y: y*BUFFER,
-        fill: cmainFill,
-        stroke: cmain,
+        fill: currentWeftFillColor,
+        stroke: currentWeftMainColor,
         strokeWidth: 1,
         zindex: 0
     })
@@ -297,11 +378,12 @@ function createRectangle(i, x, y, group) {
     label = new Konva.Text({
         text:'0',
         id: i,
+        name: text_name,
         x: x*BUFFER,
         y: y*BUFFER,
         fontSize: 18,
         fontFamily: 'Calibri',
-        fill: cmain,
+        fill: currentWeftMainColor,
         width: 25,
         padding: 5,
         align: 'center',
@@ -310,6 +392,46 @@ function createRectangle(i, x, y, group) {
 
     group.add(rect)
     group.add(label)
+}
+
+function warpColorPickerRectangle(i, x, y, group) {
+    var name = "rect_" + i.toString()
+    
+    rect = new Konva.Rect({
+        width: 25,
+        height: 25,
+        id: i,
+        name: name,
+        cornerRadius: 1,
+        x: x*BUFFER,
+        y: y,
+        fill: defaultFillColor,
+        stroke: defaultMainColor,
+        strokeWidth: 1,
+        zindex: 0
+    })
+
+    group.add(rect)
+}
+
+function weftColorPickerRectangle(i, x, y, group) {
+    var name = "rect_" + i.toString()
+    
+    rect = new Konva.Rect({
+        width: 25,
+        height: 25,
+        id: i,
+        name: name,
+        cornerRadius: 1,
+        x: x,
+        y: y*BUFFER,
+        fill: defaultFillColor,
+        stroke: defaultMainColor,
+        strokeWidth: 1,
+        zindex: 0
+    })
+
+    group.add(rect)
 }
 
 //Highlight Current Row to Weave
@@ -396,6 +518,70 @@ function drawScrollBars() {
           (rectLayer.y() / (-HEIGHT + stage.height())) * availableHeight + PADDING;
         verticalBar.y(vy);
       });
+}
+
+function updateWarpThreads(e) {
+    let colorPicker      = document.getElementById("warpColorInputSelector")
+    currentWarpMainColor = colorPicker.value
+    currentWarpFillColor = pSBC ( 0.2, currentWarpMainColor )
+            
+    //Decompose Event
+    let colorRect_obj = e.target
+    colorRect_obj.fill(currentWarpMainColor)
+    
+
+    //Update Entire Column
+    for(i=0; i< ROW_MAX; i++){
+        let colorRect_id  = colorRect_obj.id()
+        let startRow_id   = (40+32*colorRect_id)+i
+        let tempRect_name = '.' + 'rect_' + startRow_id.toString()
+        let tempText_name = '.' + 'text_' + startRow_id.toString()
+
+        let tempRect_obj = rectLayer.findOne(tempRect_name)
+        let tempText_obj = rectLayer.findOne(tempText_name)
+        
+        if(tempText_obj.text() == '1') {
+            tempText_obj.fill(currentWarpMainColor)
+            tempRect_obj.fill(currentWarpFillColor)
+        }
+    }
+}
+
+function updateWeftThreads(e) {
+    let colorPicker      = document.getElementById("weftColorInputSelector")
+    currentWeftMainColor = colorPicker.value
+    currentWeftFillColor = pSBC ( 0.2, currentWeftMainColor )
+            
+    //Decompose Event
+    let colorRect_obj = e.target
+    colorRect_obj.fill(currentWeftMainColor)
+    
+    //Update Entire Row
+    for(i=0; i< COL_MAX; i++){
+        let colorRect_id  = colorRect_obj.id()-1320
+        let startRow_id   = colorRect_id+40+(32*i)
+        
+        let tempRect_name = '.' + 'rect_' + startRow_id.toString()
+        let tempText_name = '.' + 'text_' + startRow_id.toString()
+
+        let tempRect_obj = rectLayer.findOne(tempRect_name)
+        let tempText_obj = rectLayer.findOne(tempText_name)
+        
+        if(tempText_obj.text() == '0') {
+            tempText_obj.fill(currentWeftMainColor)
+            tempRect_obj.fill(currentWeftFillColor)
+        }
+    }
+}
+
+function resetColors(redrawDrawdown){
+    currentWarpMainColor = defaultMainColor
+    currentWarpFillColor = defaultFillColor
+    currentWeftMainColor = defaultMainColor
+    currentWeftFillColor = defaultFillColor
+
+    //Envoke Call to 'drawdown-update'
+    if(redrawDrawdown) { window.ndarray.envokeDrawdownUpdate()}
 }
 
 //Execute
