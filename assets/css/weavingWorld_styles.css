@@ -8050,3 +8050,22 @@ progress {
 }
 
 /*# sourceMappingURL=weavingWorld_styles.css.map */
+object {
+  pointer-events: all;
+}
+
+.card {
+  position: absolute;
+  bottom: 12%;
+  left: 2%;
+}
+
+.disabled {
+  pointer-events: none;
+  cursor: none;
+}
+
+.enabled {
+  pointer-events: all;
+  cursor: pointer;
+}

@@ -13,12 +13,26 @@
 <body>
     <h2 class="text-center">World of Weaving</h2>
     <div class="mt-5 d-flex justify-content-center">
-        <!--CC BY 4.0 Deed: No Modifications to Original Work-->
-        <embed id='mapEmbed' src=""/>
+        <!--CC BY 4.0 Deed: Original Work Modified to Reflect Weaving Pattern by Region-->
+        <object id='mapEmbed' type="image/svg+xml" data=""></object>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="weavingWorldModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="weavingWorldModalLabel" aria-hidden="true">
+  <!--Card: Display Information-->
+  <div id="card" class="card fade">
+    <div class="card-body">
+      <h5 class="card-title" id="card-title">Select a Country</h5>
+      <p class="card-text" id="card-text">No Country Selected</p>
+      <div class="card-footer" id="card-footer">
+        <a href="#" class="card-link disabled" id="card-link-A">Link</a>
+        <a href="#" class="card-link disabled" id="card-link-B">Link</a>
+        <a href="#" class="card-link disabled" id="card-link-C">Link</a>
+        <button type="button" id="modalClose" class="btn-close mx-2" onclick="hideCard()" aria-label="Close"></button>
+      </div> 
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="weavingWorldModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="weavingWorldModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
