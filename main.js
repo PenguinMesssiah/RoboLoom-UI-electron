@@ -174,6 +174,7 @@ function createShaftWeaveWindow() {
         matrix_child.kill()
         jquery_child.kill()
         shaftWeaveWindow = null
+        app.quit()
     })
 }
 
@@ -266,6 +267,7 @@ function createJacquardWeaveWindow() {
         matrix_child.kill()
         jquery_child.kill()
         jacquardWeaveWindow = null
+        app.quit()
     })
 }
 
