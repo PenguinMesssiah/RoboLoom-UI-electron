@@ -423,6 +423,13 @@ ipcMain.on('send-row-cmd', (event, {rowIndex}) => {
     }
     matrix_child.postMessage(message)
 })
+ipcMain.on('send-plainWeave-cmd', (event, {startValue}) => {
+    let message = {
+        type: 5,
+        startValue: startValue
+    }
+    serial_child.postMessage(message)
+})
 
 //JQuery & FS Commands
 ipcMain.on('read-txt-file', (event, {filePath}) => {

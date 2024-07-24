@@ -31,10 +31,11 @@ readLineParser.on('data', (data) => {
 })
 
 process.parentPort.on('message', (e) => {
-    let type      = e.data.type
-    let motorInt  = e.data?.motorInt
-    let direction = e.data?.direction
-    let rowToMove = e.data?.rowToMove
+    let type       = e.data.type
+    let motorInt   = e.data?.motorInt
+    let direction  = e.data?.direction
+    let rowToMove  = e.data?.rowToMove
+    let startValue = e.data?.startValue 
     
     //console.log("Serial Utility Process: Message w/ type ", type)
 
@@ -58,6 +59,8 @@ process.parentPort.on('message', (e) => {
             //console.log("Setting Cal Motor motor: ", motorInt, " with dir ", direction)
             sendSingleMotorCmd(CAL, CAL_SET_MOTOR, motorInt, direction);
             break;
+        case 5: //Send Plain Weave
+            sendPlainWeave(startValue)
     }
 })
 
@@ -200,5 +203,15 @@ function moveRow(row) {
 
     for (let i = 0; i < numMotors; i++) {
         motor_pos[i] = row[i]
+    }
+}
+
+function sendPlainWeave(startValue) {
+    if(startValue == 0 ) {
+        moveRow('0101010101010101010101010101010101010101')
+    } else if (startValue == 1) {
+        moveRow('1010101010101010101010101010101010101010')
+    } else {
+        moveRow('0000000000000000000000000000000000000000')
     }
 }
