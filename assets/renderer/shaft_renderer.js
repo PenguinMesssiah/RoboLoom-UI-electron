@@ -864,5 +864,9 @@ function resetColors(redrawDrawdown){
     if(redrawDrawdown) { window.ndarray.resetColors()}
 }
 
+function sendPlainWeave(pStartValue) {
+    window.serial.sendPlainWeave(pStartValue)
+}
+
 //Execute
 initCanvas()

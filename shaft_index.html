@@ -35,9 +35,19 @@
                     </ul>
                 </div> 
             </div>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Overshot
+                </button>
+                <ul class="dropdown-menu">
+                    <a class="dropdown-item" id="plainWeaveRowZero" onclick="sendPlainWeave(0)">0101...</a>
+                    <a class="dropdown-item" id="plainWeaveRowOne" onclick="sendPlainWeave(1)">1010...</a>
+                    <a class="dropdown-item" id="plainWeaveRowOne" onclick="sendPlainWeave(-1)">0000...</a>
+                </ul>
+            </div> 
         </div>
 
-    <!--Weaving Commands 2-->
+    <!--Weaving Operations-->
         <div class="weave-btn-group-2">
             <div class="btn-group-vertical" role="group" aria-label="Navigation Button Group">
                 <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><img src="./assets/svg/bi-arrow-right-square.svg"> Change Mode</button>
