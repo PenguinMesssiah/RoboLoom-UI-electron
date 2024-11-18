@@ -185,11 +185,11 @@ function linkEvents() {
     })
 
     shaftBtn.addEventListener('click', () => {
-        window.app.openShaftWindow()
+        window.app.changeView(3,2)
     })
 
     calBtn.addEventListener('click', () => {
-        window.app.openCalibrationWindow()
+        window.app.changeView(3,1)
     })
 
     //Update Drawdown

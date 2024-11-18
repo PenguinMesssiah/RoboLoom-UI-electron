@@ -31,7 +31,7 @@ const scrollLayer = new Konva.Layer({
 });
 
 const sleep       = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
-/*Hex Color Modifier | 4.1
+/* Hex Color Modifier | 4.1
 PimpTrizkit, PJs: Shade, Blend, and Convert a Web Color, (2021), GitHub repository, https://github.com/PimpTrizkit/PJs.wiki.git
 */
 const pSBC=(p,c0,c1,l)=>{
@@ -359,11 +359,11 @@ function linkAllEvents() {
     })
 
     jacBtn.addEventListener('click', () => {
-        window.app.openJacquardWindow()
+        window.app.changeView(2,3)
     })
 
     calBtn.addEventListener('click', () => {
-        window.app.openCalibrationWindow()
+        window.app.changeView(2,1)
     })
 }
 

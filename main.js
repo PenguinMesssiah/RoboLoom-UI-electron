@@ -48,11 +48,9 @@ function createMainWindow() {
         mainWindow.webContents.send('post-serialPort-parse', message)
     })
 
-    // Emitted when the window is closed.
-    mainWindow.on('closed', function() {
-        mainWindow = null
+    mainWindow.on('close', function() {
+        app.quit()
     })
-    //mainWindow.webContents.openDevTools();
 }
 
 function createCalWindow() {
@@ -76,8 +74,8 @@ function createCalWindow() {
     appWindows.push(calWindow)
     
     // Emitted when the window is closed.
-    calWindow.on('closed', function() {
-        calWindow = null
+    calWindow.on('close', function() {
+        app.quit()
     })
 }
 
@@ -85,7 +83,7 @@ function createShaftWeaveWindow() {
     //Create Utility Services
     matrix_child = utilityProcess.fork(path.join(__dirname, './assets/util/ndarray_fnc'), {
         stdio: ['ignore', 'inherit', 'inherit'],
-        serviceName: 'Matrix Utility Process'
+        serviceName: 'Shaft Matrix Utility Process'
     })
 
     jquery_child = utilityProcess.fork(path.join(__dirname, './assets/util/jquery_fs'), {
@@ -170,10 +168,9 @@ function createShaftWeaveWindow() {
     })
 
     // Emitted when the window is closed.
-    shaftWeaveWindow.on('closed', function() {
+    shaftWeaveWindow.on('close', function() {
         matrix_child.kill()
         jquery_child.kill()
-        shaftWeaveWindow = null
         app.quit()
     })
 }
@@ -182,7 +179,7 @@ function createJacquardWeaveWindow() {
     //Create Utility Services
     matrix_child = utilityProcess.fork(path.join(__dirname, './assets/util/ndarray_fnc'), {
         stdio: ['ignore', 'inherit', 'inherit'],
-        serviceName: 'Matrix Utility Process'
+        serviceName: 'Jacquard Matrix Utility Process'
     })
 
     jquery_child = utilityProcess.fork(path.join(__dirname, './assets/util/jquery_fs'), {
@@ -266,7 +263,6 @@ function createJacquardWeaveWindow() {
     jacquardWeaveWindow.on('closed', function() {
         matrix_child.kill()
         jquery_child.kill()
-        jacquardWeaveWindow = null
         app.quit()
     })
 }
@@ -298,23 +294,48 @@ function createWeavingWorldWindow() {
 }
 
 //Inter-Process Communication
-//To-Do: Centeralize to a Singlular Handle Method
-ipcMain.handle('cal-window', async () => {
-    mainWindow.hide()
-    await app.isReady('ready', createCalWindow())
-})
-ipcMain.handle('shaft-window', async () => {
-    if(shaftWeaveWindow == null) {
-        await app.isReady('ready', createShaftWeaveWindow())
-    } else {
-        await app.isReady('ready', shaftWeaveWindow.show())
+//Centeralize to a Singlular Handle Method
+ipcMain.on('change-view', async (event, {oldFrame, newFrame}) => {
+    switch (oldFrame) {
+        case 0:
+            mainWindow.hide()
+            break;
+        case 1:
+            calWindow.hide()
+            break;
+        case 2:
+            shaftWeaveWindow.hide()
+            break;
+        case 3:
+            jacquardWeaveWindow.hide()
+            break;
     }
-})
-ipcMain.handle('jacquard-window', async () => {
-    if(jacquardWeaveWindow == null) {
-        await app.isReady('ready', createJacquardWeaveWindow())
-    } else {
-        await app.isReady('ready', jacquardWeaveWindow.show())
+
+    switch(newFrame) {
+        case 0:
+            if(mainWindow)
+                mainWindow.show()
+            else 
+                await app.isReady('ready', createMainWindow())
+            break;
+        case 1:
+            if(calWindow)
+                calWindow.show()
+            else 
+                await app.isReady('ready', createCalWindow())
+            break;
+        case 2:
+            if(shaftWeaveWindow)
+                shaftWeaveWindow.show()
+            else
+                await app.isReady('ready', createShaftWeaveWindow())
+            break;
+        case 3:
+            if(jacquardWeaveWindow)
+                jacquardWeaveWindow.show()
+            else
+                await app.isReady('ready', createJacquardWeaveWindow())
+            break;
     }
 })
 ipcMain.handle('weavingWorld-window', async () => {
@@ -322,33 +343,6 @@ ipcMain.handle('weavingWorld-window', async () => {
         await app.isReady('ready', createWeavingWorldWindow())
     } else {
         await app.isReady('ready', weaveWorldWindow.show())
-    }
-})
-ipcMain.handle('hide-cal-window', async () => {
-    calWindow.hide();
-})
-ipcMain.handle('shaft-to-cal-window', async () => {
-    shaftWeaveWindow.hide()
-    await app.isReady('ready', calWindow.show())
-})
-ipcMain.handle('shaft-to-jacquard-window', async() => {
-    shaftWeaveWindow.hide()
-    if(jacquardWeaveWindow == null) {
-        await app.isReady('ready', createJacquardWeaveWindow())
-    } else {
-        await app.isReady('ready', jacquardWeaveWindow.show())
-    }
-})
-ipcMain.handle('jacquard-to-cal-window', async () => {
-    jacquardWeaveWindow.hide()
-    await app.isReady('ready', calWindow.show())
-})
-ipcMain.handle('jacquard-to-shaft-window', async() => {
-    jacquardWeaveWindow.hide()
-    if(shaftWeaveWindow == null) {
-        await app.isReady('ready', createShaftWeaveWindow())
-    } else {
-        await app.isReady('ready', shaftWeaveWindow.show())
     }
 })
 
@@ -467,7 +461,6 @@ app.on('ready', () => {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
-    serial_child.kill()
     app.quit()
 })
 

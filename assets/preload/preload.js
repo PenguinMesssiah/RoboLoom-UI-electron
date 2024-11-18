@@ -6,8 +6,8 @@ contextBridge.exposeInMainWorld('serial', {
   onPostSerialPortParse: (callback) => ipcRenderer.on('post-serialPort-parse', (_event, value) => callback(value))
 })
 
-contextBridge.exposeInMainWorld('activeWindows', {
-  getCalWindow: () => ipcRenderer.invoke('cal-window')
+contextBridge.exposeInMainWorld('app', {
+  changeView: (oldFrame, newFrame) => ipcRenderer.send('change-view', {oldFrame, newFrame})
 })
 
 window.addEventListener('DOMContentLoaded', () => {

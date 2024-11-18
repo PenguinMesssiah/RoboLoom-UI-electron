@@ -1,7 +1,7 @@
 
 function linkEventHandlers() {
   document.getElementById("continue-btn").addEventListener('click', () => {
-    window.activeWindows.getCalWindow()
+    window.app.changeView(0,1)
   })
 
   window.serial.onPostSerialPortParse((message) => {
