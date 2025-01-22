@@ -11,7 +11,23 @@
 </head>
 
 <body>
-    <h2 class="text-center">World of Weaving</h2>
+    <div class="mt-3 me-3 text-end">
+      <h2 >World of Weaving</h2>
+      <span id="selected-region"></span>
+      <div class="mt-1 dropdown">
+        <button class="btn btn-outline-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Change Region
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#" onclick="updateMap(0)">Africa (Alkebulan)</a>
+            <li><a class="dropdown-item" href="#" onclick="updateMap(1)">North America (Turtle Island)</a></li>
+            <li><a class="dropdown-item" href="#" onclick="updateMap(2)">Latin America (Abya Yala)</a></li>
+            <li><a class="dropdown-item" href="#" onclick="updateMap(3)">China (Zhōngguó)</a></li>
+            <li><a class="dropdown-item" href="#" onclick="updateMap(4)">Europe (Europa)</a></li>
+            <li><a class="dropdown-item" href="#" onclick="updateMap(5)">India (Bharata)</a></li>
+          </ul>
+        </div>
+    </div>
     <div class="mt-5 d-flex justify-content-center">
         <!--CC BY 4.0 Deed: Original Work Modified to Reflect Weaving Pattern by Region-->
         <object id='mapEmbed' type="image/svg+xml" data=""></object>
@@ -56,11 +72,12 @@
                 Select a Region
             </button>
             <ul class="dropdown-menu">
-                <a class="dropdown-item" id="Alkebulan">Alkebulan</a>
-                <!--
-                <a class="dropdown-item" id="TurtleIsland">Turtle Island</a>
-                <a class="dropdown-item" id="AbyaYala">Abya Yala</a>
-                -->
+                <a class="dropdown-item" id="Alkebulan">Africa (Alkebulan)</a>
+                <a class="dropdown-item" id="NorthAmerica">North America (Turtle Island)</a>
+                <a class="dropdown-item" id="LatinAmerica">Latin America (Abya Yala)</a>
+                <a class="dropdown-item" id="China">China (Zhōngguó)</a>
+                <a class="dropdown-item" id="Europe">Europe (Europa)</a>
+                <a class="dropdown-item" id="India">India (Bharata)</a>
             </ul>
           </div> 
           <button type="button" class="btn btn-primary" id="modalCloseBtn">Discover & Explore</button>

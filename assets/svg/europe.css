@@ -7,16 +7,6 @@ path:hover {
     stroke-width: 1.25px;
     transition: fill 0.4s;
 }
-#Ghana {
-    fill: green;
-    }
-/*
-#Ghana, [id="Ghana"]:hover{
-    fill: purple;
-    stroke-width: 1.25px;
-    transition: fill 0.4s;
-}
-*/
 
 #mapsection {
     width: 50%;
@@ -24,8 +14,4 @@ path:hover {
     fill: #ccc;
     stroke: #333;
     stroke-width: 0.5px;
-}
-  
-#Nigeria {
-    fill: yellow;
 }

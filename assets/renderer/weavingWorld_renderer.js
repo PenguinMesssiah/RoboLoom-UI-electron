@@ -1,11 +1,14 @@
 function linkEventHandlers() {
-    let modal      = document.getElementById("weavingWorldModal")
-    let modalClose = document.getElementById("modalClose")
-    let modalCloseBtn = document.getElementById("modalCloseBtn")
-    let mapEmbed      = document.getElementById("mapEmbed")
+    let modal           = document.getElementById("weavingWorldModal")
+    let modalClose      = document.getElementById("modalClose")
+    let modalCloseBtn   = document.getElementById("modalCloseBtn")
+    let mapEmbed        = document.getElementById("mapEmbed")
     let alkebulanBtn    = document.getElementById("Alkebulan")
-    let turtleIslandBtn = document.getElementById("TurtleIsland")
-    let abyaYalaBtn     = document.getElementById("AbyaYala")
+    let northAmericaBtn = document.getElementById("NorthAmerica")
+    let latinAmericaBtn = document.getElementById("LatinAmerica")
+    let chinaBtn        = document.getElementById("China")
+    let europeBtn       = document.getElementById("Europe")
+    let indiaBtn        = document.getElementById("India")
 
     //Open Modal on Start
     modal.style.display = "block"
@@ -21,10 +24,6 @@ function linkEventHandlers() {
         modal.classList.add("hidden")
     })
 
-    alkebulanBtn.addEventListener('click', () => {
-        mapEmbed.data = './assets/svg/Alkebulan.svg'
-    })
-
     mapEmbed.addEventListener("load", (e) => {
         let activeMap = e.target.contentDocument
 
@@ -36,16 +35,30 @@ function linkEventHandlers() {
             updateInfoCard(srcName)
         })
     })
+
+    alkebulanBtn.addEventListener('click', () => {
+        updateMap(0);
+    })
     
-    /*
-    turtleIslandBtn.addEventListener('click', () => {
-        mapEmbed.data = './assets/svg/TurtleIsland.svg'
+    northAmericaBtn.addEventListener('click', () => {
+        updateMap(1);
     })
 
-    abyaYalaBtn.addEventListener('click', () => {
-        mapEmbed.data = './assets/svg/AbyaYala.svg'
+    latinAmericaBtn.addEventListener('click', () => {
+        updateMap(2);
     })
-    */
+
+    chinaBtn.addEventListener('click', () => {
+        updateMap(3);
+    })
+
+    europeBtn.addEventListener('click', () => {
+        updateMap(4)
+    })
+
+    indiaBtn.addEventListener('click', () => {
+        updateMap(5);
+    })
 }
 
 function updateInfoCard(pSrcName) {
@@ -100,6 +113,120 @@ function updateInfoCard(pSrcName) {
             cardLinkB.classList.replace("disabled", "enabled")
             cardLinkC.classList.replace("disabled", "enabled")
             break;
+        case "Hunan" :
+            cardBody.innerText = "Explore the Cultural Clothes of Hunan!"
+
+            cardLinkA.innerText = "Dong Brocade"
+            cardLinkA.href      = "https://whhlyt.hunan.gov.cn/whhlyt/english/Culture/IntangibleCulturalHeritage/202205/t20220526_24654027.html#:~:text=The%20Dong%20brocade%20weaving%2C%20mainly%20found%20among,Hunan%20Province%2C%20can%20date%20back%20to%20more"
+            cardLinkA.target    = "__top"
+
+            cardLinkB.innerText = "Tujia Brocade"
+            cardLinkB.href      = "https://www.metalocus.es/en/news/flower-tujia-china-tujia-brocade-art-museum-yimu-design-office"
+            cardLinkB.target    = "__top"
+
+            cardLinkC.innerText = ""
+            cardLinkC.href      = ""
+            cardLinkC.target    = "__top"
+
+            cardLinkA.classList.replace("disabled", "enabled")
+            cardLinkB.classList.replace("disabled", "enabled")
+            //cardLinkC.classList.replace("disabled", "enabled")
+            break;
+        case "Zhejiang":
+            cardBody.innerText = "Explore the Cultural Clothes of Zhejiang!"
+
+            cardLinkA.innerText = "Bamboo Weaving | Legacy"
+            cardLinkA.href      = "https://www.globaltimes.cn/page/202306/1293215.shtml"
+            cardLinkA.target    = "__top"
+
+            cardLinkB.innerText = "Bamboo Weaving | Guide"
+            cardLinkB.href      = "https://articles.unesco.org/sites/default/files/medias/fichiers/2024/04/1.2b%20final%20bamboo%20leaflet%20EN.pdf#page=10"
+            cardLinkB.target    = "__top"
+
+            cardLinkC.innerText = ""
+            cardLinkC.href      = ""
+            cardLinkC.target    = "__top"
+
+            cardLinkA.classList.replace("disabled", "enabled")
+            cardLinkB.classList.replace("disabled", "enabled")
+            //cardLinkC.classList.replace("disabled", "enabled")
+            break; 
+        case "Chongqing":
+                cardBody.innerText = "Explore the Cultural Clothes of Chongqing!"
+    
+                cardLinkA.innerText = "Xiabu Cloth | Legacy"
+                cardLinkA.href      = "https://www.sciencehistory.org/collections/blog/weaving-history/"
+                cardLinkA.target    = "__top"
+    
+                cardLinkB.innerText = "Xiabu Cloth | Modern"
+                cardLinkB.href      = "https://www.chinadaily.com.cn/a/202206/14/WS62a7bf6da310fd2b29e62725.html"
+                cardLinkB.target    = "__top"
+    
+                cardLinkC.innerText = ""
+                cardLinkC.href      = ""
+                cardLinkC.target    = "__top"
+    
+                cardLinkA.classList.replace("disabled", "enabled")
+                cardLinkB.classList.replace("disabled", "enabled")
+                //cardLinkC.classList.replace("disabled", "enabled")
+                break;     
+        case "Guangdong":
+                cardBody.innerText = "Explore the Cultural Clothes of Guangdong!"
+    
+                cardLinkA.innerText = "Band Weaving"
+                cardLinkA.href      = "https://www.thetextileatlas.com/craft-stories/band-weaving-hong-kong"
+                cardLinkA.target    = "__top"
+    
+                cardLinkB.innerText = "Guancao-Weave"
+                cardLinkB.href      = "https://www.womenofchina.cn/womenofchina/html1/culture/heritage/2409/1898-1.htm"
+                cardLinkB.target    = "__top"
+    
+                cardLinkC.innerText = ""
+                cardLinkC.href      = ""
+                cardLinkC.target    = "__top"
+    
+                cardLinkA.classList.replace("disabled", "enabled")
+                cardLinkB.classList.replace("disabled", "enabled")
+                //cardLinkC.classList.replace("disabled", "enabled")
+                break;  
+        case "Shandong":
+            cardBody.innerText = "Explore the Cultural Clothes of Guangdong!"
+
+            cardLinkA.innerText = "Shantung Weave"
+            cardLinkA.href      = "https://sewport.com/fabrics-directory/shantung-fabric"
+            cardLinkA.target    = "__top"
+
+            cardLinkB.innerText = "Willow Weave"
+            cardLinkB.href      = "https://www.xindb.com/static/content/SDZB/2023-12-18/1186454921173024768.html"
+            cardLinkB.target    = "__top"
+
+            cardLinkC.innerText = ""
+            cardLinkC.href      = ""
+            cardLinkC.target    = "__top"
+
+            cardLinkA.classList.replace("disabled", "enabled")
+            cardLinkB.classList.replace("disabled", "enabled")
+            //cardLinkC.classList.replace("disabled", "enabled")
+            break;
+        case "Uttar Pradesh":
+            cardBody.innerText = "Explore the Cultural Clothes of Uttar Pradesh!"
+
+            cardLinkA.innerText = "Varanasi Brocade"
+            cardLinkA.href      = "https://pdfs.semanticscholar.org/321f/4be3606249970e74dbb4161c9547ac55e8c1.pdf"
+            cardLinkA.target    = "__top"
+
+            cardLinkB.innerText = "Banarasi Silk"
+            cardLinkB.href      = "https://festival-marketplace.si.edu/madhu-agrawal-r15-a8155/"
+            cardLinkB.target    = "__top"
+
+            cardLinkC.innerText = ""
+            cardLinkC.href      = ""
+            cardLinkC.target    = "__top"
+
+            cardLinkA.classList.replace("disabled", "enabled")
+            cardLinkB.classList.replace("disabled", "enabled")
+            //cardLinkC.classList.replace("disabled", "enabled")
+            break;    
         default:
             cardTitle.innerText = "Select a Valid Country"
             cardBody.innerText = pSrcName + " is not yet added..."
@@ -128,5 +255,42 @@ function hideCard() {
     card.classList.replace("show","hidden")
 
 }
+
+function updateRegionTitle(pRegionName) {
+    let regionTitle = document.getElementById("selected-region")
+    regionTitle.innerText = "Selected Region | " + pRegionName;
+}
+
+function updateMap(pSelectedRegion) {
+    switch(pSelectedRegion) {
+        case 0:
+            mapEmbed.data = './assets/svg/Alkebulan.svg'
+            updateRegionTitle("Africa (Alkebulan)")
+            break;
+        case 1:
+            mapEmbed.data = './assets/svg/northAmerica.svg'
+            updateRegionTitle("North America (Turtle Island)")
+            break;
+        case 2:
+            mapEmbed.data = './assets/svg/latinAmerica.svg'
+            updateRegionTitle("Latin America (Abya Yala)")
+            break;
+        case 3:
+            mapEmbed.data = './assets/svg/China.svg'
+            updateRegionTitle("China (Zhōngguó)")
+            break;
+        case 4:
+            mapEmbed.data = './assets/svg/europe.svg'
+            updateRegionTitle("Europe (Europa)")
+            break;
+        case 5:
+            mapEmbed.data = './assets/svg/india.svg'
+            updateRegionTitle("India (Bharata)")
+            break;
+        default:
+            break;
+    }
+}
+
 
 linkEventHandlers()
