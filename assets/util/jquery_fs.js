@@ -62,7 +62,7 @@ function writeToFile(numShaft, numPedal, threading, tieUp, treadling) {
                 "tieUp: " + tieUp + '\n' + 
                 "treadling: " + treadling + '\n'
 
-    fs.writeFile('./assets/data/weavingDraft.txt', temp, function (err) {
+    fs.writeFile('./weavingDraft.txt', temp, function (err) {
         if (err) throw err;
     });
 }
