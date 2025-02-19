@@ -8,6 +8,26 @@ path:hover {
     transition: fill 0.4s;
 }
 
+#Italy {
+    fill: maroon;
+}
+
+#Belgium {
+    fill: orange;
+}
+
+#Poland {
+    fill: paleturquoise;
+}
+
+#Estonia {
+    fill: darkkhaki
+}
+
+#mapsection, [id="United Kingdom"]{
+    fill: olivedrab;
+}
+
 #mapsection {
     width: 50%;
     height: auto;

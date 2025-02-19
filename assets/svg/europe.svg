@@ -2,13 +2,13 @@
 <svg 
     baseprofile="tiny" 
     fill="#ececec" 
-    height="684" 
-    width="1000"
+    height="673" 
+    width="1100"
     stroke="black" 
     stroke-linecap="round"
     stroke-linejoin="round" 
     stroke-width=".1" version="1.2" 
-    viewbox="0 0 1000 684" 
+    viewbox="0 0 1000 673" 
     xmlns="http://www.w3.org/2000/svg">
    <link
       xmlns="http://www.w3.org/1999/xhtml"

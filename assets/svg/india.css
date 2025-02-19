@@ -12,6 +12,23 @@ path:hover {
     fill: purple;
 }
 
+#mapsection, [id="Madhya Pradesh"]{
+    fill: goldenrod;
+}
+
+#mapsection, [id="Jammu and Kashmir"]{
+    fill: green;
+}
+
+
+#mapsection, [id="Tamil Nadu"]{
+    fill: olive;
+}
+
+#Gujarat {
+    fill: blue;
+}
+
 #mapsection {
     width: 50%;
     height: auto;

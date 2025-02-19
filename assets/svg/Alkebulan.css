@@ -9,7 +9,20 @@ path:hover {
 }
 #Ghana {
     fill: green;
-    }
+}
+#Nigeria {
+    fill: yellow;
+}
+#Ethiopia {
+    fill: purple
+}
+#Egypt {
+    fill: palevioletred
+}
+#mapsection, [id="Democratic Republic of Congo"]{
+    fill: brown
+}
+
 /*
 #Ghana, [id="Ghana"]:hover{
     fill: purple;
@@ -26,6 +39,3 @@ path:hover {
     stroke-width: 0.5px;
 }
   
-#Nigeria {
-    fill: yellow;
-}
