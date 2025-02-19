@@ -8,6 +8,26 @@ path:hover {
    transition: fill 0.4s;
 }
 
+#Peru {
+   fill: hotpink;
+}
+
+#Chile {
+   fill: green;
+}
+
+#Bolivia {
+   fill: bisque;
+}
+
+#Mexico {
+   fill: sienna;
+}
+
+#Ecuador {
+   fill: red;
+}
+
 #mapsection {
    width: 50%;
    height: auto;

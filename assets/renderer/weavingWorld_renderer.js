@@ -494,7 +494,7 @@ function updateInfoCard(pSrcName) {
             cardLinkC.classList.replace("disabled", "enabled")
             break;
         case "Estonia":
-            cardBody.innerText = "Explore the Historical & Cultural Clothes of Estonia"
+            cardBody.innerText = "Explore the Historical & Cultural Clothes of Estonia!"
 
             cardLinkA.innerText = "Cultural History | Overview"
             cardLinkA.href      = "https://www.artun.ee/en/curricula/textile-design/history/"
@@ -511,6 +511,120 @@ function updateInfoCard(pSrcName) {
             cardLinkA.classList.replace("disabled", "enabled")
             cardLinkB.classList.replace("disabled", "enabled")
             cardLinkC.classList.replace("disabled", "enabled")
+            break;
+        case "Bolivia":
+            cardBody.innerText = "Explore the Historical & Cultural Clothes of Bolivia!"
+
+            cardLinkA.innerText = "Modern Review | Andean Textiles in Bolivia"
+            cardLinkA.href      = "https://threads-of-time.carlos.emory.edu/exhibits/show/essays/rainbow"
+            cardLinkA.target    = "__top"
+
+            cardLinkB.innerText = "Historical Overview | Coroma Textiles"
+            cardLinkB.href      = "https://traffickingculture.org/encyclopedia/case-studies/coroma-textiles/"
+            cardLinkB.target    = "__top"
+
+            cardLinkC.innerText = ""
+            cardLinkC.href      = ""
+            cardLinkC.target    = "__top"
+
+            cardLinkA.classList.replace("disabled", "enabled")
+            cardLinkB.classList.replace("disabled", "enabled")
+            //cardLinkC.classList.replace("disabled", "enabled")
+            break;
+        case "Peru":
+            cardBody.innerText = "Explore the Historical & Cultural Clothes of Peru!"
+
+            cardLinkA.innerText = "Cultural History | Quechua Textiles"
+            cardLinkA.href      = "https://guides.loc.gov/weaving-community-narratives-andean-histories-library-collections/textiles#s-lib-ctab-29124066-0"
+            cardLinkA.target    = "__top"
+
+            cardLinkB.innerText = "Modern Review | Peruvian Andes"
+            cardLinkB.href      = "https://folklife.si.edu/magazine/quechua-women-weavers-peru"
+            cardLinkB.target    = "__top"
+
+            cardLinkC.innerText = "Cultural Overview | Quechua Symbolism"
+            cardLinkC.href      = "https://www.mosqoy.org/textile-symbols"
+            cardLinkC.target    = "__top"
+
+            cardLinkA.classList.replace("disabled", "enabled")
+            cardLinkB.classList.replace("disabled", "enabled")
+            cardLinkC.classList.replace("disabled", "enabled")
+            break;
+        case "Chile":
+            cardBody.innerText = "Explore the Historical & Cultural Clothes of Chile!"
+
+            cardLinkA.innerText = "Modern Review | Aymara Weaving Tradition"
+            cardLinkA.href      = "https://cordillerana.cl/en/blogs/hechoamano/las-tejedoras-aymara-herederas-de-una-tradicion-milenaria"
+            cardLinkA.target    = "__top"
+
+            cardLinkB.innerText = "Cultural Review | Inspiration Behind Aymara Weaving"
+            cardLinkB.href      = "https://apnews.com/article/chile-aymara-sacred-textile-craft-e538a3a65e236cf04ce0ee30856f6bdf"
+            cardLinkB.target    = "__top"
+
+            cardLinkC.innerText = ""
+            cardLinkC.href      = ""
+            cardLinkC.target    = "__top"
+
+            cardLinkA.classList.replace("disabled", "enabled")
+            cardLinkB.classList.replace("disabled", "enabled")
+            //cardLinkC.classList.replace("disabled", "enabled")
+            break;
+        case "Guatemala":
+            cardBody.innerText = "Explore the Historical & Cultural Clothes of Guatemala!"
+
+            cardLinkA.innerText = "Modern & Cultural Overview | Mayan Huipil"
+            cardLinkA.href      = "https://www.phalarope.org/magazine/2021/1/30/the-huipil-an-everlasting-indigenous-cultural-emblem"
+            cardLinkA.target    = "__top"
+
+            cardLinkB.innerText = "Historical Review | Mayan Huipil"
+            cardLinkB.href      = "https://fashionhistory.fitnyc.edu/huipilli-huipil/"
+            cardLinkB.target    = "__top"
+
+            cardLinkC.innerText = ""
+            cardLinkC.href      = ""
+            cardLinkC.target    = "__top"
+
+            cardLinkA.classList.replace("disabled", "enabled")
+            cardLinkB.classList.replace("disabled", "enabled")
+            //cardLinkC.classList.replace("disabled", "enabled")
+            break;
+        case "Mexico":
+            cardBody.innerText = "Explore the Historical & Cultural Clothes of Mexico!"
+
+            cardLinkA.innerText = "Modern Review | Oaxaca Textiles"
+            cardLinkA.href      = "https://oaxacaculture.com/2023/02/on-the-oaxaca-coast-its-about-the-cloth-not-the-cut/"
+            cardLinkA.target    = "__top"
+
+            cardLinkB.innerText = "Historical & Cultural Analysis | Oaxaca Textiles (Book)"
+            cardLinkB.href      = "https://www.getty.edu/publications/resources/virtuallibrary/0892363819.pdf"
+            cardLinkB.target    = "__top"
+
+            cardLinkC.innerText = ""
+            cardLinkC.href      = ""
+            cardLinkC.target    = "__top"
+
+            cardLinkA.classList.replace("disabled", "enabled")
+            cardLinkB.classList.replace("disabled", "enabled")
+            //cardLinkC.classList.replace("disabled", "enabled")
+            break;
+        case "Ecuador":
+            cardBody.innerText = "Explore the Historical & Cultural Clothes of Ecuador!"
+
+            cardLinkA.innerText = "Historical Review | Ican Textiles"
+            cardLinkA.href      = "https://www.mayaincaaztec.com/maya-inca-aztec-galleries/inca-textile-museum"
+            cardLinkA.target    = "__top"
+
+            cardLinkB.innerText = "Cultural Overview | Toquilla Straw Hat"
+            cardLinkB.href      = "https://ich.unesco.org/en/RL/traditional-weaving-of-the-ecuadorian-toquilla-straw-hat-00729#"
+            cardLinkB.target    = "__top"
+
+            cardLinkC.innerText = ""
+            cardLinkC.href      = ""
+            cardLinkC.target    = "__top"
+
+            cardLinkA.classList.replace("disabled", "enabled")
+            cardLinkB.classList.replace("disabled", "enabled")
+            //cardLinkC.classList.replace("disabled", "enabled")
             break;
         default:
             cardTitle.innerText = "Select a Valid Country"
@@ -538,7 +652,6 @@ function hideCard() {
 
     card.style.display = "none"
     card.classList.replace("show","hidden")
-
 }
 
 function updateRegionTitle(pRegionName) {
@@ -576,6 +689,5 @@ function updateMap(pSelectedRegion) {
             break;
     }
 }
-
 
 linkEventHandlers()
