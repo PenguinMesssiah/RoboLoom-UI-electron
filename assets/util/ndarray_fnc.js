@@ -21,6 +21,7 @@ let tieUpArr     = null
 let treadlingArr = null
 let drawdownArr  = null
 let drawdownArrOld = null
+let duplicateThreadFlag = 0
 
 process.parentPort.on('message', (e) => {
     let type  = e.data.type
@@ -36,7 +37,7 @@ process.parentPort.on('message', (e) => {
     let tieUp     = e.data?.tieUp
     let treadling = e.data?.treadling
 
-    //console.log('Matrix Utility Process Message w/ type ', e.data, {'maxArrayLength': null})
+    console.log('Matrix Utility Process Message w/ type ', e.data, {'maxArrayLength': null})
 
     switch (type) {
         case 0: //Create Array Cmd
@@ -88,6 +89,7 @@ function updateMatrix (pRow, pCol, pState, pId) {
     switch(pId) {
         case THREADING_ID:
             threadingArr.set([pRow, pCol], pState)
+            duplicateCheck(pRow,pCol,pState)
             console.log('threadingArr @ ', pRow,", " ,pCol, " = ", threadingArr.get([pRow,pCol]))
             break;
         case TIEUP_ID:
@@ -116,6 +118,8 @@ function updateMatrix (pRow, pCol, pState, pId) {
         }
         process.parentPort.postMessage(message)
         drawdownArrOld = drawdownArr
+        //console.log("drawdown = ", drawdownArr.toString())
+        //console.log("drawdown = ", drawdownArr.get([0,0]))
     }
 }
 
@@ -222,6 +226,37 @@ function setAll(numShaft, numPedal, threading, tieUp, treadling) {
         console.log('value:', value, 'index:', index) 
     })
     */
+}
+
+function duplicateCheck(pRow, pCol, pState) {
+    /*
+        Error Checking Function to see if Raising a Singular Thread 
+        in Threading Matrix multiple times
+    */
+    let count = 0
+    let temp  = math.column(threadingArr, pCol)
+
+    temp.forEach(element => {
+        if(element === 1) {
+            count++;
+        }
+    });
+
+    if(count > 1) {
+        //Send Message to Shaft Render to Update Highlight
+        duplicateThreadFlag = 1;
+    }
+    else if(count === 1 && duplicateThreadFlag == 1) {
+        //Send Message to Remove Highlight
+        duplicateThreadFlag = 0;
+    }
+    let msg = { 
+        type: 4, 
+        threadingCol: pCol,
+        duplicateThreadFlag: duplicateThreadFlag
+
+    }
+    process.parentPort.postMessage(msg)
 }
 
 function sendDrawdownMatrix() {

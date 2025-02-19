@@ -135,6 +135,9 @@ function createShaftWeaveWindow() {
             case 3: //Load Weave Draft from File
                 shaftWeaveWindow.webContents.send('load-from-file', msg)
                 break;
+            case 4: //Add/Remove Duplicate Highlight
+                shaftWeaveWindow.webContents.send('highlight-threading', msg)
+                break;
             case 99:
                 shaftWeaveWindow.webContents.send('on-color-reset', msg)  
         } 
@@ -452,11 +455,11 @@ ipcMain.on('save-weave-draft', (event, {num_shafts, num_pedals}) => {
 
 // Initialize & Create
 app.on('ready', () => {
-    //createMainWindow()
+    createMainWindow()
     //createCalWindow()
     //createShaftWeaveWindow()
     //createJacquardWeaveWindow()
-    createWeavingWorldWindow()
+    //createWeavingWorldWindow()
 })
 
 // Quit when all windows are closed.

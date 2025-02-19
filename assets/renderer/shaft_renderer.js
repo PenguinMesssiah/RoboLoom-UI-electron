@@ -8,10 +8,12 @@ const HEIGHT   = 1000;
 const FALSE    = 0;
 const TRUE     = 1;
 
-const defaultMainColor    = 'black'
-const defaultFillColor    = 'white'
-const defaultAltMainColor = 'blue'
-const defaultAltFillColor = '#0080FF'
+const defaultMainColor      = 'black'
+const defaultFillColor      = 'white'
+const defaultErrorMainColor = '#FD7F2C'
+const defaultErrorFillColor = '#FDB777'
+const defaultAltMainColor   = 'blue'
+const defaultAltFillColor   = '#0080FF'
 
 /*
     Konva is in (c,r) format by default
@@ -28,6 +30,9 @@ const rectLayer   = new Konva.Layer({
 });
 const scrollLayer = new Konva.Layer({
     id: "scrollLayer"
+});
+const highlightLayer = new Konva.Layer({
+    id: "highlightLayer"
 });
 
 const sleep       = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
@@ -72,7 +77,9 @@ let currentWeftFillColor = defaultFillColor
 var num_pedals = DEFAULT
 var num_shafts = DEFAULT
 var select_row     = null
+var threadingGroup = null
 var highlightGroup = null
+var threadingHighlightGroup = null;
 
 
 function initCanvas() {
@@ -84,7 +91,7 @@ function drawWeaveDraft(resetMatricies) {
     let idx = 0
     
     //Draw Threading & Create Array (s x n)
-    var threadingGroup = new Konva.Group({
+    threadingGroup = new Konva.Group({
         x: 5, 
         y: 50,
         id: 'threadingGroup',
@@ -190,21 +197,47 @@ function drawWeaveDraft(resetMatricies) {
         height: 800
     });
 
+    //Mirror Group on Top of Threading Group
+    threadingHighlightGroup = new Konva.Group({
+        x: 5, 
+        y: 0,
+        id: 'threadingHighlightGroup',
+        fill: 'transparent', 
+        width: 1000,
+        height: 250
+    });
+
     drawScrollBars()
 
     rectLayer.add(threadingGroup);
+    rectLayer.add(threadingHighlightGroup);
     rectLayer.add(tieUpGroup);
     rectLayer.add(treadlingGroup);
     rectLayer.add(drawdownGroup);
     rectLayer.add(highlightGroup);
     rectLayer.add(warpColorSelectorGroup);
     rectLayer.add(weftColorSelectorGroup);
-
+    highlightLayer.add(threadingHighlightGroup);
+    
     stage.add(rectLayer);
+    stage.add(highlightLayer);
 }
 
 function linkAllEvents() {
+    var threadingObjectClick = null;
+    
     stage.on('click', function (e) {
+        threadingHighlightGroup.on('click', function(f) {
+            //Exception Case: Check for Click in Threading Highlight Group
+            var target = rectLayer.getIntersection(stage.getPointerPosition());
+            threadingObjectClick = target;
+        })
+        
+        if(threadingObjectClick) {
+            e.target = threadingObjectClick;
+            threadingObjectClick = null;
+        } 
+  
         //Error Handling
         if(typeof e.target.id() == 'string') {
             console.log("Error Handler: Clicked on Invalid Canvas Location")
@@ -246,6 +279,31 @@ function linkAllEvents() {
     //Process Drawdown Update
     window.ndarray.onDrawdownUpdate((value) => {
         populateDrawdown(value);       
+    })
+
+    //On Duplicate Found Draw or Remove Highlight on Threading Matrix
+    window.ndarray.onDuplicateCheck((msg) => { 
+        let threadingCol        = msg.threadingCol
+        let duplicateThreadFlag = msg.duplicateThreadFlag
+
+        if(duplicateThreadFlag) {
+            threadingHighlightGroup.destroyChildren()
+
+            threadingHighlightRect = new Konva.Rect({
+                width: 25,
+                height: num_shafts*BUFFER,
+                cornerRadius: 1,
+                x: threadingCol*BUFFER,
+                y: 50,
+                stroke: defaultErrorMainColor,
+                strokeWidth: 3
+            })
+            
+            threadingHighlightGroup.add(threadingHighlightRect)
+        }   
+        else {
+            threadingHighlightGroup.destroyChildren()
+        }
     })
 
     window.ndarray.onColorReset((msg) => {
@@ -442,6 +500,15 @@ function updateObj(pText, pRect, value) {
         case 'threadingGroup':
         case 'treadlingGroup':
         case 'drawdownGroup':
+            if(value >= 2) {
+                //indicates an error state
+                pText.text(value.toString())
+                pText.fill(defaultErrorMainColor)
+                pRect.fill(defaultErrorFillColor)
+                break;
+            }
+            
+            //Traditional Flow for Updating Colors
             if(value === 0 && currentWeftMainColor != defaultMainColor) {
                 pText.text('0')
                 pText.fill(currentWeftMainColor)
@@ -791,6 +858,7 @@ function drawScrollBars() {
         var delta = (verticalBar.y() - PADDING) / availableHeight;
 
         rectLayer.y(-(HEIGHT - stage.height()) * delta);
+        highlightLayer.y(-(HEIGHT - stage.height()) * delta)
     });
     scrollLayer.add(verticalBar);
 
@@ -820,6 +888,7 @@ function drawScrollBars() {
     var delta = (horizontalBar.x() - PADDING) / availableWidth;
 
     rectLayer.x(-(WIDTH - stage.width()) * delta);
+    highlightLayer.x(-(WIDTH - stage.width()) * delta)
     });
 
     stage.on('wheel', function (e) {
@@ -838,6 +907,7 @@ function drawScrollBars() {
 
         const y = Math.max(minY, Math.min(rectLayer.y() - dy, maxY));
         rectLayer.position({ x, y });
+        highlightLayer.position({ x, y});
 
         const availableHeight =
           stage.height() - PADDING * 2 - verticalBar.height();

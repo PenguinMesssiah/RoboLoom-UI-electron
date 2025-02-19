@@ -5,7 +5,8 @@ contextBridge.exposeInMainWorld('ndarray', {
     updateMatrix: (row, col, state, id) => ipcRenderer.send('update-matrix', {row, col, state, id}),
     onDrawdownUpdate: (callback) => ipcRenderer.on('drawdown-update', (_event, value) => callback(value)),
     resetColors: () => ipcRenderer.send('reset-colors'),
-    onColorReset: (callback) => ipcRenderer.on('on-color-reset', (_event, value) => callback(value))
+    onColorReset: (callback) => ipcRenderer.on('on-color-reset', (_event, value) => callback(value)),
+    onDuplicateCheck: (callback) => ipcRenderer.on('highlight-threading', (_event, value) => callback(value))
 })
 
 contextBridge.exposeInMainWorld('serial', {
