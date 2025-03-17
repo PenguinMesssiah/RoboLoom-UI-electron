@@ -9739,6 +9739,13 @@ body {
   text-align: center;
 }
 
+ol#commandHistory {
+    transform: rotate(180deg);
+}
+li#historyItem1, li#historyItem2, li#historyItem3 {
+    transform: rotate(-180deg);
+}
+
 .card {
   width: 45rem;
   justify-content: center;

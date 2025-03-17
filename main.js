@@ -455,10 +455,10 @@ ipcMain.on('save-weave-draft', (event, {num_shafts, num_pedals}) => {
 
 // Initialize & Create
 app.on('ready', () => {
-    createMainWindow()
+    //createMainWindow()
     //createCalWindow()
     //createShaftWeaveWindow()
-    //createJacquardWeaveWindow()
+    createJacquardWeaveWindow()
     //createWeavingWorldWindow()
 })
 

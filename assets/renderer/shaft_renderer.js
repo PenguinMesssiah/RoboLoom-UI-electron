@@ -391,11 +391,13 @@ function linkAllEvents() {
     prevRowBtn.addEventListener('click', () => {
         console.log("selec row = ", select_row)
         window.serial.sendRowCmd(select_row)
+        updateCommandHistory(select_row, 0)
     })
 
     nextRowBtn.addEventListener('click', () => {
         console.log("selec row = ", select_row)
         window.serial.sendRowCmd(select_row)
+        updateCommandHistory(select_row, 0)
     })
 
     worldWeave.addEventListener('click', () => {
@@ -405,6 +407,7 @@ function linkAllEvents() {
     jumpRowBtn.addEventListener('click', () => {
         //console.log("selec row = ", select_row)
         window.serial.sendRowCmd(select_row)
+        updateCommandHistory(select_row,0)
     })
 
     saveBtn.addEventListener('click', () => {
@@ -934,8 +937,44 @@ function resetColors(redrawDrawdown){
     if(redrawDrawdown) { window.ndarray.resetColors()}
 }
 
+function updateCommandHistory(pSelectedRow, pCommandSource) {
+    let date_obj = new Date()
+    let historyItem1 = document.getElementById("historyItem1")
+    let historyItem2 = document.getElementById("historyItem2")
+    let historyItem3 = document.getElementById("historyItem3")
+
+    let newCommand = date_obj.getHours() + ":" +
+                        date_obj.getMinutes() + ":" + 
+                        date_obj.getSeconds() + " | ";
+    switch(pCommandSource) {
+        case 0:
+            newCommand += "Drawdown Row: " + pSelectedRow
+            break;
+        case 1:
+            newCommand += "Overshot: "
+            switch(pSelectedRow) {
+                case 0:
+                    newCommand += "0101"
+                    break;
+                case 1:
+                    newCommand += "1010"
+                    break;
+                case -1:
+                    newCommand += "0000"
+                    break;
+            }
+            break;
+        }
+
+    //Update Command Log 
+    historyItem3.innerHTML = historyItem2.innerHTML
+    historyItem2.innerHTML = historyItem1.innerHTML
+    historyItem1.innerHTML = newCommand
+}
+
 function sendPlainWeave(pStartValue) {
     window.serial.sendPlainWeave(pStartValue)
+    updateCommandHistory(pStartValue, 1)
 }
 
 //Execute

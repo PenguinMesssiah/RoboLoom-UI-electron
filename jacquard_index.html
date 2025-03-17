@@ -60,6 +60,19 @@
     <!--Konva Canvas-->
     <div class="container-fluid">
         <div class="d-flex justify-content-center" id="konva-container"></div>
+    
+    <!--History of Commands-->
+    <div class="commandHistory">
+        <h5 >Command History</h5>
+        <ol class="list-group" id="commandHistory">
+            <li class="list-group-item" id="historyItem1"><i>Prior Command</i></li>
+            <li class="list-group-item" id="historyItem2"><i>Prior Command</i></li>
+            <li class="list-group-item list-group-item-action active" id="historyItem3"><i>Prior Command</i></li>
+        </ol>        
+    </div>
+    <a class="icon-link d-flex justify-content-start mb-5" href="#settingsPanel" data-bs-toggle="offcanvas">
+        <img src="./assets/svg/SoloPersonaje.png">
+    </a>
 
     <!--Offcanvas-->
     <div class="offcanvas offcanvas-end" data-bs-backdrop="static" tabindex="-1" id="settingsPanel" aria-labelledby="settingsPanelLabel">
@@ -140,9 +153,6 @@
     </div>
     <div class="modal-backdrop fade show" id="backdrop" style="display: none;"></div>
 
-    <a class="icon-link d-flex justify-content-start mb-5" href="#settingsPanel" data-bs-toggle="offcanvas">
-        <img src="./assets/svg/SoloPersonaje.png">
-    </a>
 
 </body>
 

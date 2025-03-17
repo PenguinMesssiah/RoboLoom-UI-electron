@@ -9532,6 +9532,20 @@ button {
   text-align: center;
 }
 
+ol#commandHistory {
+  transform: rotate(180deg);
+}
+li#historyItem1, li#historyItem2, li#historyItem3 {
+  transform: rotate(-180deg);
+}
+
+.commandHistory {
+  position: absolute;
+  margin-top: -550px;
+  margin-inline-start: 20px;
+  width: 100px;
+}
+
 .white-space-normal {
   white-space: normal;
 }

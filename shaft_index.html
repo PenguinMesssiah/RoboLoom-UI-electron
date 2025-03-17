@@ -20,7 +20,7 @@
     <div class="row">
         <div id="konva-container"></div>
     
-    <!--Weaving Commands-->
+        <!--Weaving Commands-->
         <div class="weave-btn-group d-flex justify-content-end">
             <div class="btn-group-vertical" role="group" aria-label="Weaving Button Group">
                 <button type="button" id="previousRowBtn" class="btn btn-info" onclick="highlightRow(-1)">Previous Row</button>
@@ -47,7 +47,7 @@
             </div> 
         </div>
 
-    <!--Weaving Operations-->
+        <!--Weaving Operations-->
         <div class="weave-btn-group-2">
             <div class="btn-group-vertical" role="group" aria-label="Navigation Button Group">
                 <button type="button" class="btn btn-outline-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><img src="./assets/svg/bi-arrow-right-square.svg"> Change Mode</button>
@@ -66,7 +66,14 @@
                 <span class="input-group-text" id="">Weft Color</span>
                 <input type="color" class="form-control form-control-color" id="weftColorInputSelector" value="#00C2BF" title="Choose a Warp Color">
             </div>
-            <a class="icon-link d-flex justify-content-end mt-6" href="#settingsPanel" data-bs-toggle="offcanvas">
+            <!--History of Commands-->
+            <h5 class="mt-5">Command History</h5>
+            <ol class="list-group" id="commandHistory">
+                <li class="list-group-item" id="historyItem1"><i>Prior Command</i></li>
+                <li class="list-group-item" id="historyItem2"><i>Prior Command</i></li>
+                <li class="list-group-item" id="historyItem3"><i>Prior Command</i></li>
+            </ol>
+            <a class="icon-link d-flex justify-content-end mt-5" href="#settingsPanel" data-bs-toggle="offcanvas">
                 <img src="./assets/svg/SoloPersonaje.png">
             </a>
         </div>
