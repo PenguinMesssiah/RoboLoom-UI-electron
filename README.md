@@ -3,7 +3,7 @@ A novel educational weaving software that centers culturally relevant pedagogy (
 
 ## Acknowledgements
 
-This work expands upon the research performed by the Social Haptics Robotics and Education (SHRED) Lab at Carnegie Mellon University. This work exists as the principal software for the Robot-Loom Educational Kit, comprised of the 
+This work expands upon the research performed by the Social Haptics Robotics and Education (SHRED) Lab at Carnegie Mellon University. This work exists as the principal software for the [Robot-Loom Educational Kit](https://sites.google.com/view/roboloom/home?authuser=0), comprised of the 
  - (1) Robo-Loom $^{[1]}$
  - (2) educational ThreadSpace Software
  - (3) the Robo-Loom curriculum 
