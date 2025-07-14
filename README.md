@@ -25,6 +25,10 @@ npm install
 npm start
 ```
 
+## Video Demo
+
+[Software Demo](https://youtu.be/NFKrm7I0Kl8)
+
 Learn more about Electron and its API in the [documentation](http://electron.atom.io/docs/).
 
 
