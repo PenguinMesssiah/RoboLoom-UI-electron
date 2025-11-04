@@ -17,7 +17,7 @@ let appWindows          = new List()
 
 function createMainWindow() {
     //Create Utility Services
-    serial_child = utilityProcess.fork(path.join(__dirname, './assets/util/serial_cmd'), {
+    serial_child = utilityProcess.fork(path.join(__dirname, './assets/util/serial_cmd.js'), {
         stdio: ['ignore', 'inherit', 'inherit'],
         serviceName: 'Serial Utility Process'
     })
@@ -81,12 +81,12 @@ function createCalWindow() {
 
 function createShaftWeaveWindow() {
     //Create Utility Services
-    matrix_child = utilityProcess.fork(path.join(__dirname, './assets/util/ndarray_fnc'), {
+    matrix_child = utilityProcess.fork(path.join(__dirname, './assets/util/ndarray_fnc.js'), {
         stdio: ['ignore', 'inherit', 'inherit'],
         serviceName: 'Shaft Matrix Utility Process'
     })
 
-    jquery_child = utilityProcess.fork(path.join(__dirname, './assets/util/jquery_fs'), {
+    jquery_child = utilityProcess.fork(path.join(__dirname, './assets/util/jquery_fs.js'), {
         stdio: ['ignore', 'inherit', 'inherit'],
         serviceName: 'JQuery Utility Process'
     })
@@ -180,12 +180,12 @@ function createShaftWeaveWindow() {
 
 function createJacquardWeaveWindow() {
     //Create Utility Services
-    matrix_child = utilityProcess.fork(path.join(__dirname, './assets/util/ndarray_fnc'), {
+    matrix_child = utilityProcess.fork(path.join(__dirname, './assets/util/ndarray_fnc.js'), {
         stdio: ['ignore', 'inherit', 'inherit'],
         serviceName: 'Jacquard Matrix Utility Process'
     })
 
-    jquery_child = utilityProcess.fork(path.join(__dirname, './assets/util/jquery_fs'), {
+    jquery_child = utilityProcess.fork(path.join(__dirname, './assets/util/jquery_fs.js'), {
         stdio: ['ignore', 'inherit', 'inherit'],
         serviceName: 'JQuery Utility Process'
     })

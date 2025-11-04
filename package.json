@@ -28,7 +28,7 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
     "@electron-forge/plugin-fuses": "^7.4.0",
     "@electron/fuses": "^1.8.0",
-    "electron": "^26.4.0"
+    "electron": "^39.0.0"
   },
   "dependencies": {
     "@amcharts/amcharts5": "^5.11.0",
@@ -39,6 +39,7 @@
     "jquery-csv": "^1.0.21",
     "konva": "^9.3.6",
     "mathjs": "^12.4.1",
+    "node-abi": "^3.24.0",
     "serialport": "^10.3.0",
     "tableify": "^1.1.1"
   },
